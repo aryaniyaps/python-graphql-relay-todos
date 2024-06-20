@@ -12,6 +12,6 @@ class NoteService:
             content=content,
         )
 
-    async def get_all_notes(self) -> list[Note]:
+    async def get_all(self) -> list[Note]:
         """Get all notes."""
         return await self._note_repo.get_all()

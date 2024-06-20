@@ -5,7 +5,21 @@
 groups = ["default"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:0a4539f02c5c871d1e79c22da40f501c29e23e6fa7e260e4cd6187a5e1faa130"
+content_hash = "sha256:12f0b8186af1f9eec969f97b9a4d4437efcf24aee79185e2595dd9ced0924bad"
+
+[[package]]
+name = "aioinject"
+version = "0.34.0"
+requires_python = ">=3.10"
+summary = "Async dependency injection library"
+groups = ["default"]
+dependencies = [
+    "typing-extensions>=4.5.0",
+]
+files = [
+    {file = "aioinject-0.34.0-py3-none-any.whl", hash = "sha256:d7179c298d562aaf6631f452e4096ef4e19a8aae84c21cddcbdb4fdfcb1e6146"},
+    {file = "aioinject-0.34.0.tar.gz", hash = "sha256:64bbba0dc27e57a35b86b71412a82ef32b40ec1296e17f4f75202213fc9ffd3d"},
+]
 
 [[package]]
 name = "alembic"
