@@ -1,0 +1,25 @@
+[project]
+name = "graphql-notes"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [{ name = "Aryan Iyappan", email = "aryaniyappan2006@gmail.com" }]
+dependencies = [
+    "strawberry-graphql>=0.235.0",
+    "result>=0.17.0",
+    "pydantic>=2.7.4",
+    "pydantic-settings>=2.3.3",
+    "fastapi-slim>=0.111.0",
+    "granian[reload]>=1.4.4",
+    "alembic>=1.13.1",
+    "sqlalchemy>=2.0.31",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = { text = "MIT" }
+
+[tool.pdm.scripts]
+server = "granian --interface asgi app.server:app --reload"
+
+
+[tool.pdm]
+distribution = false
