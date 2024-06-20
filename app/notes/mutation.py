@@ -17,7 +17,12 @@ class NoteMutation:
     @inject
     async def create_note(
         self,
-        content: str,
+        content: Annotated[
+            str,
+            strawberry.argument(
+                description="""The content of the note.""",
+            ),
+        ],
         note_service: Annotated[NoteService, Inject],
     ) -> Note:
         """Create a new note."""
