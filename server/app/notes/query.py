@@ -1,7 +1,8 @@
 from typing import Annotated
 
 import strawberry
-from aioinject import Inject, inject
+from aioinject import Inject
+from aioinject.ext.strawberry import inject
 
 from .models import Note
 from .services import NoteService
