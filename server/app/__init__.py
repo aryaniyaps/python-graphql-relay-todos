@@ -35,4 +35,5 @@ def create_app() -> FastAPI:
         openapi_url=settings.openapi_url,
     )
     add_routes(app)
+    add_middleware(app)
     return app
