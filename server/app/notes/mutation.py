@@ -13,7 +13,7 @@ from .types import NoteType
 class NoteMutation:
     @strawberry.mutation(
         graphql_type=NoteType,
-        description="""Create a new note.""",
+        description="Create a new note.",
     )
     @inject
     async def create_note(
@@ -21,7 +21,7 @@ class NoteMutation:
         content: Annotated[
             str,
             strawberry.argument(
-                description="""The content of the note.""",
+                description="The content of the note.",
             ),
         ],
         note_service: Annotated[NoteService, Inject],
