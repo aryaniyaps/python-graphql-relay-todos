@@ -15,7 +15,7 @@ class NoteQuery:
         description="Get all notes.",
     )
     @inject
-    async def get_all_notes(
+    async def all_notes(
         self, note_service: Annotated[NoteService, Inject]
     ) -> list[Note]:
         """Get all notes."""
