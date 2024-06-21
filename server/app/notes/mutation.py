@@ -30,3 +30,23 @@ class NoteMutation:
         return await note_service.create_note(
             content=content,
         )
+
+    @strawberry.mutation(
+        graphql_type=NoteType,
+        description="Delete a note by ID.",
+    )
+    @inject
+    async def delete_note(
+        self,
+        note_id: Annotated[
+            str,
+            strawberry.argument(
+                description="The ID of the note to delete.",
+            ),
+        ],
+        note_service: Annotated[NoteService, Inject],
+    ) -> Note:
+        """Delete a note by ID."""
+        return await note_service.delete(
+            note_id=note_id,
+        )

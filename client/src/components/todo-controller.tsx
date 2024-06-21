@@ -37,7 +37,6 @@ export default function TodoController() {
     await createTodo({ variables: { content: data.content } });
   };
 
-  if (loading) return "Submitting...";
   if (error) return `Submission error! ${error.message}`;
 
   return (
@@ -62,7 +61,9 @@ export default function TodoController() {
             </FormItem>
           )}
         />
-        <Button type="submit">Create note</Button>
+        <Button type="submit" disabled={loading}>
+          Create todo
+        </Button>
       </form>
     </Form>
   );
