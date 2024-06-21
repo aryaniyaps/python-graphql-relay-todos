@@ -20,7 +20,8 @@ readme = "README.md"
 license = { text = "MIT" }
 
 [tool.pdm.scripts]
-server = "granian --interface asgi app.server:app --reload"
+dev = "granian --interface asgi app.server:app --reload"
+migrate = "alembic upgrade head"
 
 
 [tool.pdm]

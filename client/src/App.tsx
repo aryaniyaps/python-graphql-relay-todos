@@ -3,7 +3,7 @@ import TodoList from "./components/todo-list";
 
 function App() {
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="mx-auto max-w-lg flex flex-col w-full h-full justify-center gap-8">
       <TodoController />
       <TodoList />
     </div>
