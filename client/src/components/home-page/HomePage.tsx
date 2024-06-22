@@ -1,5 +1,5 @@
-import TodoController from "./todo-controller";
-import TodoList from "./todo-list";
+import TodoController from "./TodoController";
+import TodoList from "./TodoList";
 
 export default function HomePage() {
   return (

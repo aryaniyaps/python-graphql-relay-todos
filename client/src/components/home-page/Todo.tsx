@@ -1,10 +1,11 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "react-relay";
+import { graphql } from "relay-runtime";
 import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
 
-const DELETE_TODO = gql`
-  mutation DeleteTodo($noteId: String!) {
+const deleteTodoMutation = graphql`
+  mutation TodoDeleteMutation($noteId: String!) {
     deleteNote(noteId: $noteId) {
       id
     }
@@ -13,7 +14,7 @@ const DELETE_TODO = gql`
 
 export default function Todo({ todo }: { todo: any }) {
   // TODO: update todo list cache after mutation
-  const [deleteTodo, { loading }] = useMutation(DELETE_TODO);
+  const [commitMutation, isMutationInFlight] = useMutation(deleteTodoMutation);
 
   return (
     <Card>
@@ -25,9 +26,9 @@ export default function Todo({ todo }: { todo: any }) {
           <Button
             size={"icon"}
             variant={"ghost"}
-            disabled={loading}
-            onClick={async () => {
-              await deleteTodo({ variables: { noteId: todo.id } });
+            disabled={isMutationInFlight}
+            onClick={() => {
+              commitMutation({ variables: { noteId: todo.id } });
             }}
           >
             <Icons.trash className="h-4 w-4" />

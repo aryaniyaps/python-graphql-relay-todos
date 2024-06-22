@@ -1,14 +1,17 @@
-import { ApolloProvider } from "@apollo/client";
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom/client";
+import { RelayEnvironmentProvider } from "react-relay/hooks";
 import App from "./App.tsx";
+import Loader from "./components/loader.tsx";
 import "./index.css";
-import client from "./lib/apolloClient.ts";
+import environment from "./lib/relay-environment";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <RelayEnvironmentProvider environment={environment}>
+      <Suspense fallback={<Loader />}>
+        <App />
+      </Suspense>
+    </RelayEnvironmentProvider>
   </React.StrictMode>
 );

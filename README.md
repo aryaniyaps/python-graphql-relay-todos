@@ -32,3 +32,11 @@ npm install
 ```
 npm run dev
 ```
+
+
+## Generating the GraphQL schema
+
+```
+cd server
+pdm run generate-schema
+```

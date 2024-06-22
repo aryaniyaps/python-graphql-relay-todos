@@ -1,6 +1,6 @@
-import { gql, useMutation } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { graphql, useMutation } from "react-relay";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import {
@@ -12,8 +12,8 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 
-const CREATE_TODO = gql`
-  mutation CreateTodo($content: String!) {
+const createTodoMutation = graphql`
+  mutation TodoControllerCreateMutation($content: String!) {
     createNote(content: $content) {
       id
       content
@@ -31,19 +31,15 @@ const createTodoSchema = z.object({
 
 export default function TodoController() {
   // TODO: update todo list cache after mutation
-  const [createTodo, { loading, error }] = useMutation(CREATE_TODO);
+  const [commitMutation, isMutationInFlight] = useMutation(createTodoMutation);
 
   const form = useForm<z.infer<typeof createTodoSchema>>({
     resolver: zodResolver(createTodoSchema),
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof createTodoSchema>> = async (
-    data
-  ) => {
-    await createTodo({ variables: { content: data.content } });
+  const onSubmit: SubmitHandler<z.infer<typeof createTodoSchema>> = (data) => {
+    commitMutation({ variables: { content: data.content } });
   };
-
-  if (error) return `Submission error! ${error.message}`;
 
   return (
     <Form {...form}>
@@ -67,7 +63,7 @@ export default function TodoController() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={loading}>
+        <Button type="submit" disabled={isMutationInFlight}>
           Create todo
         </Button>
       </form>

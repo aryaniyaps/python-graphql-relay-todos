@@ -1,0 +1,28 @@
+"""Date with time (isoformat)"""
+scalar DateTime
+
+type Mutation {
+  """Create a new note."""
+  createNote(
+    """The content of the note."""
+    content: String!
+  ): Note!
+
+  """Delete a note by ID."""
+  deleteNote(
+    """The ID of the note to delete."""
+    noteId: String!
+  ): Note!
+}
+
+type Note {
+  id: String!
+  content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+type Query {
+  """Get all notes."""
+  allNotes: [Note!]!
+}
