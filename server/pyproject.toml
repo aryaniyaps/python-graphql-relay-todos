@@ -4,12 +4,12 @@ version = "0.1.0"
 description = "Default template for PDM package"
 authors = [{ name = "Aryan Iyappan", email = "aryaniyappan2006@gmail.com" }]
 dependencies = [
-    "strawberry-graphql[cli]>=0.235.0",
+    "strawberry-graphql>=0.235.0",
     "result>=0.17.0",
     "pydantic>=2.7.4",
     "pydantic-settings>=2.3.3",
     "fastapi-slim>=0.111.0",
-    "granian[reload]>=1.4.4",
+    "granian>=1.4.4",
     "alembic>=1.13.1",
     "sqlalchemy>=2.0.31",
     "aioinject>=0.34.0",
@@ -25,6 +25,15 @@ dev = "granian --interface asgi app.server:app --reload"
 generate-schema = "strawberry export-schema app.schema:schema --output ../schema/schema.graphql"
 migrate = "alembic upgrade head"
 
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "ruff>=0.4.10",
+    "mypy>=1.10.0",
+    "black>=24.4.2",
+    "strawberry-graphql[cli]>=0.235.0",
+    "granian[reload]>=1.4.4",
+]
 
 [tool.pdm]
 distribution = false
