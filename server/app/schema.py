@@ -3,13 +3,17 @@ from strawberry import Schema
 from strawberry.extensions import ParserCache, ValidationCache
 from strawberry.tools import merge_types
 
+from .base.query import BaseQuery
 from .container import create_container
 from .notes.mutation import NoteMutation
 from .notes.query import NoteQuery
 
 query = merge_types(
     name="Query",
-    types=(NoteQuery,),
+    types=(
+        BaseQuery,
+        NoteQuery,
+    ),
 )
 
 

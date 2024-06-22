@@ -35,6 +35,11 @@ type Note implements Node {
 }
 
 type Query {
+  node(
+    """The ID of the object."""
+    id: GlobalID!
+  ): Node!
+
   """Get all notes."""
   allNotes: [Note!]!
 }
