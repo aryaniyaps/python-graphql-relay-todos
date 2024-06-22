@@ -1,80 +1,66 @@
-from typing import (
-    Annotated,
-    Any,
-    AsyncIterable,
-    AsyncIterator,
-    Iterable,
-    Iterator,
-    List,
-    Optional,
-    TypeVar,
-)
+from typing import Any, Self, TypeVar
 
-import strawberry
-from aioinject import Inject
-from aioinject.ext.strawberry import inject
-from sqlakeyset import Page, unserialize_bookmark
-from sqlakeyset.asyncio import select_page
-from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry import relay
+from strawberry.relay.types import NodeIterableType
 
 from app.context import Info
 
-T = TypeVar("T", bound=relay.Node)
+NodeT = TypeVar(
+    "NodeT",
+    bound=relay.Node,
+)
 
 
-@strawberry.type(name="Connection", description="A connection to a list of items.")
-class KeysetConnection(relay.Connection[T]):
-    edges: List[relay.Edge[T]] = strawberry.field(
-        description="Contains the nodes in this connection",
-    )
-
+class KeysetConnection(relay.Connection):
     @classmethod
-    @inject
     async def resolve_connection(
         cls,
-        nodes: Iterator[T] | Iterable[T] | AsyncIterator[T] | AsyncIterable[T],
+        nodes: NodeIterableType[NodeT],
         *,
         info: Info,
-        before: Optional[str] = None,
-        after: Optional[str] = None,
-        first: Optional[int] = None,
-        last: Optional[int] = None,
-        session: Annotated[AsyncSession, Inject],
+        before: str | None = None,
+        after: str | None = None,
+        first: int | None = None,
+        last: int | None = None,
         **kwargs: Any,
-    ) -> "KeysetConnection[T]":
-        if first is not None and last is not None:
-            raise ValueError("Cannot specify both first and last")
+    ) -> Self:
+        # NOTE: This is a showcase implementation and is far from
+        # being optimal performance wise
+        edges_mapping = {
+            relay.to_base64("fruit_name", n.name): relay.Edge(
+                node=n,
+                cursor=relay.to_base64("fruit_name", n.name),
+            )
+            for n in sorted(nodes, key=lambda f: f.name)
+        }
+        edges = list(edges_mapping.values())
+        first_edge = edges[0] if edges else None
+        last_edge = edges[-1] if edges else None
 
-        max_results = info.schema.config.relay_max_results
-        per_page = first or last or max_results
+        if after is not None:
+            after_edge_idx = edges.index(edges_mapping[after])
+            edges = [e for e in edges if edges.index(e) > after_edge_idx]
 
-        if per_page > max_results:
-            raise ValueError(f"Cannot request more than {max_results} results")
+        if before is not None:
+            before_edge_idx = edges.index(edges_mapping[before])
+            edges = [e for e in edges if edges.index(e) < before_edge_idx]
 
-        # Use sqlakeyset to paginate
-        page: Page = await select_page(
-            session,
-            nodes,
-            per_page=per_page,
-            after=unserialize_bookmark(after) if after else None,
-            before=unserialize_bookmark(before) if before else None,
-        )
+        if first is not None:
+            edges = edges[:first]
 
-        # Create edges
-        # (Overriding Edge.resolve_edge as we already have base64 encoded cursors from
-        # sqlakeyset available!)
-        edges = [
-            relay.Edge(node=node, cursor=page.paging.get_bookmark_at(i))
-            for i, node in enumerate(page)
-        ]
+        if last is not None:
+            edges = edges[-last:]
 
         return cls(
             edges=edges,
             page_info=relay.PageInfo(
-                has_next_page=page.paging.has_next,
-                has_previous_page=page.paging.has_previous,
-                start_cursor=page.paging.get_bookmark_at(0) if page else None,
-                end_cursor=page.paging.get_bookmark_at(-1) if page else None,
+                start_cursor=edges[0].cursor if edges else None,
+                end_cursor=edges[-1].cursor if edges else None,
+                has_previous_page=(
+                    first_edge is not None and bool(edges) and edges[0] != first_edge
+                ),
+                has_next_page=(
+                    last_edge is not None and bool(edges) and edges[-1] != last_edge
+                ),
             ),
         )
