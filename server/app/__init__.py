@@ -1,19 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from strawberry.fastapi import GraphQLRouter
 
 from .config import settings
-from .schema import schema
+from .graphql_app import create_graphql_app
 
 
 def add_routes(app: FastAPI) -> None:
     """Register routes for the app."""
-    app.include_router(
-        GraphQLRouter(
-            schema=schema,
-        ),  # type: ignore
-        prefix="/graphql",
-    )
+    app.mount("/graphql", create_graphql_app())
 
 
 def add_middleware(app: FastAPI) -> None:
