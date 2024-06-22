@@ -16,16 +16,8 @@ class NoteService:
         """Get all notes."""
         return await self._note_repo.get_all()
 
-    async def delete(self, note_id: str) -> Note:
+    async def delete(self, note_id: str) -> None:
         """Delete a note by ID."""
-        existing_note = await self._note_repo.get(note_id=note_id)
-
-        if existing_note is None:
-            # TODO: raise NoteDoesNotExist error here
-            raise Exception
-
         await self._note_repo.delete(
             note_id=note_id,
         )
-
-        return existing_note

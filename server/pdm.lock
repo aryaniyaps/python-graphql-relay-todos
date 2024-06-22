@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:66c0991cc4c626613b15608f712591af8402f3fb04a6c23604b3b0d09807e942"
+content_hash = "sha256:8d4493343efe4932e47932c53a53d3ad37c9e2a090c18b1570dbacc085dae8b4"
 
 [[package]]
 name = "aioinject"
@@ -329,6 +329,17 @@ files = [
 ]
 
 [[package]]
+name = "packaging"
+version = "24.1"
+requires_python = ">=3.8"
+summary = "Core utilities for Python packages"
+groups = ["default"]
+files = [
+    {file = "packaging-24.1-py3-none-any.whl", hash = "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124"},
+    {file = "packaging-24.1.tar.gz", hash = "sha256:026ed72c8ed3fcce5bf8950572258698927fd1dbda10a5e981cdf0ac37f4f002"},
+]
+
+[[package]]
 name = "pydantic"
 version = "2.7.4"
 requires_python = ">=3.8"
@@ -511,6 +522,23 @@ groups = ["default"]
 files = [
     {file = "sniffio-1.3.1-py3-none-any.whl", hash = "sha256:2f6da418d1f1e0fddd844478f41680e794e6051915791a034ff65e5f100525a2"},
     {file = "sniffio-1.3.1.tar.gz", hash = "sha256:f4324edc670a0f49750a81b895f35c3adb843cca46f0530f79fc1babb23789dc"},
+]
+
+[[package]]
+name = "sqlakeyset"
+version = "2.0.1716332987"
+requires_python = "<4.0,>=3.7"
+summary = "offset-free paging for sqlalchemy"
+groups = ["default"]
+dependencies = [
+    "packaging>=20.0",
+    "python-dateutil",
+    "sqlalchemy>=1.3.11",
+    "typing-extensions<5,>=4",
+]
+files = [
+    {file = "sqlakeyset-2.0.1716332987-py3-none-any.whl", hash = "sha256:e28916828cdaaaaaee3905ba55722959ad2808d47b0bb3235e1d15c5480c17fa"},
+    {file = "sqlakeyset-2.0.1716332987.tar.gz", hash = "sha256:504c20747c3f05484fa67b16dcc7c7b0d5367f7e5d3f335a8845184e61425d94"},
 ]
 
 [[package]]
