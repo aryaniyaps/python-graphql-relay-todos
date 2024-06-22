@@ -1,15 +1,9 @@
-import TodoController from "./components/todo-controller";
-import TodoList from "./components/todo-list";
+import HomePage from "./components/home-page/home-page";
 
-function App() {
+export default function App() {
   return (
     <div className="mx-auto max-w-lg flex items-center w-full h-full justify-center">
-      <div className="flex flex-col items-center w-full h-full justify-center gap-8 py-8">
-        <TodoController />
-        <TodoList />
-      </div>
+      <HomePage />
     </div>
   );
 }
-
-export default App;

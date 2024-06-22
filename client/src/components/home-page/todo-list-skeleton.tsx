@@ -1,4 +1,4 @@
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../ui/skeleton";
 
 function TodoSkeleton() {
   return <Skeleton className="h-[125px] w-full rounded-xl" />;

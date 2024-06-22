@@ -1,7 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
-import { Icons } from "./icons";
-import { Button } from "./ui/button";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { Icons } from "../icons";
+import { Button } from "../ui/button";
+import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
 
 const DELETE_TODO = gql`
   mutation DeleteTodo($noteId: String!) {

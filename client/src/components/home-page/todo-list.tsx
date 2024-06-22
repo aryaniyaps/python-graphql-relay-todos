@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
+import { ScrollArea } from "../ui/scroll-area";
 import Todo from "./todo";
 import TodoListSkeleton from "./todo-list-skeleton";
-import { ScrollArea } from "./ui/scroll-area";
 
 const GET_TODOS = gql`
   query GetTodos {
