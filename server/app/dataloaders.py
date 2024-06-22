@@ -1,5 +1,4 @@
 import dataclasses
-from uuid import UUID
 
 from strawberry.dataloader import DataLoader
 

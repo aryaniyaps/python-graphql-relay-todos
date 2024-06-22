@@ -1,8 +1,6 @@
 import dataclasses
 
-from starlette.requests import Request
-from starlette.responses import Response
-from starlette.websockets import WebSocket
+from fastapi import Request, Response, WebSocket
 from strawberry.types import Info as StrawberryInfo
 
 from app.dataloaders import Dataloaders
