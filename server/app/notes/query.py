@@ -5,7 +5,6 @@ from aioinject import Inject
 from aioinject.ext.strawberry import inject
 from strawberry import relay
 
-from .models import Note
 from .services import NoteService
 from .types import NoteType
 
@@ -19,7 +18,15 @@ class NoteQuery:
     async def notes(
         self,
         note_service: Annotated[NoteService, Inject],
-    ) -> list[Note]:
+    ) -> list[NoteType]:
         notes = await note_service.get_all()
-        print(notes)
-        return notes
+
+        return [
+            NoteType(
+                id=str(note.id),
+                created_at=note.created_at,
+                content=note.content,
+                updated_at=note.updated_at,
+            )
+            for note in notes
+        ]
