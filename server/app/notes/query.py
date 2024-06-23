@@ -5,8 +5,6 @@ from aioinject import Inject
 from aioinject.ext.strawberry import inject
 from strawberry import relay
 
-from app.base.types import KeysetConnection
-
 from .models import Note
 from .services import NoteService
 from .types import NoteType
@@ -22,4 +20,6 @@ class NoteQuery:
         self,
         note_service: Annotated[NoteService, Inject],
     ) -> list[Note]:
-        return await note_service.get_all()
+        notes = await note_service.get_all()
+        print(notes)
+        return notes

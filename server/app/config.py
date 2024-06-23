@@ -16,6 +16,35 @@ class Settings(BaseSettings):
 
     environment: Environment = Environment.development
 
+    host: Annotated[
+        str,
+        Field(
+            examples=[
+                "127.0.0.1",
+            ],
+        ),
+    ] = "127.0.0.1"
+
+    port: Annotated[
+        int,
+        Field(
+            examples=[
+                8000,
+            ],
+        ),
+    ] = 8000
+
+    log_level: Annotated[
+        str,
+        Field(
+            examples=[
+                "INFO",
+                "NOTSET",
+                "DEBUG",
+            ],
+        ),
+    ] = "DEBUG"
+
     cors_allow_origins: Annotated[
         list[str],
         Field(

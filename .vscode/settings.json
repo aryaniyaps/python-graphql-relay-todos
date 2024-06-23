@@ -1,14 +1,14 @@
 {
   "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
-    }
+    "editor.defaultFormatter": "charliermarsh.ruff"
   },
   "python.defaultInterpreterPath": "${workspaceFolder}/server/.venv",
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": [""],
   "python.terminal.activateEnvironment": false,
-  "python.analysis.ignore": ["*"]
+  "python.analysis.ignore": ["*"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  }
 }

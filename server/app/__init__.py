@@ -1,8 +1,9 @@
+from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .config import settings
-from .graphql_app import create_graphql_app
+from app.config import settings
+from app.graphql_app import create_graphql_app
 
 
 def add_routes(app: FastAPI) -> None:
@@ -19,6 +20,10 @@ def add_middleware(app: FastAPI) -> None:
         allow_headers=["*"],
         allow_methods=["*"],
         expose_headers=["*"],
+    )
+    app.add_middleware(
+        CorrelationIdMiddleware,
+        header_name="X-Request-ID",
     )
 
 
