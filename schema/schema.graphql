@@ -34,14 +34,57 @@ type Note implements Node {
   updatedAt: DateTime
 }
 
+"""A connection to a list of items."""
+type NoteConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection"""
+  edges: [NoteEdge!]!
+}
+
+"""An edge in a connection."""
+type NoteEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The item at the end of the edge"""
+  node: Note!
+}
+
+"""Information to aid in pagination."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
 type Query {
   node(
     """The ID of the object."""
     id: GlobalID!
   ): Node!
+  notes(
+    """Returns the items in the list that come before the specified cursor."""
+    before: String = null
 
-  """Get all notes."""
-  allNotes: [Note!]!
+    """Returns the items in the list that come after the specified cursor."""
+    after: String = null
+
+    """Returns the first n items from the list."""
+    first: Int = null
+
+    """Returns the items in the list that come after the specified cursor."""
+    last: Int = null
+  ): NoteConnection!
 }
 
 """Represents NULL values"""

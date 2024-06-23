@@ -5,10 +5,8 @@ import { Button } from "../ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
 
 const deleteTodoMutation = graphql`
-  mutation TodoDeleteMutation($noteId: String!) {
-    deleteNote(noteId: $noteId) {
-      id
-    }
+  mutation TodoDeleteMutation($noteId: GlobalID!) {
+    deleteNote(noteId: $noteId)
   }
 `;
 

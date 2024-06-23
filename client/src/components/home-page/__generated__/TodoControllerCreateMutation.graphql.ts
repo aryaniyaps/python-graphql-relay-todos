@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2ed9aa65a873d1fd1ff7ebf56ba5b77d>>
+ * @generated SignedSource<<f6d7723e630ba24fdc09ed4b2b513a4f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,7 @@ export type TodoControllerCreateMutation$data = {
   readonly createNote: {
     readonly content: string;
     readonly createdAt: any;
-    readonly id: string;
+    readonly id: any;
     readonly updatedAt: any | null | undefined;
   };
 };
