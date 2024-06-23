@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8aa727cfc8bb6786c48cb66a702e7e32>>
+ * @generated SignedSource<<36de205c97809e0e2b303c5dd6d09ce8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,9 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
-export type TodoListQuery$variables = {
-  first: number;
-};
+export type TodoListQuery$variables = Record<PropertyKey, never>;
 export type TodoListQuery$data = {
   readonly notes: {
     readonly edges: ReadonlyArray<{
@@ -35,21 +33,8 @@ export type TodoListQuery = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "first"
-  }
-],
-v1 = [
-  {
     "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "first",
-        "variableName": "first"
-      }
-    ],
+    "args": null,
     "concreteType": "NoteConnection",
     "kind": "LinkedField",
     "name": "notes",
@@ -129,32 +114,32 @@ v1 = [
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "TodoListQuery",
-    "selections": (v1/*: any*/),
+    "selections": (v0/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "TodoListQuery",
-    "selections": (v1/*: any*/)
+    "selections": (v0/*: any*/)
   },
   "params": {
-    "cacheID": "d7ba992f05e38cf7d4d2d3b1d9314d3c",
+    "cacheID": "d51848720a23d18c3a22c63611d4976c",
     "id": null,
     "metadata": {},
     "name": "TodoListQuery",
     "operationKind": "query",
-    "text": "query TodoListQuery(\n  $first: Int!\n) {\n  notes(first: $first) {\n    edges {\n      node {\n        id\n        content\n        createdAt\n        updatedAt\n      }\n    }\n    pageInfo {\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query TodoListQuery {\n  notes {\n    edges {\n      node {\n        id\n        content\n        createdAt\n        updatedAt\n      }\n    }\n    pageInfo {\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "6f53f4b729ad7a54434f416179b6af9f";
+(node as any).hash = "a860ae1e7b6d48c7e0bdeb9b672b20fb";
 
 export default node;

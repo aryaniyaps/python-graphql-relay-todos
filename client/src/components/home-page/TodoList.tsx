@@ -6,8 +6,8 @@ import { graphql } from "relay-runtime";
 import { TodoListQuery as TodoListQueryType } from "./__generated__/TodoListQuery.graphql";
 
 const getTodosQuery = graphql`
-  query TodoListQuery($first: Int!) {
-    notes(first: $first) {
+  query TodoListQuery {
+    notes {
       edges {
         node {
           id
@@ -24,11 +24,11 @@ const getTodosQuery = graphql`
 `;
 
 export default function TodoList() {
-  const data = useClientQuery<TodoListQueryType>(getTodosQuery, { first: 10 });
-
+  const data = useClientQuery<TodoListQueryType>(getTodosQuery, {});
+  console.log(data);
   return (
     <ScrollArea className="flex grow w-full">
-      {data.notes.edges.map((noteEdge) => {
+      {data.notes?.edges?.map((noteEdge) => {
         return <Todo todo={noteEdge.node} key={noteEdge.node.id} />;
       })}
     </ScrollArea>
