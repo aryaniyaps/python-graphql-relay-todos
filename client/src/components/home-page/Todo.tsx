@@ -4,13 +4,31 @@ import { Icons } from "../icons";
 import { Button } from "../ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "../ui/card";
 
-const deleteTodoMutation = graphql`
-  mutation TodoDeleteMutation($noteId: GlobalID!) {
-    deleteNote(noteId: $noteId)
+export const TodoFragment = graphql`
+  fragment TodoFragment on Todo {
+    id
+    content
+    createdAt
+    updatedAt
   }
 `;
 
-export default function Todo({ todo }: { todo: any }) {
+const deleteTodoMutation = graphql`
+  mutation TodoDeleteMutation($todoId: GlobalID!) {
+    deleteTodo(todoId: $todoId)
+  }
+`;
+
+type Props = {
+  todo: {
+    id: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+};
+
+export default function Todo({ todo }: Props) {
   // TODO: update todo list cache after mutation
   const [commitMutation, isMutationInFlight] = useMutation(deleteTodoMutation);
 
@@ -26,7 +44,7 @@ export default function Todo({ todo }: { todo: any }) {
             variant={"ghost"}
             disabled={isMutationInFlight}
             onClick={() => {
-              commitMutation({ variables: { noteId: todo.id } });
+              commitMutation({ variables: { todoId: todo.id } });
             }}
           >
             <Icons.trash className="h-4 w-4" />

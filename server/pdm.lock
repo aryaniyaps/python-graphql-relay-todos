@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:08b7ee77a8709c04a604a5b0f0e4c6e39812d7098f7b6632d112ef5923e60209"
+content_hash = "sha256:0b874e8225bd6655b3e2e2cf91696acab85c1fca0884b2b45bc0565f35a68620"
 
 [[package]]
 name = "aioinject"

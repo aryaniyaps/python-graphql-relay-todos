@@ -7,13 +7,10 @@ import { TodoListQuery as TodoListQueryType } from "./__generated__/TodoListQuer
 
 const getTodosQuery = graphql`
   query TodoListQuery {
-    notes {
+    todos {
       edges {
         node {
-          id
-          content
-          createdAt
-          updatedAt
+          ...TodoFragment
         }
       }
       pageInfo {
@@ -28,8 +25,8 @@ export default function TodoList() {
   console.log(data);
   return (
     <ScrollArea className="flex grow w-full">
-      {data.notes?.edges?.map((noteEdge) => {
-        return <Todo todo={noteEdge.node} key={noteEdge.node.id} />;
+      {data.todos?.edges?.map((todoEdge) => {
+        return <Todo todo={todoEdge.node} key={todoEdge.node.id} />;
       })}
     </ScrollArea>
   );

@@ -29,6 +29,9 @@ dev = [
     "ruff>=0.4.10",
     "mypy>=1.10.0",
     "black>=24.4.2",
+    # for console exception formatting
+    # (used by structlog)
+    "rich>=13.7.1",
 ]
 
 [tool.pdm.scripts]

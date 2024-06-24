@@ -9,8 +9,8 @@ from strawberry.relay.types import NodeIterableType
 from app.context import Info
 
 
-@strawberry.type(name="Note")
-class NoteType(relay.Node):
+@strawberry.type(name="Todo")
+class TodoType(relay.Node):
     id: relay.NodeID[str]
     content: str
     created_at: datetime
@@ -24,4 +24,4 @@ class NoteType(relay.Node):
         node_ids: Iterable[str],
         required: bool = False,
     ) -> NodeIterableType[Self | None]:
-        return await info.context.loaders.note_by_id.load_many(node_ids)
+        return await info.context.loaders.todo_by_id.load_many(node_ids)

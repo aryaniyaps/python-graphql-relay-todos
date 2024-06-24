@@ -5,21 +5,21 @@ from strawberry.tools import merge_types
 
 from .base.query import BaseQuery
 from .container import create_container
-from .notes.mutation import NoteMutation
-from .notes.query import NoteQuery
+from .todos.mutation import TodoMutation
+from .todos.query import TodoQuery
 
 query = merge_types(
     name="Query",
     types=(
         BaseQuery,
-        NoteQuery,
+        TodoQuery,
     ),
 )
 
 
 mutation = merge_types(
     name="Mutation",
-    types=(NoteMutation,),
+    types=(TodoMutation,),
 )
 
 

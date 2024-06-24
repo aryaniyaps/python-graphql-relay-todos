@@ -7,16 +7,16 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 scalar GlobalID @specifiedBy(url: "https://relay.dev/graphql/objectidentification.htm")
 
 type Mutation {
-  """Create a new note."""
-  createNote(
-    """The content of the note."""
+  """Create a new todo."""
+  createTodo(
+    """The content of the todo."""
     content: String!
-  ): Note!
+  ): Todo!
 
-  """Delete a note by ID."""
-  deleteNote(
-    """The ID of the note to delete."""
-    noteId: GlobalID!
+  """Delete a todo by ID."""
+  deleteTodo(
+    """The ID of the todo to delete."""
+    todoId: GlobalID!
   ): Void
 }
 
@@ -24,32 +24,6 @@ type Mutation {
 interface Node {
   """The Globally Unique ID of this object"""
   id: GlobalID!
-}
-
-type Note implements Node {
-  """The Globally Unique ID of this object"""
-  id: GlobalID!
-  content: String!
-  createdAt: DateTime!
-  updatedAt: DateTime
-}
-
-"""A connection to a list of items."""
-type NoteConnection {
-  """Pagination data for this connection"""
-  pageInfo: PageInfo!
-
-  """Contains the nodes in this connection"""
-  edges: [NoteEdge!]!
-}
-
-"""An edge in a connection."""
-type NoteEdge {
-  """A cursor for use in pagination"""
-  cursor: String!
-
-  """The item at the end of the edge"""
-  node: Note!
 }
 
 """Information to aid in pagination."""
@@ -72,7 +46,7 @@ type Query {
     """The ID of the object."""
     id: GlobalID!
   ): Node!
-  notes(
+  todos(
     """Returns the items in the list that come before the specified cursor."""
     before: String = null
 
@@ -84,7 +58,33 @@ type Query {
 
     """Returns the items in the list that come after the specified cursor."""
     last: Int = null
-  ): NoteConnection!
+  ): TodoConnection!
+}
+
+type Todo implements Node {
+  """The Globally Unique ID of this object"""
+  id: GlobalID!
+  content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""A connection to a list of items."""
+type TodoConnection {
+  """Pagination data for this connection"""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection"""
+  edges: [TodoEdge!]!
+}
+
+"""An edge in a connection."""
+type TodoEdge {
+  """A cursor for use in pagination"""
+  cursor: String!
+
+  """The item at the end of the edge"""
+  node: Todo!
 }
 
 """Represents NULL values"""

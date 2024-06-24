@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f6d7723e630ba24fdc09ed4b2b513a4f>>
+ * @generated SignedSource<<a91027f78d65a07eadc02c30d02911cc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,7 +13,7 @@ export type TodoControllerCreateMutation$variables = {
   content: string;
 };
 export type TodoControllerCreateMutation$data = {
-  readonly createNote: {
+  readonly createTodo: {
     readonly content: string;
     readonly createdAt: any;
     readonly id: any;
@@ -43,9 +43,9 @@ v1 = [
         "variableName": "content"
       }
     ],
-    "concreteType": "Note",
+    "concreteType": "Todo",
     "kind": "LinkedField",
-    "name": "createNote",
+    "name": "createTodo",
     "plural": false,
     "selections": [
       {
@@ -98,16 +98,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "14676ec994fe5e23dca49586089a03a3",
+    "cacheID": "de8b414ad517265ebb752ff530d3fdf5",
     "id": null,
     "metadata": {},
     "name": "TodoControllerCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoControllerCreateMutation(\n  $content: String!\n) {\n  createNote(content: $content) {\n    id\n    content\n    createdAt\n    updatedAt\n  }\n}\n"
+    "text": "mutation TodoControllerCreateMutation(\n  $content: String!\n) {\n  createTodo(content: $content) {\n    id\n    content\n    createdAt\n    updatedAt\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d8361e3708e7dd052054e7f2b6701677";
+(node as any).hash = "64286bb13e5cdfdb683b88282f72b21f";
 
 export default node;

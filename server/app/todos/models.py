@@ -9,7 +9,7 @@ from sqlalchemy.sql.functions import now
 from app.database.base import Base
 
 
-class Note(Base):
+class Todo(Base):
     __tablename__ = "notes"
 
     id: Mapped[UUID] = mapped_column(

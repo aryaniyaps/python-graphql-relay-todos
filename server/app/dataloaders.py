@@ -2,18 +2,18 @@ import dataclasses
 
 from strawberry.dataloader import DataLoader
 
-from app.notes.dataloaders import load_note_by_id
-from app.notes.models import Note
+from app.todos.dataloaders import load_todo_by_id
+from app.todos.models import Todo
 
 
 @dataclasses.dataclass(slots=True, kw_only=True)
 class Dataloaders:
-    note_by_id: DataLoader[str, Note | None]
+    todo_by_id: DataLoader[str, Todo | None]
 
 
 def create_dataloaders() -> Dataloaders:
     return Dataloaders(
-        note_by_id=DataLoader(
-            load_fn=load_note_by_id,
+        todo_by_id=DataLoader(
+            load_fn=load_todo_by_id,
         )
     )

@@ -14,7 +14,7 @@ import { Textarea } from "../ui/textarea";
 
 const createTodoMutation = graphql`
   mutation TodoControllerCreateMutation($content: String!) {
-    createNote(content: $content) {
+    createTodo(content: $content) {
       id
       content
       createdAt

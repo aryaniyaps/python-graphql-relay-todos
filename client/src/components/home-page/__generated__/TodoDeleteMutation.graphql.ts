@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0d62b7802e7d0191fdf9e9e876928564>>
+ * @generated SignedSource<<b8b555d454338485bf9239f18353e38c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,10 +10,10 @@
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type TodoDeleteMutation$variables = {
-  noteId: any;
+  todoId: any;
 };
 export type TodoDeleteMutation$data = {
-  readonly deleteNote: any | null | undefined;
+  readonly deleteTodo: any | null | undefined;
 };
 export type TodoDeleteMutation = {
   response: TodoDeleteMutation$data;
@@ -25,7 +25,7 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "noteId"
+    "name": "todoId"
   }
 ],
 v1 = [
@@ -34,12 +34,12 @@ v1 = [
     "args": [
       {
         "kind": "Variable",
-        "name": "noteId",
-        "variableName": "noteId"
+        "name": "todoId",
+        "variableName": "todoId"
       }
     ],
     "kind": "ScalarField",
-    "name": "deleteNote",
+    "name": "deleteTodo",
     "storageKey": null
   }
 ];
@@ -61,16 +61,16 @@ return {
     "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "74f725e48f2d831b2a62ad7d7b21012f",
+    "cacheID": "553933d2bc0e7fcc757612f6fe8b32e9",
     "id": null,
     "metadata": {},
     "name": "TodoDeleteMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoDeleteMutation(\n  $noteId: GlobalID!\n) {\n  deleteNote(noteId: $noteId)\n}\n"
+    "text": "mutation TodoDeleteMutation(\n  $todoId: GlobalID!\n) {\n  deleteTodo(todoId: $todoId)\n}\n"
   }
 };
 })();
 
-(node as any).hash = "cc81b0a4a33cb83f7ed2bded60900cca";
+(node as any).hash = "e6b354d4ed0ab9e588fa74d5a1250cbd";
 
 export default node;
