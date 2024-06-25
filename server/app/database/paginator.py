@@ -76,6 +76,9 @@ class Paginator(Generic[ModelType, CursorType]):
 
         results = scalars.all()
 
+        # FIXME: There's an issue here: has_next_page returns False if after is not given
+        # I think ideally we need to get two results extra - one before and one after and check if both
+        # next and prev pages exist
         has_next_page = after is not None and len(results) > limit
         has_previous_page = before is not None and len(results) > 0
         entities = results[:limit]
