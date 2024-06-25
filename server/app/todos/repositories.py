@@ -30,13 +30,14 @@ class TodoRepo:
     async def get_all(
         self,
         limit: int,
-        cursor: UUID | None = None,
+        before: UUID | None = None,
+        after: UUID | None = None,
     ) -> PaginatedResult[Todo, UUID]:
         """Get all todos."""
-        paginator = Paginator(
+        paginator: Paginator[Todo, UUID] = Paginator(
             session=self._session,
-            model=Todo,
             paginate_by=Todo.id,
+            paginate_order_by=Todo.created_at,
         )
 
         return await paginator.paginate(
@@ -44,7 +45,8 @@ class TodoRepo:
                 desc(Todo.created_at),
             ),
             limit=limit,
-            cursor=cursor,
+            before=before,
+            after=after,
         )
 
     async def delete(self, todo_id: str) -> None:

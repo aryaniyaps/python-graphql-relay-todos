@@ -19,12 +19,14 @@ class TodoService:
     async def get_all(
         self,
         limit: int,
-        cursor: UUID | None = None,
+        after: UUID | None = None,
+        before: UUID | None = None,
     ) -> PaginatedResult[Todo, UUID]:
         """Get all todos."""
         return await self._todo_repo.get_all(
             limit=limit,
-            cursor=cursor,
+            after=after,
+            before=before,
         )
 
     async def delete(self, todo_id: str) -> None:

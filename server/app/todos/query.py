@@ -20,11 +20,12 @@ class TodoQuery:
         self,
         todo_service: Annotated[TodoService, Inject],
     ) -> TodoConnectionType:
-        # TODO: find a way to get limit and cursor here
-        # TODO: find a way to base64 decode cursor here
+        # TODO: find a way to get limit, after and before here
+        # TODO: find a way to base64 decode cursors here
         paginated_result = await todo_service.get_all(
             limit=limit,
-            cursor=cursor,
+            after=after,
+            before=before,
         )
 
         return TodoConnectionType.from_paginated_result(
