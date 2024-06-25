@@ -45,7 +45,8 @@ class Paginator(Generic[ModelType, CursorType]):
     async def paginate(
         self,
         statement: Select[tuple[ModelType]],
-        limit: int | None,
+        last: int | None = None,
+        first: int | None = None,
         before: CursorType | None = None,
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
@@ -79,8 +80,9 @@ class Paginator(Generic[ModelType, CursorType]):
         # FIXME: There's an issue here: has_next_page returns False if after is not given
         # I think ideally we need to get two results extra - one before and one after and check if both
         # next and prev pages exist
-        has_next_page = after is not None and len(results) > limit
-        has_previous_page = before is not None and len(results) > 0
+        # reference: https://github.com/devoxa/prisma-relay-cursor-connection/blob/master/src/index.ts
+        has_next_page = before is None and len(results) > limit
+        has_previous_page = before is not None and len(results) > limit
         entities = results[:limit]
         start_cursor = (
             getattr(entities[0], self._paginate_by.name) if entities else None
