@@ -6,28 +6,27 @@ from aioinject.ext.strawberry import inject
 from strawberry import relay
 
 from .services import TodoService
-from .types import TodoType
+from .types import TodoConnectionType
 
 
 # TODO: add viewer type which returns todos maybe, so that we can use fragments easily in the client
 @strawberry.type
 class TodoQuery:
     @relay.connection(
-        graphql_type=relay.ListConnection[TodoType],
+        graphql_type=TodoConnectionType,
     )
     @inject
     async def todos(
         self,
         todo_service: Annotated[TodoService, Inject],
-    ) -> list[TodoType]:
-        todos = await todo_service.get_all()
+    ) -> TodoConnectionType:
+        # TODO: find a way to get limit and cursor here
+        # TODO: find a way to base64 decode cursor here
+        paginated_result = await todo_service.get_all(
+            limit=limit,
+            cursor=cursor,
+        )
 
-        return [
-            TodoType(
-                id=str(todo.id),
-                created_at=todo.created_at,
-                content=todo.content,
-                updated_at=todo.updated_at,
-            )
-            for todo in todos
-        ]
+        return TodoConnectionType.from_paginated_result(
+            paginated_result=paginated_result,
+        )

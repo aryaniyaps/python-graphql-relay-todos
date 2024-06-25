@@ -1,5 +1,9 @@
+from uuid import UUID
+
 from sqlalchemy import delete, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.database.paginator import PaginatedResult, Paginator
 
 from .models import Todo
 
@@ -23,13 +27,25 @@ class TodoRepo:
             ),
         )
 
-    async def get_all(self) -> list[Todo]:
+    async def get_all(
+        self,
+        limit: int,
+        cursor: UUID | None = None,
+    ) -> PaginatedResult[Todo, UUID]:
         """Get all todos."""
-        statement = select(Todo).order_by(desc(Todo.created_at))
+        paginator = Paginator(
+            session=self._session,
+            model=Todo,
+            paginate_by=Todo.id,
+        )
 
-        scalars = await self._session.scalars(statement)
-
-        return list(scalars)
+        return await paginator.paginate(
+            statement=select(Todo).order_by(
+                desc(Todo.created_at),
+            ),
+            limit=limit,
+            cursor=cursor,
+        )
 
     async def delete(self, todo_id: str) -> None:
         """Delete a todo by ID."""

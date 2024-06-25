@@ -1,3 +1,7 @@
+from uuid import UUID
+
+from app.database.paginator import PaginatedResult
+
 from .models import Todo
 from .repositories import TodoRepo
 
@@ -12,9 +16,16 @@ class TodoService:
             content=content,
         )
 
-    async def get_all(self) -> list[Todo]:
+    async def get_all(
+        self,
+        limit: int,
+        cursor: UUID | None = None,
+    ) -> PaginatedResult[Todo, UUID]:
         """Get all todos."""
-        return await self._todo_repo.get_all()
+        return await self._todo_repo.get_all(
+            limit=limit,
+            cursor=cursor,
+        )
 
     async def delete(self, todo_id: str) -> None:
         """Delete a todo by ID."""
