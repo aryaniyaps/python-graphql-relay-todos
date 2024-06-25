@@ -18,7 +18,7 @@ class TodoService:
 
     async def get_all(
         self,
-        limit: int,
+        limit: int | None,
         after: UUID | None = None,
         before: UUID | None = None,
     ) -> PaginatedResult[Todo, UUID]:

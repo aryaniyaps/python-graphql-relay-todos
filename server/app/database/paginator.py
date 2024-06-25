@@ -9,6 +9,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import InstrumentedAttribute
 from sqlalchemy.sql import Select
 
+from app.lib.constants import DEFAULT_PAGINATION_LIMIT
+
 from .base import Base
 
 CursorType = TypeVar("CursorType", UUID, str)
@@ -43,7 +45,7 @@ class Paginator(Generic[ModelType, CursorType]):
     async def paginate(
         self,
         statement: Select[tuple[ModelType]],
-        limit: int,
+        limit: int | None,
         before: CursorType | None = None,
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
@@ -52,6 +54,10 @@ class Paginator(Generic[ModelType, CursorType]):
                 "Only one of 'before' and 'after' can be specified"
             )
             raise ValueError(invalid_arguments_error)
+
+        if limit is None:
+            # set default pagination limit
+            limit = DEFAULT_PAGINATION_LIMIT
 
         query = statement.order_by(
             self._paginate_order_by

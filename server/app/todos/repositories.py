@@ -29,7 +29,7 @@ class TodoRepo:
 
     async def get_all(
         self,
-        limit: int,
+        limit: int | None = None,
         before: UUID | None = None,
         after: UUID | None = None,
     ) -> PaginatedResult[Todo, UUID]:
