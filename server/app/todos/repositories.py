@@ -32,7 +32,7 @@ class TodoRepo:
         before: int | None = None,
         after: int | None = None,
     ) -> PaginatedResult[Todo, int]:
-        """Get all todos."""
+        """Get a paginated result of todos."""
         paginator: Paginator[Todo, int] = Paginator(
             session=self._session,
             paginate_by=Todo.id,

@@ -24,7 +24,17 @@ class TodoType(relay.Node):
         node_ids: Iterable[str],
         required: bool = False,  # noqa: ARG003
     ):
-        return await info.context.loaders.todo_by_id.load_many(node_ids)
+        todos = await info.context.loaders.todo_by_id.load_many(node_ids)
+        return [
+            cls(
+                id=todo.id,
+                content=todo.content,
+                created_at=todo.created_at,
+                updated_at=todo.updated_at,
+            )
+            for todo in todos
+            if todo is not None
+        ]
 
 
 @strawberry.type(name="TodoConnection")

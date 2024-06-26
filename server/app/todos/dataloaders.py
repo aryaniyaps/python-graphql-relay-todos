@@ -1,3 +1,4 @@
+from aioinject import inject
 from sqlalchemy import select
 
 from app.database.session import async_session_factory
@@ -5,6 +6,7 @@ from app.database.session import async_session_factory
 from .models import Todo
 
 
+# @inject
 async def load_todo_by_id(
     todo_ids: list[str],
 ) -> list[Todo | None]:
