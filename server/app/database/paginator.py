@@ -50,6 +50,8 @@ class Paginator(Generic[ModelType, CursorType]):
 
         Returns the pagination limit specified.
         """
+        # FIXME: relay spec doesn't specify the commented out checks, it was there in dummy
+        # strawberry docs code
         if first is not None and last is not None:
             first_and_last_error = "Cannot provide both `first` and `last`"
             raise ValueError(first_and_last_error)
@@ -58,9 +60,9 @@ class Paginator(Generic[ModelType, CursorType]):
             if first > MAX_PAGINATION_LIMIT:
                 max_pagination_limit_error = f"`first` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
                 raise ValueError(max_pagination_limit_error)
-            if before is not None:
-                first_and_before_error = "`first` cannot be provided with `before`"
-                raise ValueError(first_and_before_error)
+            # if before is not None:
+            #     first_and_before_error = "`first` cannot be provided with `before`"
+            #     raise ValueError(first_and_before_error)
             return first
 
         if last is not None:
@@ -69,9 +71,9 @@ class Paginator(Generic[ModelType, CursorType]):
                     f"`last` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
                 )
                 raise ValueError(max_pagination_limit_error)
-            if after is not None:
-                last_and_after_error = "`last` cannot be provided with `after`"
-                raise ValueError(last_and_after_error)
+            # if after is not None:
+            #     last_and_after_error = "`last` cannot be provided with `after`"
+            #     raise ValueError(last_and_after_error)
             return last
 
         no_first_and_last_error = (
