@@ -1,19 +1,22 @@
-from aioinject import inject
-from sqlalchemy import select
+from typing import Annotated
 
-from app.database.session import async_session_factory
+from aioinject import Inject
+from aioinject.ext.strawberry import inject
+
+from app.todos.repositories import TodoRepo
 
 from .models import Todo
 
 
-# @inject
+@inject
 async def load_todo_by_id(
     todo_ids: list[str],
+    todo_repo: Annotated[
+        TodoRepo,
+        Inject,
+    ],
 ) -> list[Todo | None]:
-    int_todo_ids = list(map(int, todo_ids))
-    stmt = select(Todo).where(Todo.id.in_(int_todo_ids))
-
-    async with async_session_factory() as session:
-        todo_by_id = {todo.id: todo for todo in await session.scalars(stmt)}
-
-    return [todo_by_id.get(todo_id) for todo_id in int_todo_ids]
+    """Load multiple todos by their IDs."""
+    return await todo_repo.get_by_ids(
+        todo_ids=list(map(int, todo_ids)),
+    )
