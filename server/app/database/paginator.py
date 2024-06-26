@@ -103,16 +103,21 @@ class Paginator(Generic[ModelType, CursorType]):
             before=before,
         )
 
-        if before is not None:
-            statement = statement.where(self._paginate_by < before)
-        elif after is not None:
+        if after is not None:
+            print("AFTER VALUE: ", after)
             statement = statement.where(self._paginate_by > after)
+        elif before is not None:
+            statement = statement.where(self._paginate_by < before)
 
         statement = statement.limit(pagination_limit + 1)
+
+        print("PAGINATION LIMIT VALUE: ", pagination_limit)
 
         scalars = await self._session.scalars(statement)
 
         results = scalars.all()
+
+        print("RESULTS: ", [todo.id for todo in results])
 
         # TODO: check this!!
         # should it be:
@@ -123,7 +128,7 @@ class Paginator(Generic[ModelType, CursorType]):
         # )
         entities = (
             results[-pagination_limit:]
-            if before is not None
+            if last is not None
             else results[:pagination_limit]
         )
 
