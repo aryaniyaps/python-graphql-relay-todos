@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import InstrumentedAttribute
 from sqlalchemy.sql import Select
 
-from app.lib.constants import DEFAULT_PAGINATION_LIMIT
+from app.lib.constants import MAX_PAGINATION_LIMIT
 
 from .base import Base
 
@@ -44,17 +44,40 @@ class Paginator(Generic[ModelType, CursorType]):
         last: int | None,
         before: CursorType | None,
         after: CursorType | None,
-    ) -> None:
-        """Validate the given pagination arguments."""
-        if first and last:
+    ) -> int:
+        """
+        Validate the given pagination arguments.
+
+        Returns the pagination limit specified.
+        """
+        if first is not None and last is not None:
             first_and_last_error = "Cannot provide both `first` and `last`"
             raise ValueError(first_and_last_error)
-        if first and before:
-            first_and_before_error = "`first` cannot be provided with `before`"
-            raise ValueError(first_and_before_error)
-        if last and after:
-            last_and_after_error = "`last` cannot be provided with `after`"
-            raise ValueError(last_and_after_error)
+
+        if first is not None:
+            if first > MAX_PAGINATION_LIMIT:
+                max_pagination_limit_error = f"`first` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
+                raise ValueError(max_pagination_limit_error)
+            if before is not None:
+                first_and_before_error = "`first` cannot be provided with `before`"
+                raise ValueError(first_and_before_error)
+            return first
+
+        if last is not None:
+            if last > MAX_PAGINATION_LIMIT:
+                max_pagination_limit_error = (
+                    f"`last` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
+                )
+                raise ValueError(max_pagination_limit_error)
+            if after is not None:
+                last_and_after_error = "`last` cannot be provided with `after`"
+                raise ValueError(last_and_after_error)
+            return last
+
+        no_first_and_last_error = (
+            "You must provide either `first` or `last` to paginate"
+        )
+        raise ValueError(no_first_and_last_error)
 
     async def paginate(
         self,
@@ -65,34 +88,36 @@ class Paginator(Generic[ModelType, CursorType]):
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
         """Paginate the given SQLAlchemy statement."""
-        self.__validate_arguments(
+        pagination_limit = self.__validate_arguments(
             first=first,
             last=last,
             after=after,
             before=before,
         )
 
-        limit = first or last or DEFAULT_PAGINATION_LIMIT
-
         if before is not None:
             statement = statement.where(self._paginate_by < before)
         elif after is not None:
             statement = statement.where(self._paginate_by > after)
 
-        statement = statement.limit(limit + 1)
+        statement = statement.limit(pagination_limit + 1)
 
         scalars = await self._session.scalars(statement)
 
         results = scalars.all()
 
-        entities = results[-limit:] if before is not None else results[:limit]
+        entities = (
+            results[-pagination_limit:]
+            if before is not None
+            else results[:pagination_limit]
+        )
 
         if before is not None:
             has_next_page = True
-            has_previous_page = len(results) > limit
+            has_previous_page = len(results) > pagination_limit
         else:
             # we are paginating forwards by default
-            has_next_page = len(results) > limit
+            has_next_page = len(results) > pagination_limit
             has_previous_page = after is not None
 
         start_cursor = (
