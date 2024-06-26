@@ -46,19 +46,9 @@ type Query {
     """The ID of the object."""
     id: GlobalID!
   ): Node!
-  todos(
-    """Returns the items in the list that come before the specified cursor."""
-    before: String = null
 
-    """Returns the items in the list that come after the specified cursor."""
-    after: String = null
-
-    """Returns the first n items from the list."""
-    first: Int = null
-
-    """Returns the items in the list that come after the specified cursor."""
-    last: Int = null
-  ): TodoConnection!
+  """Get all todos available."""
+  todos(before: String = null, after: String = null, first: Int = null, last: Int = null): TodoConnection!
 }
 
 type Todo implements Node {
@@ -69,7 +59,6 @@ type Todo implements Node {
   updatedAt: DateTime
 }
 
-"""A connection to a list of items."""
 type TodoConnection {
   """Pagination data for this connection"""
   pageInfo: PageInfo!

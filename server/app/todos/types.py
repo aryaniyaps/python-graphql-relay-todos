@@ -38,8 +38,11 @@ class TodoConnectionType(relay.Connection[TodoType]):
                     TodoType,
                     paginated_result.page_info.start_cursor,
                 ),
-                has_previous_page=False,
-                end_cursor=None,
+                has_previous_page=paginated_result.page_info.has_previous_page,
+                end_cursor=relay.to_base64(
+                    TodoType,
+                    paginated_result.page_info.end_cursor,
+                ),
             ),
             edges=[
                 relay.Edge(

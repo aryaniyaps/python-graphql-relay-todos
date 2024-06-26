@@ -74,24 +74,23 @@ class Paginator(Generic[ModelType, CursorType]):
 
         limit = first or last or DEFAULT_PAGINATION_LIMIT
 
-        # TODO: make sure IDs are sortable
-        # Cursors should NOT be UUIDs
-
         if before is not None:
-            query = statement.where(self._paginate_by < before)
+            statement = statement.where(self._paginate_by < before)
         elif after is not None:
-            query = statement.where(self._paginate_by > after)
+            statement = statement.where(self._paginate_by > after)
 
-        query = query.limit(limit + 1)
+        statement = statement.limit(limit + 1)
 
-        scalars = await self._session.scalars(query)
+        scalars = await self._session.scalars(statement)
 
         results = scalars.all()
 
-        if first is not None:
-            entities = results[:first]
-        elif last is not None:
+        if last is not None:
             entities = results[-last:]
+        else:
+            # we are paginating forwards and may not have the
+            # first argument, defaulting to the default pagination limit.
+            entities = results[:limit]
 
         if before is not None:
             has_next_page = True
