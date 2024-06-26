@@ -25,7 +25,7 @@ class TodoRepo:
             ),
         )
 
-    async def get_by_ids(self, todo_ids: list[int]) -> list[Todo | None]:
+    async def get_many_by_ids(self, todo_ids: list[int]) -> list[Todo | None]:
         """Get multiple todos by IDs."""
         stmt = select(Todo).where(Todo.id.in_(todo_ids))
         todo_by_id = {todo.id: todo for todo in await self._session.scalars(stmt)}

@@ -17,6 +17,6 @@ async def load_todo_by_id(
     ],
 ) -> list[Todo | None]:
     """Load multiple todos by their IDs."""
-    return await todo_repo.get_by_ids(
+    return await todo_repo.get_many_by_ids(
         todo_ids=list(map(int, todo_ids)),
     )
