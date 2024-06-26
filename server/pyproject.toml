@@ -33,12 +33,24 @@ dev = [
     # (used by structlog)
     "rich>=13.7.1",
 ]
+test = [
+    "pytest>=8.2.2",
+    "sqlalchemy-pytest>=0.3.2.post1",
+    "pytest-timeout>=2.3.1",
+    "pytest-sugar>=1.0.0",
+    "anyio>=4.4.0",
+]
 
 [tool.pdm.scripts]
 dev = "app/server.py"
 lint = { composite = ["black .", "ruff --fix .", "black .", "mypy ."] }
 generate-schema = "strawberry export-schema app.schema:schema --output ../schema/schema.graphql"
 migrate = "alembic upgrade head"
+test = "pytest -vv"
+
+[tool.pytest.ini_options]
+timeout = 5
+pythonpath = "."
 
 [tool.setuptools.packages.find]
 where = ["."] # list of folders that contain the packages (["."] by default)

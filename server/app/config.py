@@ -67,6 +67,8 @@ class Settings(BaseSettings):
         ),
     ]
 
+    database_test_url: str
+
     database_pool_size: Annotated[
         int,
         Field(
