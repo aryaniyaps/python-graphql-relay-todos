@@ -85,12 +85,7 @@ class Paginator(Generic[ModelType, CursorType]):
 
         results = scalars.all()
 
-        if last is not None:
-            entities = results[-last:]
-        else:
-            # we are paginating forwards and may not have the
-            # first argument, defaulting to the default pagination limit.
-            entities = results[:limit]
+        entities = results[-limit:] if before is not None else results[:limit]
 
         if before is not None:
             has_next_page = True
