@@ -1,30 +1,29 @@
-"""initial migration
+"""
+initial migration
 
-Revision ID: b34a5c46adf0
+Revision ID: 1d39b1c92f55
 Revises: 71526df857a5
-Create Date: 2024-06-21 06:59:36.140438
+Create Date: 2024-06-26 14:49:57.670225
 
 """
 
-from typing import Sequence, Union
+from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = "b34a5c46adf0"
-down_revision: Union[str, None] = "71526df857a5"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+revision: str = "1d39b1c92f55"
+down_revision: str | None = "71526df857a5"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
     op.create_table(
         "notes",
-        sa.Column(
-            "id", sa.Uuid(), server_default=sa.text("gen_random_uuid()"), nullable=False
-        ),
+        sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("content", postgresql.CITEXT(length=250), nullable=False),
         sa.Column(
             "created_at",

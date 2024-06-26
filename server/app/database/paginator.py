@@ -1,7 +1,6 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Generic, TypeVar
-from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import InstrumentedAttribute
@@ -13,7 +12,7 @@ from .base import Base
 
 ModelType = TypeVar("ModelType", bound=Base)
 
-CursorType = TypeVar("CursorType", UUID, str)
+CursorType = TypeVar("CursorType", int, str)
 
 
 @dataclass
@@ -40,7 +39,7 @@ class Paginator(Generic[ModelType, CursorType]):
         self._paginate_by: InstrumentedAttribute[CursorType] = paginate_by
 
     @staticmethod
-    def __validate_pagination_arguments(
+    def __validate_arguments(
         first: int | None,
         last: int | None,
         before: CursorType | None,
@@ -48,11 +47,14 @@ class Paginator(Generic[ModelType, CursorType]):
     ) -> None:
         """Validate the given pagination arguments."""
         if first and last:
-            raise ValueError("Cannot provide both `first` and `last`")
+            first_and_last_error = "Cannot provide both `first` and `last`"
+            raise ValueError(first_and_last_error)
         if first and before:
-            raise ValueError("`first` cannot be provided with `before`")
+            first_and_before_error = "`first` cannot be provided with `before`"
+            raise ValueError(first_and_before_error)
         if last and after:
-            raise ValueError("`last` cannot be provided with `after`")
+            last_and_after_error = "`last` cannot be provided with `after`"
+            raise ValueError(last_and_after_error)
 
     async def paginate(
         self,
@@ -63,20 +65,16 @@ class Paginator(Generic[ModelType, CursorType]):
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
         """Paginate the given SQLAlchemy statement."""
-        self.__validate_pagination_arguments(
+        self.__validate_arguments(
             first=first,
             last=last,
             after=after,
             before=before,
         )
 
-        limit = first or last
+        limit = first or last or DEFAULT_PAGINATION_LIMIT
 
-        if limit is None:
-            # set default pagination limit
-            limit = DEFAULT_PAGINATION_LIMIT
-
-        # TODO: make sure IDs are time sortable
+        # TODO: make sure IDs are sortable
         # Cursors should NOT be UUIDs
 
         if before is not None:

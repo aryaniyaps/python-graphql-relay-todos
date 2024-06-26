@@ -4,7 +4,6 @@ from typing import Self
 
 import strawberry
 from strawberry import relay
-from strawberry.relay.types import NodeIterableType
 
 from app.context import Info
 from app.database.paginator import PaginatedResult
@@ -18,13 +17,13 @@ class TodoType(relay.Node):
     updated_at: datetime | None
 
     @classmethod
-    async def resolve_nodes(
+    async def resolve_nodes(  # noqa: ANN206
         cls,
         *,
         info: Info,
         node_ids: Iterable[str],
-        required: bool = False,
-    ) -> NodeIterableType[Self | None]:
+        required: bool = False,  # noqa: ARG003
+    ):
         return await info.context.loaders.todo_by_id.load_many(node_ids)
 
 

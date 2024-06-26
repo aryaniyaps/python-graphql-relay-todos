@@ -1,5 +1,4 @@
 from typing import Annotated
-from uuid import UUID
 
 import strawberry
 from aioinject import Inject
@@ -10,7 +9,6 @@ from .services import TodoService
 from .types import TodoConnectionType
 
 
-# TODO: add viewer type which returns todos maybe, so that we can use fragments easily in the client
 @strawberry.type
 class TodoQuery:
     @strawberry.field(
@@ -29,12 +27,12 @@ class TodoQuery:
         paginated_result = await todo_service.get_all(
             first=first,
             last=last,
-            after=UUID(
+            after=int(
                 relay.from_base64(after)[1],
             )
             if after
             else None,
-            before=UUID(
+            before=int(
                 relay.from_base64(before)[1],
             )
             if before

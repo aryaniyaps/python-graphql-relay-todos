@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from sqlalchemy import delete, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -19,7 +17,7 @@ class TodoRepo:
         await self._session.commit()
         return todo
 
-    async def get(self, todo_id: str) -> Todo | None:
+    async def get(self, todo_id: int) -> Todo | None:
         """Get todo by ID."""
         return await self._session.scalar(
             select(Todo).where(
@@ -31,11 +29,11 @@ class TodoRepo:
         self,
         first: int | None = None,
         last: int | None = None,
-        before: UUID | None = None,
-        after: UUID | None = None,
-    ) -> PaginatedResult[Todo, UUID]:
+        before: int | None = None,
+        after: int | None = None,
+    ) -> PaginatedResult[Todo, int]:
         """Get all todos."""
-        paginator: Paginator[Todo, UUID] = Paginator(
+        paginator: Paginator[Todo, int] = Paginator(
             session=self._session,
             paginate_by=Todo.id,
         )
@@ -50,7 +48,7 @@ class TodoRepo:
             after=after,
         )
 
-    async def delete(self, todo_id: str) -> None:
+    async def delete(self, todo_id: int) -> None:
         """Delete a todo by ID."""
         await self._session.execute(
             delete(Todo).where(

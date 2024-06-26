@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from app.database.paginator import PaginatedResult
 
 from .models import Todo
@@ -20,9 +18,9 @@ class TodoService:
         self,
         first: int | None = None,
         last: int | None = None,
-        after: UUID | None = None,
-        before: UUID | None = None,
-    ) -> PaginatedResult[Todo, UUID]:
+        after: int | None = None,
+        before: int | None = None,
+    ) -> PaginatedResult[Todo, int]:
         """Get all todos."""
         return await self._todo_repo.get_all(
             first=first,
@@ -31,7 +29,7 @@ class TodoService:
             before=before,
         )
 
-    async def delete(self, todo_id: str) -> None:
+    async def delete(self, todo_id: int) -> None:
         """Delete a todo by ID."""
         await self._todo_repo.delete(
             todo_id=todo_id,
