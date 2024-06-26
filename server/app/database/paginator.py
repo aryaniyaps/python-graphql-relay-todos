@@ -108,6 +108,13 @@ class Paginator(Generic[ModelType, CursorType]):
 
         results = scalars.all()
 
+        # TODO: check this!!
+        # should it be:
+        # entities = (
+        #     results[-pagination_limit:]
+        #     if last is not None
+        #     else results[:pagination_limit]
+        # )
         entities = (
             results[-pagination_limit:]
             if before is not None
