@@ -1,10 +1,8 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Generic, TypeVar
 from uuid import UUID
 
-from sqlalchemy import desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import InstrumentedAttribute
 from sqlalchemy.sql import Select
@@ -13,8 +11,9 @@ from app.lib.constants import DEFAULT_PAGINATION_LIMIT
 
 from .base import Base
 
-CursorType = TypeVar("CursorType", UUID, str)
 ModelType = TypeVar("ModelType", bound=Base)
+
+CursorType = TypeVar("CursorType", UUID, str)
 
 
 @dataclass
@@ -36,11 +35,24 @@ class Paginator(Generic[ModelType, CursorType]):
         self,
         session: AsyncSession,
         paginate_by: InstrumentedAttribute[CursorType],
-        paginate_order_by: InstrumentedAttribute[datetime],
     ) -> None:
         self._session = session
         self._paginate_by: InstrumentedAttribute[CursorType] = paginate_by
-        self._paginate_order_by = paginate_order_by
+
+    @staticmethod
+    def __validate_pagination_arguments(
+        first: int | None,
+        last: int | None,
+        before: CursorType | None,
+        after: CursorType | None,
+    ) -> None:
+        """Validate the given pagination arguments."""
+        if first and last:
+            raise ValueError("Cannot provide both `first` and `last`")
+        if first and before:
+            raise ValueError("`first` cannot be provided with `before`")
+        if last and after:
+            raise ValueError("`last` cannot be provided with `after`")
 
     async def paginate(
         self,
@@ -50,26 +62,27 @@ class Paginator(Generic[ModelType, CursorType]):
         before: CursorType | None = None,
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
-        if before is not None and after is not None:
-            invalid_arguments_error = (
-                "Only one of 'before' and 'after' can be specified"
-            )
-            raise ValueError(invalid_arguments_error)
+        """Paginate the given SQLAlchemy statement."""
+        self.__validate_pagination_arguments(
+            first=first,
+            last=last,
+            after=after,
+            before=before,
+        )
+
+        limit = first or last
 
         if limit is None:
             # set default pagination limit
             limit = DEFAULT_PAGINATION_LIMIT
 
-        query = statement.order_by(
-            self._paginate_order_by
-            if before is not None
-            else desc(self._paginate_order_by)
-        )
+        # TODO: make sure IDs are time sortable
+        # Cursors should NOT be UUIDs
 
         if before is not None:
-            query = query.where(self._paginate_by < before)
+            query = statement.where(self._paginate_by < before)
         elif after is not None:
-            query = query.where(self._paginate_by > after)
+            query = statement.where(self._paginate_by > after)
 
         query = query.limit(limit + 1)
 
@@ -77,17 +90,36 @@ class Paginator(Generic[ModelType, CursorType]):
 
         results = scalars.all()
 
-        # FIXME: There's an issue here: has_next_page returns False if after is not given
-        # I think ideally we need to get two results extra - one before and one after and check if both
-        # next and prev pages exist
-        # reference: https://github.com/devoxa/prisma-relay-cursor-connection/blob/master/src/index.ts
-        has_next_page = before is None and len(results) > limit
-        has_previous_page = before is not None and len(results) > limit
-        entities = results[:limit]
+        if first is not None:
+            entities = results[:first]
+        elif last is not None:
+            entities = results[-last:]
+
+        if before is not None:
+            has_next_page = True
+            has_previous_page = len(results) > limit
+        else:
+            # we are paginating forwards by default
+            has_next_page = len(results) > limit
+            has_previous_page = after is not None
+
         start_cursor = (
-            getattr(entities[0], self._paginate_by.name) if entities else None
+            getattr(
+                entities[0],
+                self._paginate_by.name,
+            )
+            if entities
+            else None
         )
-        end_cursor = getattr(entities[-1], self._paginate_by.name) if entities else None
+
+        end_cursor = (
+            getattr(
+                entities[-1],
+                self._paginate_by.name,
+            )
+            if entities
+            else None
+        )
 
         return PaginatedResult(
             entities=entities,

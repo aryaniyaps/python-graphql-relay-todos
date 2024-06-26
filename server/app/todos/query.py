@@ -15,6 +15,7 @@ from .types import TodoConnectionType
 class TodoQuery:
     @strawberry.field(
         graphql_type=TodoConnectionType,
+        description="Get all todos available.",
     )
     @inject
     async def todos(
@@ -26,14 +27,15 @@ class TodoQuery:
         last: int | None = None,
     ) -> TodoConnectionType:
         paginated_result = await todo_service.get_all(
-            limit=first or last,
+            first=first,
+            last=last,
             after=UUID(
-                relay.from_base64(after)[-1],
+                relay.from_base64(after)[1],
             )
             if after
             else None,
             before=UUID(
-                relay.from_base64(before)[-1],
+                relay.from_base64(before)[1],
             )
             if before
             else None,

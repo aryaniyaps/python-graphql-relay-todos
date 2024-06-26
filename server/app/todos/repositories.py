@@ -29,7 +29,8 @@ class TodoRepo:
 
     async def get_all(
         self,
-        limit: int | None = None,
+        first: int | None = None,
+        last: int | None = None,
         before: UUID | None = None,
         after: UUID | None = None,
     ) -> PaginatedResult[Todo, UUID]:
@@ -37,14 +38,14 @@ class TodoRepo:
         paginator: Paginator[Todo, UUID] = Paginator(
             session=self._session,
             paginate_by=Todo.id,
-            paginate_order_by=Todo.created_at,
         )
 
         return await paginator.paginate(
             statement=select(Todo).order_by(
                 desc(Todo.created_at),
             ),
-            limit=limit,
+            first=first,
+            last=last,
             before=before,
             after=after,
         )
