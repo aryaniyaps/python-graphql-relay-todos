@@ -57,6 +57,9 @@ class Paginator(Generic[ModelType, CursorType]):
             raise ValueError(first_and_last_error)
 
         if first is not None:
+            if first < 0:
+                first_not_positive_error = "`first` must be a positive integer"
+                raise ValueError(first_not_positive_error)
             if first > MAX_PAGINATION_LIMIT:
                 max_pagination_limit_error = f"`first` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
                 raise ValueError(max_pagination_limit_error)
@@ -66,6 +69,9 @@ class Paginator(Generic[ModelType, CursorType]):
             return first
 
         if last is not None:
+            if last < 0:
+                last_not_positive_error = "`last` must be a positive integer"
+                raise ValueError(last_not_positive_error)
             if last > MAX_PAGINATION_LIMIT:
                 max_pagination_limit_error = (
                     f"`last` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
