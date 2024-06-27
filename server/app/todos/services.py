@@ -8,7 +8,7 @@ class TodoService:
     def __init__(self, todo_repo: TodoRepo) -> None:
         self._todo_repo = todo_repo
 
-    async def create_todo(self, content: str) -> Todo:
+    async def create(self, content: str) -> Todo:
         """Create a new todo."""
         return await self._todo_repo.create(
             content=content,

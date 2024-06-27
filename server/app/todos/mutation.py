@@ -29,7 +29,7 @@ class TodoMutation:
         todo_service: Annotated[TodoService, Inject],
     ) -> TodoType:
         """Create a new todo."""
-        todo = await todo_service.create_todo(
+        todo = await todo_service.create(
             content=content,
         )
         return TodoType.from_orm(todo)
