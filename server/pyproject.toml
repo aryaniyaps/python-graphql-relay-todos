@@ -46,6 +46,7 @@ dev = "app/server.py"
 lint = { composite = ["black .", "ruff --fix .", "black .", "mypy ."] }
 generate-schema = "strawberry export-schema app.schema:schema --output ../schema/schema.graphql"
 migrate = "alembic upgrade head"
+new-migration = "alembic revision --autogenerate"
 test = "pytest -vv"
 
 [tool.pytest.ini_options]

@@ -16,6 +16,10 @@ class Todo(Base):
         CITEXT(250),
     )
 
+    completed: Mapped[bool] = mapped_column(
+        default=False,
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         server_default=now(),
     )

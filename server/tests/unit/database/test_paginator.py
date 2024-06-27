@@ -173,3 +173,19 @@ async def test_paginate_end_page_backwards(
     assert result.page_info.has_previous_page is False
     assert result.page_info.start_cursor == 1
     assert result.page_info.end_cursor == last_todo_id
+
+
+async def test_paginate_filter_condition(
+    session: AsyncSession, todo_paginator: Paginator[Todo, int]
+) -> None:
+    """Ensure that filter conditions are preserved while paginating."""
+    pagination_limit = 10
+    completed_todos = await session.scalars(select(Todo).filter(Todo.completed == True))  # noqa: E712
+    completed_todo_count = len(completed_todos.all())
+    result = await todo_paginator.paginate(
+        select(Todo).filter(Todo.completed == True),  # noqa: E712
+        first=pagination_limit,
+    )
+
+    # check the results
+    assert len(result.entities) == min(pagination_limit, completed_todo_count)
