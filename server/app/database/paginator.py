@@ -104,9 +104,11 @@ class Paginator(Generic[ModelType, CursorType]):
         )
 
         if after is not None:
-            print("AFTER VALUE: ", after)
             statement = statement.where(self._paginate_by > after)
         elif before is not None:
+            print("BEFORE VALUE: ", before)
+            # TODO: we need to update the order_by of the query
+            # when before is passed
             statement = statement.where(self._paginate_by < before)
 
         statement = statement.limit(pagination_limit + 1)
@@ -128,7 +130,7 @@ class Paginator(Generic[ModelType, CursorType]):
         # )
         entities = (
             results[-pagination_limit:]
-            if last is not None
+            if before is not None
             else results[:pagination_limit]
         )
 
