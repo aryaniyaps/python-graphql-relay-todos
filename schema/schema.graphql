@@ -46,15 +46,14 @@ type Query {
     """The ID of the object."""
     id: GlobalID!
   ): Node!
-
-  """Get all todos available."""
-  todos(before: String = null, after: String = null, first: Int = null, last: Int = null): TodoConnection!
+  viewer: Viewer!
 }
 
 type Todo implements Node {
   """The Globally Unique ID of this object"""
   id: GlobalID!
   content: String!
+  completed: Boolean!
   createdAt: DateTime!
   updatedAt: DateTime
 }
@@ -74,6 +73,11 @@ type TodoEdge {
 
   """The item at the end of the edge"""
   node: Todo!
+}
+
+type Viewer {
+  """Get all todos available."""
+  todos(before: String = null, after: String = null, first: Int = null, last: Int = null): TodoConnection!
 }
 
 """Represents NULL values"""

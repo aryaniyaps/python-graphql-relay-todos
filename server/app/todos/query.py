@@ -9,8 +9,8 @@ from .services import TodoService
 from .types import TodoConnectionType
 
 
-@strawberry.type
-class TodoQuery:
+@strawberry.type(name="Viewer")
+class ViewerType:
     @strawberry.field(
         graphql_type=TodoConnectionType,
         description="Get all todos available.",
@@ -46,3 +46,10 @@ class TodoQuery:
         return TodoConnectionType.from_paginated_result(
             paginated_result=paginated_result,
         )
+
+
+@strawberry.type
+class TodoQuery:
+    @strawberry.field()
+    def viewer(self) -> ViewerType:
+        return ViewerType()

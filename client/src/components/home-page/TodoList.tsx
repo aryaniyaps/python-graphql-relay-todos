@@ -1,15 +1,20 @@
-import { useClientQuery } from "react-relay";
+import { useFragment } from "react-relay";
 import { ScrollArea } from "../ui/scroll-area";
 import Todo from "./Todo";
 
 import { graphql } from "relay-runtime";
-import { TodoListQuery as TodoListQueryType } from "./__generated__/TodoListQuery.graphql";
+import { TodoListFragment$key } from "./__generated__/TodoListFragment.graphql";
 
-const getTodosQuery = graphql`
-  query TodoListQuery {
-    todos {
+const TodoListFragment = graphql`
+  fragment TodoListFragment on Viewer
+  @argumentDefinitions(
+    cursor: { type: "String" }
+    count: { type: "Int", defaultValue: 3 }
+  ) {
+    todos(after: $cursor, first: $count) {
       edges {
         node {
+          id
           ...TodoFragment
         }
       }
@@ -20,12 +25,16 @@ const getTodosQuery = graphql`
   }
 `;
 
-export default function TodoList() {
-  const data = useClientQuery<TodoListQueryType>(getTodosQuery, {});
+type Props = {
+  viewer: TodoListFragment$key;
+};
+
+export default function TodoList({ viewer }: Props) {
+  const data = useFragment(TodoListFragment, viewer);
   console.log(data);
   return (
     <ScrollArea className="flex grow w-full">
-      {data.todos?.edges?.map((todoEdge) => {
+      {data.todos.edges.map((todoEdge) => {
         return <Todo todo={todoEdge.node} key={todoEdge.node.id} />;
       })}
     </ScrollArea>
