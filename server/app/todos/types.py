@@ -7,14 +7,27 @@ from strawberry import relay
 
 from app.context import Info
 from app.database.paginator import PaginatedResult
+from app.todos.models import Todo
 
 
 @strawberry.type(name="Todo")
 class TodoType(relay.Node):
     id: relay.NodeID[str]
     content: str
+    completed: bool
     created_at: datetime
     updated_at: datetime | None
+
+    @classmethod
+    def from_orm(cls, todo: Todo) -> Self:
+        """Construct a node from an ORM instance."""
+        return cls(
+            id=str(todo.id),
+            content=todo.content,
+            completed=todo.completed,
+            created_at=todo.created_at,
+            updated_at=todo.updated_at,
+        )
 
     @classmethod
     async def resolve_nodes(  # noqa: ANN206
@@ -25,16 +38,7 @@ class TodoType(relay.Node):
         required: bool = False,  # noqa: ARG003
     ):
         todos = await info.context.loaders.todo_by_id.load_many(node_ids)
-        return [
-            cls(
-                id=todo.id,
-                content=todo.content,
-                created_at=todo.created_at,
-                updated_at=todo.updated_at,
-            )
-            for todo in todos
-            if todo is not None
-        ]
+        return [cls.from_orm(todo) for todo in todos if todo is not None]
 
 
 @strawberry.type(name="TodoConnection")
@@ -56,12 +60,7 @@ class TodoConnectionType(relay.Connection[TodoType]):
             ),
             edges=[
                 relay.Edge(
-                    node=TodoType(
-                        id=todo.id,
-                        content=todo.content,
-                        created_at=todo.created_at,
-                        updated_at=todo.updated_at,
-                    ),
+                    node=TodoType.from_orm(todo),
                     cursor=relay.to_base64(TodoType, todo.id),
                 )
                 for todo in paginated_result.entities
