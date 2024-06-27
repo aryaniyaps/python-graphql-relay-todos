@@ -11,6 +11,9 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: ./server
     env:
       SERVER_DEBUG: true
       SERVER_ENVIRONMENT: "testing"
