@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<516f7e5aa2fa59fad8a5c1f83bc0be7a>>
+ * @generated SignedSource<<dc304e9d631f14ab74d24ea477572681>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,63 +10,32 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type TodoListPaginationQuery$variables = {
-  count?: number | null | undefined;
-  cursor?: string | null | undefined;
-};
-export type TodoListPaginationQuery$data = {
+export type HomePageQuery$variables = Record<PropertyKey, never>;
+export type HomePageQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"TodoListFragment">;
 };
-export type TodoListPaginationQuery = {
-  response: TodoListPaginationQuery$data;
-  variables: TodoListPaginationQuery$variables;
+export type HomePageQuery = {
+  response: HomePageQuery$data;
+  variables: HomePageQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": 3,
-    "kind": "LocalArgument",
-    "name": "count"
-  },
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "cursor"
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "after",
-    "variableName": "cursor"
-  },
-  {
-    "kind": "Variable",
+    "kind": "Literal",
     "name": "first",
-    "variableName": "count"
+    "value": 3
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "TodoListPaginationQuery",
+    "name": "HomePageQuery",
     "selections": [
       {
-        "args": [
-          {
-            "kind": "Variable",
-            "name": "count",
-            "variableName": "count"
-          },
-          {
-            "kind": "Variable",
-            "name": "cursor",
-            "variableName": "cursor"
-          }
-        ],
+        "args": null,
         "kind": "FragmentSpread",
         "name": "TodoListFragment"
       }
@@ -76,13 +45,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "TodoListPaginationQuery",
+    "name": "HomePageQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "concreteType": "TodoConnection",
         "kind": "LinkedField",
         "name": "todos",
@@ -178,11 +147,11 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": null
+        "storageKey": "todos(first:3)"
       },
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v0/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "TodoListFragment_todos",
@@ -192,16 +161,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "34f62a82e056f882b2f4a8538c4b8b0b",
+    "cacheID": "ed0fd3f5c6a796aadaaffd18ac31fd70",
     "id": null,
     "metadata": {},
-    "name": "TodoListPaginationQuery",
+    "name": "HomePageQuery",
     "operationKind": "query",
-    "text": "query TodoListPaginationQuery(\n  $count: Int = 3\n  $cursor: String\n) {\n  ...TodoListFragment_1G22uz\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment_1G22uz on Query {\n  todos(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
+    "text": "query HomePageQuery {\n  ...TodoListFragment\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Query {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4337c75a6d3e2c98239c5c810587f43d";
+(node as any).hash = "b10c4637b120934e17e38b5c99f81746";
 
 export default node;

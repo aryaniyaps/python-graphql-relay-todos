@@ -1,14 +1,14 @@
 import { usePaginationFragment } from "react-relay";
-import { ScrollArea } from "../ui/scroll-area";
 import Todo from "./Todo";
 
 import { useTransition } from "react";
 import { graphql } from "relay-runtime";
 import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
 import { TodoListFragment$key } from "./__generated__/TodoListFragment.graphql";
 
 const TodoListFragment = graphql`
-  fragment TodoListFragment on Viewer
+  fragment TodoListFragment on Query
   @refetchable(queryName: "TodoListPaginationQuery")
   @argumentDefinitions(
     cursor: { type: "String" }
@@ -30,12 +30,12 @@ const TodoListFragment = graphql`
 `;
 
 type Props = {
-  viewer: TodoListFragment$key;
+  root: TodoListFragment$key;
 };
 
-export default function TodoList({ viewer }: Props) {
+export default function TodoList({ root }: Props) {
   const [isPending, startTransition] = useTransition();
-  const { data, loadNext } = usePaginationFragment(TodoListFragment, viewer);
+  const { data, loadNext } = usePaginationFragment(TodoListFragment, root);
 
   function loadMore() {
     return startTransition(() => {
@@ -44,12 +44,17 @@ export default function TodoList({ viewer }: Props) {
   }
 
   return (
-    <ScrollArea className="flex grow w-full flex-col gap-2">
+    <ScrollArea className="flex grow w-full flex-col gap-4">
       {data.todos.edges.map((todoEdge) => {
         return <Todo todo={todoEdge.node} key={todoEdge.node.id} />;
       })}
       {data.todos.pageInfo.hasNextPage && (
-        <Button className="w-full" onClick={loadMore} disabled={isPending}>
+        <Button
+          className="w-full"
+          variant={"secondary"}
+          onClick={loadMore}
+          disabled={isPending}
+        >
           load more
         </Button>
       )}

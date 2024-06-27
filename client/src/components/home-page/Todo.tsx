@@ -30,7 +30,7 @@ export default function Todo({ todo }: Props) {
   const data = useFragment(TodoFragment, todo);
 
   return (
-    <Card>
+    <Card className="mb-4">
       <CardHeader>
         <div className="flex justify-between">
           <div className="flex flex-col">
