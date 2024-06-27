@@ -18,6 +18,7 @@ async def test_create_todo(todo_repo: TodoRepo) -> None:
     assert isinstance(todo, Todo)
     assert todo.id is not None
     assert todo.content == "content"
+    assert not todo.completed
     assert todo.created_at is not None
     assert todo.updated_at is None
 
