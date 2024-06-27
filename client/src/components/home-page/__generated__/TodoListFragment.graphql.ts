@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<814862988adc2ae00ca554505eacc499>>
+ * @generated SignedSource<<1995a92fa9766f8cdd70db662321ceac>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -8,7 +8,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { Fragment, ReaderFragment } from 'relay-runtime';
+import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type TodoListFragment$data = {
   readonly todos: {
@@ -29,7 +29,13 @@ export type TodoListFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"TodoListFragment">;
 };
 
-const node: ReaderFragment = {
+import TodoListPaginationQuery_graphql from './TodoListPaginationQuery.graphql';
+
+const node: ReaderFragment = (function(){
+var v0 = [
+  "todos"
+];
+return {
   "argumentDefinitions": [
     {
       "defaultValue": 3,
@@ -43,26 +49,38 @@ const node: ReaderFragment = {
     }
   ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": (v0/*: any*/)
+      }
+    ],
+    "refetch": {
+      "connection": {
+        "forward": {
+          "count": "count",
+          "cursor": "cursor"
+        },
+        "backward": null,
+        "path": (v0/*: any*/)
+      },
+      "fragmentPathInResult": [
+        "viewer"
+      ],
+      "operation": TodoListPaginationQuery_graphql
+    }
+  },
   "name": "TodoListFragment",
   "selections": [
     {
-      "alias": null,
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "after",
-          "variableName": "cursor"
-        },
-        {
-          "kind": "Variable",
-          "name": "first",
-          "variableName": "count"
-        }
-      ],
+      "alias": "todos",
+      "args": null,
       "concreteType": "TodoConnection",
       "kind": "LinkedField",
-      "name": "todos",
+      "name": "__TodoListFragment_todos_connection",
       "plural": false,
       "selections": [
         {
@@ -92,8 +110,22 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "FragmentSpread",
                   "name": "TodoFragment"
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "__typename",
+                  "storageKey": null
                 }
               ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "cursor",
               "storageKey": null
             }
           ],
@@ -113,6 +145,13 @@ const node: ReaderFragment = {
               "kind": "ScalarField",
               "name": "hasNextPage",
               "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -124,7 +163,8 @@ const node: ReaderFragment = {
   "type": "Viewer",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "f572eba27cd9bc36dd090b642c53fc77";
+(node as any).hash = "9873d343ad355040e40fd384767a4735";
 
 export default node;

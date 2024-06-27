@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5047610af530f7ecf02eb4afcd041f04>>
+ * @generated SignedSource<<626e70cb2225c773eb63a8e43ccd4b8f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,31 +10,51 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type HomePageQuery$variables = Record<PropertyKey, never>;
-export type HomePageQuery$data = {
+export type TodoListPaginationQuery$variables = {
+  count?: number | null | undefined;
+  cursor?: string | null | undefined;
+};
+export type TodoListPaginationQuery$data = {
   readonly viewer: {
     readonly " $fragmentSpreads": FragmentRefs<"TodoListFragment">;
   };
 };
-export type HomePageQuery = {
-  response: HomePageQuery$data;
-  variables: HomePageQuery$variables;
+export type TodoListPaginationQuery = {
+  response: TodoListPaginationQuery$data;
+  variables: TodoListPaginationQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "kind": "Literal",
+    "defaultValue": 3,
+    "kind": "LocalArgument",
+    "name": "count"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "value": 3
+    "variableName": "count"
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "HomePageQuery",
+    "name": "TodoListPaginationQuery",
     "selections": [
       {
         "alias": null,
@@ -45,7 +65,18 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "count",
+                "variableName": "count"
+              },
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
+            ],
             "kind": "FragmentSpread",
             "name": "TodoListFragment"
           }
@@ -58,9 +89,9 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "HomePageQuery",
+    "name": "TodoListPaginationQuery",
     "selections": [
       {
         "alias": null,
@@ -72,7 +103,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v1/*: any*/),
             "concreteType": "TodoConnection",
             "kind": "LinkedField",
             "name": "todos",
@@ -168,11 +199,11 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "todos(first:3)"
+            "storageKey": null
           },
           {
             "alias": null,
-            "args": (v0/*: any*/),
+            "args": (v1/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "TodoListFragment_todos",
@@ -185,16 +216,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9577ad5bd79af3a8d765bd268aec39f4",
+    "cacheID": "445de4b9338c29453b3620b1e022e72d",
     "id": null,
     "metadata": {},
-    "name": "HomePageQuery",
+    "name": "TodoListPaginationQuery",
     "operationKind": "query",
-    "text": "query HomePageQuery {\n  viewer {\n    ...TodoListFragment\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Viewer {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
+    "text": "query TodoListPaginationQuery(\n  $count: Int = 3\n  $cursor: String\n) {\n  viewer {\n    ...TodoListFragment_1G22uz\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment_1G22uz on Viewer {\n  todos(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "69d5ca73665d7d2f28ca9068d69fbda2";
+(node as any).hash = "9873d343ad355040e40fd384767a4735";
 
 export default node;
