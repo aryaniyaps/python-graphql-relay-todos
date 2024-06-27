@@ -112,7 +112,7 @@ class Paginator(Generic[ModelType, CursorType]):
             statement = statement.where(self._paginate_by < before)
 
         if last is not None:
-            # get the latest records when `last` is specified
+            # switch the order of records when `last` is specified
             statement = statement.order_by(desc(self._paginate_by))
 
         statement = statement.limit(pagination_limit + 1)

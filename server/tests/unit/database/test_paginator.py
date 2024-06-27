@@ -132,7 +132,10 @@ async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) 
 
 async def test_paginate_empty_results(todo_paginator: Paginator[Todo, int]) -> None:
     """Test pagination when no records are returned from the database."""
-    result = await todo_paginator.paginate(select(Todo).where(Todo.id > 50), first=10)
+    last_todo_id = 50
+    result = await todo_paginator.paginate(
+        select(Todo).where(Todo.id > last_todo_id), first=10
+    )
 
     # check the results
     assert len(result.entities) == 0
@@ -145,6 +148,7 @@ async def test_paginate_empty_results(todo_paginator: Paginator[Todo, int]) -> N
 async def test_paginate_end_page_forwards(todo_paginator: Paginator[Todo, int]) -> None:
     """Test pagination when we've reached the end page forwards."""
     pagination_limit = 75
+    last_todo_id = 50
     result = await todo_paginator.paginate(select(Todo), first=pagination_limit)
 
     # check the results
@@ -152,7 +156,7 @@ async def test_paginate_end_page_forwards(todo_paginator: Paginator[Todo, int]) 
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is False
     assert result.page_info.start_cursor == 1
-    assert result.page_info.end_cursor == 50
+    assert result.page_info.end_cursor == last_todo_id
 
 
 async def test_paginate_end_page_backwards(
@@ -160,6 +164,7 @@ async def test_paginate_end_page_backwards(
 ) -> None:
     """Test pagination when we've reached the end page backwards."""
     pagination_limit = 75
+    last_todo_id = 50
     result = await todo_paginator.paginate(select(Todo), last=pagination_limit)
 
     # check the results
@@ -167,4 +172,4 @@ async def test_paginate_end_page_backwards(
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is False
     assert result.page_info.start_cursor == 1
-    assert result.page_info.end_cursor == 50
+    assert result.page_info.end_cursor == last_todo_id
