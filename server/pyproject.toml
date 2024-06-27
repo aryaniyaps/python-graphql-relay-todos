@@ -39,6 +39,7 @@ test = [
     "pytest-timeout>=2.3.1",
     "anyio>=4.4.0",
     "pytest-pretty>=1.2.0",
+    "coverage>=7.5.4",
 ]
 
 [tool.pdm.scripts]
@@ -47,7 +48,8 @@ lint = { composite = ["black .", "ruff --fix .", "black .", "mypy ."] }
 generate-schema = "strawberry export-schema app.schema:schema --output ../schema/schema.graphql"
 migrate = "alembic upgrade head"
 new-migration = "alembic revision --autogenerate"
-test = "pytest -vv"
+test = { composite = ["coverage run", "coverage report -m", "coverage xml"] }
+
 
 [tool.pytest.ini_options]
 timeout = 5
@@ -97,12 +99,12 @@ init_typed = true
 
 [tool.ruff]
 src = ["app", "tests"]
-fixable = ["F", "E", "W", "I", "COM", "UP", "RUF"]
-unfixable = [
+lint.fixable = ["F", "E", "W", "I", "COM", "UP", "RUF"]
+lint.unfixable = [
     "F841", # variable  is assigned to but never used
 ]
-select = ["ALL"]
-ignore = [
+lint.select = ["ALL"]
+lint.ignore = [
     "E501",    # line length
     "ANN101",
     "ANN102",
@@ -119,27 +121,27 @@ ignore = [
     "ISC001",
 ]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["S101", "S105", "S106"]
 "migrations/*" = ["INP001"]
 "migrations/versions/*" = ["D400", "D415"]
 
 
-[tool.ruff.flake8-pytest-style]
+[tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
 mark-parentheses = false
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 6
 
-[tool.ruff.flake8-bugbear]
+[tool.ruff.lint.flake8-bugbear]
 extend-immutable-calls = []
 
-[tool.ruff.pep8-naming]
+[tool.ruff.lint.pep8-naming]
 classmethod-decorators = ["classmethod"]
 staticmethod-decorators = ["staticmethod"]
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "parents"
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
