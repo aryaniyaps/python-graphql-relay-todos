@@ -1,0 +1,47 @@
+name: test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+    env:
+      SERVER_DEBUG: true
+      SERVER_ENVIRONMENT: "testing"
+      SERVER_LOG_LEVEL: "INFO"
+      SERVER_DATABASE_URL: "postgresql+asyncpg://user:pass@localhost:5432/todos"
+      SERVER_DATABASE_POOL_SIZE: 20
+      SERVER_CORS_ALLOW_ORIGINS: '["*"]'
+      SERVER_OPENAPI_URL:
+
+    services:
+      postgres:
+        image: "bitnami/postgresql:16"
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRESQL_USERNAME: "user"
+          POSTGRESQL_PASSWORD: "pass"
+          POSTGRESQL_DATABASE: "todos"
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install PDM
+        run: pip install --no-cache pdm
+
+      - name: Install Dependencies
+        run: pdm install -dG test
+
+      - name: Run Tests
+        run: pdm run test
