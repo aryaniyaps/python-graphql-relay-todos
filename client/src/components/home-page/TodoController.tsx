@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { graphql, useMutation } from "react-relay";
+import { graphql, useFragment, useMutation } from "react-relay";
 import { z } from "zod";
 import { Button } from "../ui/button";
 import {
@@ -11,14 +11,37 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
+import { TodoControllerFragment$key } from "./__generated__/TodoControllerFragment.graphql";
 
-const createTodoMutation = graphql`
-  mutation TodoControllerCreateMutation($content: String!) {
+const TodoControllerFragment = graphql`
+  fragment TodoControllerFragment on Query
+  @argumentDefinitions(
+    cursor: { type: "String" }
+    count: { type: "Int", defaultValue: 3 }
+  ) {
+    todos(after: $cursor, first: $count)
+      @connection(key: "TodoListFragment_todos") {
+      __id
+      edges {
+        # we have to select the edges field while
+        # using the @connection directive
+        __typename
+      }
+    }
+  }
+`;
+
+const TodoControllerCreateMutation = graphql`
+  mutation TodoControllerCreateMutation(
+    $content: String!
+    $connections: [ID!]!
+  ) {
     createTodo(content: $content) {
-      id
-      content
-      createdAt
-      updatedAt
+      todoEdge @prependEdge(connections: $connections) {
+        node {
+          ...TodoFragment
+        }
+      }
     }
   }
 `;
@@ -29,16 +52,29 @@ const createTodoSchema = z.object({
   }),
 });
 
-export default function TodoController() {
-  // TODO: update todo list cache after mutation
-  const [commitMutation, isMutationInFlight] = useMutation(createTodoMutation);
+type Props = {
+  rootQuery: TodoControllerFragment$key;
+};
+
+export default function TodoController({ rootQuery }: Props) {
+  const data = useFragment(TodoControllerFragment, rootQuery);
+  const [commitMutation, isMutationInFlight] = useMutation(
+    TodoControllerCreateMutation
+  );
 
   const form = useForm<z.infer<typeof createTodoSchema>>({
     resolver: zodResolver(createTodoSchema),
+    values: { content: "" },
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof createTodoSchema>> = (data) => {
-    commitMutation({ variables: { content: data.content } });
+  const onSubmit: SubmitHandler<z.infer<typeof createTodoSchema>> = async (
+    input
+  ) => {
+    console.log(data.todos.__id);
+    form.reset();
+    commitMutation({
+      variables: { content: input.content, connections: [data.todos.__id] },
+    });
   };
 
   return (

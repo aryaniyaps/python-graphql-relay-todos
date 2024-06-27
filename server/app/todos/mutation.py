@@ -8,13 +8,13 @@ from strawberry import relay
 from app.context import Info
 
 from .services import TodoService
-from .types import TodoType
+from .types import CreateTodoPayload, TodoType
 
 
 @strawberry.type
 class TodoMutation:
     @strawberry.mutation(
-        graphql_type=TodoType,
+        graphql_type=CreateTodoPayload,
         description="Create a new todo.",
     )
     @inject
@@ -27,12 +27,17 @@ class TodoMutation:
             ),
         ],
         todo_service: Annotated[TodoService, Inject],
-    ) -> TodoType:
+    ) -> CreateTodoPayload:
         """Create a new todo."""
         todo = await todo_service.create(
             content=content,
         )
-        return TodoType.from_orm(todo)
+        return CreateTodoPayload(
+            todo_edge=relay.Edge(
+                node=TodoType.from_orm(todo),
+                cursor=relay.to_base64(TodoType, todo.id),
+            ),
+        )
 
     @strawberry.mutation(
         graphql_type=None,

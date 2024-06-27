@@ -1,4 +1,4 @@
-from sqlalchemy import delete, select
+from sqlalchemy import delete, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.paginator import PaginatedResult, Paginator
@@ -43,10 +43,11 @@ class TodoRepo:
         paginator: Paginator[Todo, int] = Paginator(
             session=self._session,
             paginate_by=Todo.id,
+            reverse=True,
         )
 
         return await paginator.paginate(
-            statement=select(Todo),
+            statement=select(Todo).order_by(desc(Todo.created_at)),
             first=first,
             last=last,
             before=before,

@@ -7,15 +7,16 @@ import { HomePageQuery as HomePageQueryType } from "./__generated__/HomePageQuer
 const HomePageQuery = graphql`
   query HomePageQuery {
     ...TodoListFragment
+    ...TodoControllerFragment
   }
 `;
 export default function HomePage() {
-  const data = useLazyLoadQuery<HomePageQueryType>(HomePageQuery, {});
+  const rootQuery = useLazyLoadQuery<HomePageQueryType>(HomePageQuery, {});
   return (
     <HomePageLayout>
       <div className="flex flex-col items-center w-full h-full justify-center gap-8 py-8">
-        <TodoController />
-        <TodoList root={data} />
+        <TodoController rootQuery={rootQuery} />
+        <TodoList rootQuery={rootQuery} />
       </div>
     </HomePageLayout>
   );

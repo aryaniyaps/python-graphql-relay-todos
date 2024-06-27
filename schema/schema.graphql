@@ -1,3 +1,7 @@
+type CreateTodoPayload {
+  todoEdge: TodoEdge!
+}
+
 """Date with time (isoformat)"""
 scalar DateTime
 
@@ -11,7 +15,7 @@ type Mutation {
   createTodo(
     """The content of the todo."""
     content: String!
-  ): Todo!
+  ): CreateTodoPayload!
 
   """Delete a todo by ID."""
   deleteTodo(

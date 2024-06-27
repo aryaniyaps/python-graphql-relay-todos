@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dc304e9d631f14ab74d24ea477572681>>
+ * @generated SignedSource<<2d79d89f2f5153e3eb8cb0d9c1b65274>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,7 +12,7 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type HomePageQuery$variables = Record<PropertyKey, never>;
 export type HomePageQuery$data = {
-  readonly " $fragmentSpreads": FragmentRefs<"TodoListFragment">;
+  readonly " $fragmentSpreads": FragmentRefs<"TodoControllerFragment" | "TodoListFragment">;
 };
 export type HomePageQuery = {
   response: HomePageQuery$data;
@@ -26,7 +26,14 @@ var v0 = [
     "name": "first",
     "value": 3
   }
-];
+],
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -38,6 +45,11 @@ return {
         "args": null,
         "kind": "FragmentSpread",
         "name": "TodoListFragment"
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "TodoControllerFragment"
       }
     ],
     "type": "Query",
@@ -101,13 +113,7 @@ return {
                     "name": "updatedAt",
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "__typename",
-                    "storageKey": null
-                  }
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -117,7 +123,8 @@ return {
                 "kind": "ScalarField",
                 "name": "cursor",
                 "storageKey": null
-              }
+              },
+              (v1/*: any*/)
             ],
             "storageKey": null
           },
@@ -145,6 +152,18 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "kind": "ClientExtension",
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "__id",
+                "storageKey": null
+              }
+            ]
           }
         ],
         "storageKey": "todos(first:3)"
@@ -161,16 +180,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ed0fd3f5c6a796aadaaffd18ac31fd70",
+    "cacheID": "8f4bc8f12fc3b2141df99f69b504209b",
     "id": null,
     "metadata": {},
     "name": "HomePageQuery",
     "operationKind": "query",
-    "text": "query HomePageQuery {\n  ...TodoListFragment\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Query {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
+    "text": "query HomePageQuery {\n  ...TodoListFragment\n  ...TodoControllerFragment\n}\n\nfragment TodoControllerFragment on Query {\n  todos(first: 3) {\n    edges {\n      __typename\n      cursor\n      node {\n        __typename\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Query {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b10c4637b120934e17e38b5c99f81746";
+(node as any).hash = "3510f98453c44395f9444d1347b7a95c";
 
 export default node;

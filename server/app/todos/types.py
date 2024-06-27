@@ -41,6 +41,11 @@ class TodoType(BaseNodeType):
         return list(map(cls.from_orm, [todo for todo in todos if todo is not None]))
 
 
+@strawberry.type
+class CreateTodoPayload:
+    todo_edge: relay.Edge[TodoType]
+
+
 @strawberry.type(name="TodoConnection")
 class TodoConnectionType(relay.Connection[TodoType]):
     @classmethod

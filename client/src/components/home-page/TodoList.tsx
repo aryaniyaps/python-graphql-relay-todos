@@ -30,12 +30,12 @@ const TodoListFragment = graphql`
 `;
 
 type Props = {
-  root: TodoListFragment$key;
+  rootQuery: TodoListFragment$key;
 };
 
-export default function TodoList({ root }: Props) {
+export default function TodoList({ rootQuery }: Props) {
   const [isPending, startTransition] = useTransition();
-  const { data, loadNext } = usePaginationFragment(TodoListFragment, root);
+  const { data, loadNext } = usePaginationFragment(TodoListFragment, rootQuery);
 
   function loadMore() {
     return startTransition(() => {

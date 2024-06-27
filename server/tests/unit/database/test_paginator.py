@@ -14,6 +14,20 @@ async def todo_paginator(session: AsyncSession) -> Paginator[Todo, int]:
     )
 
 
+@pytest.fixture
+async def reverse_todo_paginator(session: AsyncSession) -> Paginator[Todo, int]:
+    return Paginator(
+        session=session,
+        paginate_by=Todo.id,
+        reverse=True,
+    )
+
+
+# TODO: test reverse pagination
+# (not to be confused with backwards pagination, this is pagination that has to do
+# with ORDER BY created_at/ID DESC)
+
+
 @pytest.fixture(autouse=True)
 async def _seed_todos(session: AsyncSession) -> None:
     todos = [

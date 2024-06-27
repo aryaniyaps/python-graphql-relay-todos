@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from sqlalchemy import desc
+from sqlalchemy import asc, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import InstrumentedAttribute
 from sqlalchemy.sql import Select
@@ -33,11 +33,14 @@ class PaginatedResult(Generic[ModelType, CursorType]):
 class Paginator(Generic[ModelType, CursorType]):
     def __init__(
         self,
+        *,
         session: AsyncSession,
         paginate_by: InstrumentedAttribute[CursorType],
+        reverse: bool = False,
     ) -> None:
         self._session = session
         self._paginate_by: InstrumentedAttribute[CursorType] = paginate_by
+        self._reverse = reverse
 
     @staticmethod
     def __validate_arguments(  # noqa: C901
@@ -107,13 +110,22 @@ class Paginator(Generic[ModelType, CursorType]):
         )
 
         if after is not None:
-            statement = statement.where(self._paginate_by > after)
+            if self._reverse:
+                statement = statement.where(self._paginate_by < after)
+            else:
+                statement = statement.where(self._paginate_by > after)
         elif before is not None:
-            statement = statement.where(self._paginate_by < before)
+            if self._reverse:
+                statement = statement.where(self._paginate_by > before)
+            else:
+                statement = statement.where(self._paginate_by < before)
 
         if last is not None:
             # switch the order of records when `last` is specified
-            statement = statement.order_by(desc(self._paginate_by))
+            if self._reverse:
+                statement = statement.order_by(asc(self._paginate_by))
+            else:
+                statement = statement.order_by(desc(self._paginate_by))
 
         statement = statement.limit(pagination_limit + 1)
 
