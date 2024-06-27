@@ -3,12 +3,15 @@ from app.database.paginator import Paginator
 from app.lib.constants import MAX_PAGINATION_LIMIT
 from app.todos.models import Todo
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.sql import desc, select
+from sqlalchemy.sql import select
 
 
 @pytest.fixture
 async def todo_paginator(session: AsyncSession) -> Paginator[Todo, int]:
-    return Paginator(session, Todo.id)
+    return Paginator(
+        session=session,
+        paginate_by=Todo.id,
+    )
 
 
 @pytest.fixture(autouse=True)
@@ -40,17 +43,6 @@ async def test_paginate_first_and_after(todo_paginator: Paginator[Todo, int]) ->
     assert result.page_info.end_cursor == 20
 
 
-async def test_paginate_first_and_before(todo_paginator: Paginator[Todo, int]) -> None:
-    result = await todo_paginator.paginate(select(Todo), first=10, before=50)
-
-    # check the results
-    assert len(result.entities) == 10
-    assert result.page_info.has_next_page is True
-    assert result.page_info.has_previous_page is True
-    assert result.page_info.start_cursor == 40
-    assert result.page_info.end_cursor == 49
-
-
 async def test_paginate_last(todo_paginator: Paginator[Todo, int]) -> None:
     result = await todo_paginator.paginate(select(Todo), last=10)
 
@@ -58,17 +50,6 @@ async def test_paginate_last(todo_paginator: Paginator[Todo, int]) -> None:
     assert len(result.entities) == 10
     assert result.page_info.has_next_page is True
     assert result.page_info.has_previous_page is False
-    assert result.page_info.start_cursor == 40
-    assert result.page_info.end_cursor == 50
-
-
-async def test_paginate_last_and_after(todo_paginator: Paginator[Todo, int]) -> None:
-    result = await todo_paginator.paginate(select(Todo), last=10, after=40)
-
-    # check the results
-    assert len(result.entities) == 10
-    assert result.page_info.has_next_page is False
-    assert result.page_info.has_previous_page is True
     assert result.page_info.start_cursor == 41
     assert result.page_info.end_cursor == 50
 
@@ -88,13 +69,17 @@ async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) 
     with pytest.raises(ValueError, match="Cannot provide both `first` and `last`"):
         await todo_paginator.paginate(select(Todo), first=10, last=10)
 
-    # # test that an error is raised when `first` is provided with `before`
-    # with pytest.raises(ValueError):
-    #     await todo_paginator.paginate(select(Todo), first=10, before=5)
+    # test that an error is raised when both `after` and `before` are provided
+    with pytest.raises(ValueError, match="Cannot provide both `after` and `before`"):
+        await todo_paginator.paginate(select(Todo), after=10, before=50, first=10)
 
-    # # test that an error is raised when `last` is provided with `after`
-    # with pytest.raises(ValueError):
-    #     await todo_paginator.paginate(select(Todo), last=10, after=5)
+    # test that an error is raised when `first` is provided with `before`
+    with pytest.raises(ValueError, match="`first` cannot be provided with `before`"):
+        await todo_paginator.paginate(select(Todo), first=10, before=5)
+
+    # test that an error is raised when `last` is provided with `after`
+    with pytest.raises(ValueError, match="`last` cannot be provided with `after`"):
+        await todo_paginator.paginate(select(Todo), last=10, after=5)
 
     # test that an error is raised when `first` exceeds the maximum pagination limit
     with pytest.raises(

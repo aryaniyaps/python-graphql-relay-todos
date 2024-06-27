@@ -1,7 +1,9 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Generic, TypeVar
 
+from sqlalchemy import desc
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import InstrumentedAttribute
 from sqlalchemy.sql import Select
@@ -39,7 +41,7 @@ class Paginator(Generic[ModelType, CursorType]):
         self._paginate_by: InstrumentedAttribute[CursorType] = paginate_by
 
     @staticmethod
-    def __validate_arguments(
+    def __validate_arguments(  # noqa: C901
         first: int | None,
         last: int | None,
         before: CursorType | None,
@@ -50,11 +52,13 @@ class Paginator(Generic[ModelType, CursorType]):
 
         Returns the pagination limit specified.
         """
-        # FIXME: relay spec doesn't specify the commented out checks, it was there in dummy
-        # strawberry docs code
         if first is not None and last is not None:
             first_and_last_error = "Cannot provide both `first` and `last`"
             raise ValueError(first_and_last_error)
+
+        if after is not None and before is not None:
+            after_and_before_error = "Cannot provide both `after` and `before`"
+            raise ValueError(after_and_before_error)
 
         if first is not None:
             if first < 0:
@@ -63,9 +67,9 @@ class Paginator(Generic[ModelType, CursorType]):
             if first > MAX_PAGINATION_LIMIT:
                 max_pagination_limit_error = f"`first` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
                 raise ValueError(max_pagination_limit_error)
-            # if before is not None:
-            #     first_and_before_error = "`first` cannot be provided with `before`"
-            #     raise ValueError(first_and_before_error)
+            if before is not None:
+                first_and_before_error = "`first` cannot be provided with `before`"
+                raise ValueError(first_and_before_error)
             return first
 
         if last is not None:
@@ -77,9 +81,9 @@ class Paginator(Generic[ModelType, CursorType]):
                     f"`last` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records"
                 )
                 raise ValueError(max_pagination_limit_error)
-            # if after is not None:
-            #     last_and_after_error = "`last` cannot be provided with `after`"
-            #     raise ValueError(last_and_after_error)
+            if after is not None:
+                last_and_after_error = "`last` cannot be provided with `after`"
+                raise ValueError(last_and_after_error)
             return last
 
         no_first_and_last_error = (
@@ -106,33 +110,22 @@ class Paginator(Generic[ModelType, CursorType]):
         if after is not None:
             statement = statement.where(self._paginate_by > after)
         elif before is not None:
-            print("BEFORE VALUE: ", before)
-            # TODO: we need to update the order_by of the query
-            # when before is passed
             statement = statement.where(self._paginate_by < before)
 
-        statement = statement.limit(pagination_limit + 1)
+        if last is not None:
+            # get the latest records when `last` is specified
+            statement = statement.order_by(desc(self._paginate_by))
 
-        print("PAGINATION LIMIT VALUE: ", pagination_limit)
+        statement = statement.limit(pagination_limit + 1)
 
         scalars = await self._session.scalars(statement)
 
         results = scalars.all()
 
-        print("RESULTS: ", [todo.id for todo in results])
+        entities = results[:pagination_limit]
 
-        # TODO: check this!!
-        # should it be:
-        # entities = (
-        #     results[-pagination_limit:]
-        #     if last is not None
-        #     else results[:pagination_limit]
-        # )
-        entities = (
-            results[-pagination_limit:]
-            if before is not None
-            else results[:pagination_limit]
-        )
+        if last is not None:
+            entities = list(reversed(entities))
 
         if before is not None:
             has_next_page = True
