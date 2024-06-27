@@ -1,4 +1,4 @@
-name: test
+name: test server
 
 env:
   # aligns neatly with pytest-pretty's output
@@ -13,7 +13,7 @@ on:
       - main
 
 jobs:
-  tests:
+  test-server:
     runs-on: ubuntu-20.04
     defaults:
       run:

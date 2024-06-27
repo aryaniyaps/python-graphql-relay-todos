@@ -1,4 +1,4 @@
-name: lint
+name: lint server
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  lint:
+  lint-server:
     runs-on: ubuntu-latest
     defaults:
       run:
