@@ -16,7 +16,15 @@ async def todo_paginator(session: AsyncSession) -> Paginator[Todo, int]:
 
 @pytest.fixture(autouse=True)
 async def _seed_todos(session: AsyncSession) -> None:
-    todos = [Todo(content=f"Todo {i}", id=i + 1) for i in range(50)]
+    todos = [
+        Todo(
+            content=f"Todo {i}",
+            id=i + 1,
+            # 50% todos are completed
+            completed=i % 2 == 0,
+        )
+        for i in range(50)
+    ]
     session.add_all(todos)
     await session.commit()
 
