@@ -1,0 +1,43 @@
+name: lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job:
+          - mypy .
+          - black --check .
+          - ruff check --output-format=github .
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            .venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pdm.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Install PDM
+        run: |
+          pip install pdm
+          pdm sync --clean
+
+      - name: run ${{ matrix.job }}
+        run: pdm run ${{ matrix.job }}

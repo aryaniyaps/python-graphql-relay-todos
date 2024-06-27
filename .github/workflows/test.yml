@@ -1,5 +1,9 @@
 name: test
 
+env:
+  # aligns neatly with pytest-pretty's output
+  COLUMNS: 120
+
 on:
   push:
     branches:
@@ -14,12 +18,13 @@ jobs:
     defaults:
       run:
         working-directory: ./server
+
     env:
       SERVER_DEBUG: true
       SERVER_ENVIRONMENT: "testing"
       SERVER_LOG_LEVEL: "INFO"
       SERVER_DATABASE_URL: "postgresql+asyncpg://user:pass@localhost:5432/todos"
-      SERVER_DATABASE_TEST_URL: "postgresql+asyncpg://user:pass@localhost:5432/todos"
+      SERVER_DATABASE_TEST_URL: "postgresql+asyncpg://user:pass@localhost:5432/todos_test"
       SERVER_DATABASE_POOL_SIZE: 20
       SERVER_CORS_ALLOW_ORIGINS: '["*"]'
       SERVER_OPENAPI_URL:
@@ -32,20 +37,30 @@ jobs:
         env:
           POSTGRESQL_USERNAME: "user"
           POSTGRESQL_PASSWORD: "pass"
-          POSTGRESQL_DATABASE: "todos"
+          POSTGRESQL_DATABASE: "todos_test"
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
-      - name: Install PDM
-        run: pip install --no-cache pdm
+      - name: Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            .venv
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pdm.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
-      - name: Install Dependencies
-        run: pdm install -dG test
+      - name: Install PDM
+        run: |
+          pip install pdm
+          pdm sync --clean
 
       - name: Run Tests
         run: pdm run test
