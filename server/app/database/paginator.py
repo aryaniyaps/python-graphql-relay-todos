@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import datetime
 from typing import Generic, TypeVar
 
 from sqlalchemy import desc

@@ -22,6 +22,7 @@ async def _seed_todos(session: AsyncSession) -> None:
 
 
 async def test_paginate_first(todo_paginator: Paginator[Todo, int]) -> None:
+    """Ensure that we can paginate correctly with the `first` argument."""
     result = await todo_paginator.paginate(select(Todo), first=10)
 
     # check the results
@@ -33,6 +34,7 @@ async def test_paginate_first(todo_paginator: Paginator[Todo, int]) -> None:
 
 
 async def test_paginate_first_and_after(todo_paginator: Paginator[Todo, int]) -> None:
+    """Ensure that we can paginate correctly with the `first` and `after` arguments."""
     result = await todo_paginator.paginate(select(Todo), first=10, after=10)
 
     # check the results
@@ -44,6 +46,7 @@ async def test_paginate_first_and_after(todo_paginator: Paginator[Todo, int]) ->
 
 
 async def test_paginate_last(todo_paginator: Paginator[Todo, int]) -> None:
+    """Ensure that we can paginate correctly with the `last` argument."""
     result = await todo_paginator.paginate(select(Todo), last=10)
 
     # check the results
@@ -55,6 +58,7 @@ async def test_paginate_last(todo_paginator: Paginator[Todo, int]) -> None:
 
 
 async def test_paginate_last_and_before(todo_paginator: Paginator[Todo, int]) -> None:
+    """Ensure that we can paginate correctly with the `last` and `before` arguments."""
     # test that `last` and `before` arguments can be used together
     result = await todo_paginator.paginate(select(Todo), last=10, before=50)
     assert len(result.entities) == 10
@@ -65,6 +69,7 @@ async def test_paginate_last_and_before(todo_paginator: Paginator[Todo, int]) ->
 
 
 async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) -> None:
+    """Ensure that we cannot paginate with invalid pagination arguments."""
     # test that an error is raised when both `first` and `last` are provided
     with pytest.raises(ValueError, match="Cannot provide both `first` and `last`"):
         await todo_paginator.paginate(select(Todo), first=10, last=10)
@@ -117,6 +122,7 @@ async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) 
 
 
 async def test_paginate_empty_results(todo_paginator: Paginator[Todo, int]) -> None:
+    """Test pagination when no records are returned from the database."""
     # test that an empty result set is returned when there are no matching records
     result = await todo_paginator.paginate(select(Todo).where(Todo.id > 50), first=10)
     assert len(result.entities) == 0
@@ -126,9 +132,23 @@ async def test_paginate_empty_results(todo_paginator: Paginator[Todo, int]) -> N
     assert result.page_info.end_cursor is None
 
 
-async def test_paginate_end_page(todo_paginator: Paginator[Todo, int]) -> None:
+async def test_paginate_end_page_forwards(todo_paginator: Paginator[Todo, int]) -> None:
+    """Test pagination when we've reached the end page forwards."""
     # test that a single page of results is returned when there are fewer records than the pagination limit
     result = await todo_paginator.paginate(select(Todo), first=75)
+    assert len(result.entities) == 50
+    assert result.page_info.has_next_page is False
+    assert result.page_info.has_previous_page is False
+    assert result.page_info.start_cursor == 1
+    assert result.page_info.end_cursor == 50
+
+
+async def test_paginate_end_page_backwards(
+    todo_paginator: Paginator[Todo, int],
+) -> None:
+    """Test pagination when we've reached the end page backwards."""
+    # test that a single page of results is returned when there are fewer records than the pagination limit
+    result = await todo_paginator.paginate(select(Todo), last=75)
     assert len(result.entities) == 50
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is False
