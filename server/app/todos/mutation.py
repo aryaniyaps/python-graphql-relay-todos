@@ -52,4 +52,4 @@ class TodoMutation:
     ) -> None:
         """Delete a todo by ID."""
         todo = await todo_id.resolve_node(info, ensure_type=TodoType)
-        await todo_service.delete(todo_id=int(todo.id))
+        await todo_service.delete(todo_id=todo.id)

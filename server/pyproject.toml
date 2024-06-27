@@ -37,8 +37,8 @@ test = [
     "pytest>=8.2.2",
     "sqlalchemy-pytest>=0.3.2.post1",
     "pytest-timeout>=2.3.1",
-    "pytest-sugar>=1.0.0",
     "anyio>=4.4.0",
+    "pytest-pretty>=1.2.0",
 ]
 
 [tool.pdm.scripts]
@@ -52,6 +52,8 @@ test = "pytest -vv"
 [tool.pytest.ini_options]
 timeout = 5
 pythonpath = "."
+filterwarnings = ["ignore::DeprecationWarning"]
+
 
 [tool.setuptools.packages.find]
 where = ["."] # list of folders that contain the packages (["."] by default)

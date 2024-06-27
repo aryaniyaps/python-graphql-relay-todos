@@ -5,14 +5,14 @@ from typing import Self
 import strawberry
 from strawberry import relay
 
+from app.base.types import BaseNodeType
 from app.context import Info
 from app.database.paginator import PaginatedResult
 from app.todos.models import Todo
 
 
 @strawberry.type(name="Todo")
-class TodoType(relay.Node):
-    id: relay.NodeID[str]
+class TodoType(BaseNodeType):
     content: str
     completed: bool
     created_at: datetime
@@ -22,7 +22,7 @@ class TodoType(relay.Node):
     def from_orm(cls, todo: Todo) -> Self:
         """Construct a node from an ORM instance."""
         return cls(
-            id=str(todo.id),
+            id=todo.id,
             content=todo.content,
             completed=todo.completed,
             created_at=todo.created_at,
@@ -38,7 +38,7 @@ class TodoType(relay.Node):
         required: bool = False,  # noqa: ARG003
     ):
         todos = await info.context.loaders.todo_by_id.load_many(node_ids)
-        return [cls.from_orm(todo) for todo in todos if todo is not None]
+        return list(map(cls.from_orm, [todo for todo in todos if todo is not None]))
 
 
 @strawberry.type(name="TodoConnection")
