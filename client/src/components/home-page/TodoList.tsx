@@ -44,7 +44,13 @@ export default function TodoList({ rootQuery }: Props) {
     });
   }
 
-  // TODO: add empty state here
+  if (data.todos.edges.length === 0 && !data.todos.pageInfo.hasNextPage) {
+    return (
+      <div className="flex grow flex-col gap-4 px-4 items-center">
+        <p>Hmm, there are no todos yet</p>
+      </div>
+    );
+  }
 
   return (
     <ScrollArea className="flex grow w-full flex-col gap-4 px-4">
