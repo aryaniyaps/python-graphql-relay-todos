@@ -62,6 +62,7 @@ export default function Todo({ todo, connectionId }: Props) {
         </p>
         <div className="flex gap-2 grow justify-end opacity-0 group-hover:opacity-100 transition-opacity">
           <Button
+            title={data.completed ? "mark as incomplete" : "mark as complete"}
             size={"icon"}
             variant={"ghost"}
             disabled={isToggleCompletedMutationInFlight}
@@ -78,6 +79,7 @@ export default function Todo({ todo, connectionId }: Props) {
             )}
           </Button>
           <Button
+            title="delete todo"
             size={"icon"}
             variant={"ghost"}
             disabled={isDeleteMutationInFlight}

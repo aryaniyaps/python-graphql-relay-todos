@@ -70,7 +70,6 @@ export default function TodoController({ rootQuery }: Props) {
   const onSubmit: SubmitHandler<z.infer<typeof createTodoSchema>> = async (
     input
   ) => {
-    console.log(data.todos.__id);
     form.reset();
     commitMutation({
       variables: { content: input.content, connections: [data.todos.__id] },

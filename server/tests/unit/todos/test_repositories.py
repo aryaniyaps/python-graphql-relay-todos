@@ -47,6 +47,17 @@ async def test_get_all_todos(todo_repo: TodoRepo) -> None:
 
 
 async def test_delete_todo(todo: Todo, todo_repo: TodoRepo) -> None:
-    """Ensure we can delete a todo by ID."""
-    await todo_repo.delete(todo_id=todo.id)
+    """Ensure we can delete a todo."""
+    await todo_repo.delete(todo=todo)
     assert await todo_repo.get(todo_id=todo.id) is None
+
+
+async def test_update_todo(todo: Todo, todo_repo: TodoRepo) -> None:
+    """Ensure we can update a todo."""
+    # mark todo as complete
+    await todo_repo.update(todo=todo, completed=True)
+    assert todo.completed
+
+    # mark todo as incomplete
+    await todo_repo.update(todo=todo, completed=False)
+    assert not todo.completed
