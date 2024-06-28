@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6ff9d3513a985fb5a4cb850ea489460f>>
+ * @generated SignedSource<<e9428c956e451b3de6a91927a1ee3034>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,7 @@ export type TodoDeleteMutation$variables = {
 };
 export type TodoDeleteMutation$data = {
   readonly deleteTodo: {
-    readonly deletedTodoId: string | null | undefined;
+    readonly id?: string;
   };
 };
 export type TodoDeleteMutation = {
@@ -45,9 +45,12 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "deletedTodoId",
+  "name": "id",
   "storageKey": null
-};
+},
+v4 = [
+  (v3/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -61,12 +64,17 @@ return {
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteTodoPayload",
+        "concreteType": null,
         "kind": "LinkedField",
         "name": "deleteTodo",
         "plural": false,
         "selections": [
-          (v3/*: any*/)
+          {
+            "kind": "InlineFragment",
+            "selections": (v4/*: any*/),
+            "type": "Todo",
+            "abstractKey": null
+          }
         ],
         "storageKey": null
       }
@@ -86,27 +94,47 @@ return {
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteTodoPayload",
+        "concreteType": null,
         "kind": "LinkedField",
         "name": "deleteTodo",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
-            "filters": null,
-            "handle": "deleteEdge",
-            "key": "",
-            "kind": "ScalarHandle",
-            "name": "deletedTodoId",
-            "handleArgs": [
+            "kind": "ScalarField",
+            "name": "__typename",
+            "storageKey": null
+          },
+          {
+            "kind": "InlineFragment",
+            "selections": [
+              (v3/*: any*/),
               {
-                "kind": "Variable",
-                "name": "connections",
-                "variableName": "connections"
+                "alias": null,
+                "args": null,
+                "filters": null,
+                "handle": "deleteEdge",
+                "key": "",
+                "kind": "ScalarHandle",
+                "name": "id",
+                "handleArgs": [
+                  {
+                    "kind": "Variable",
+                    "name": "connections",
+                    "variableName": "connections"
+                  }
+                ]
               }
-            ]
+            ],
+            "type": "Todo",
+            "abstractKey": null
+          },
+          {
+            "kind": "InlineFragment",
+            "selections": (v4/*: any*/),
+            "type": "Node",
+            "abstractKey": "__isNode"
           }
         ],
         "storageKey": null
@@ -114,16 +142,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7aa4fb975e8bb44c3fa9079110ceed86",
+    "cacheID": "2c6b0701d7ac9c3da9be7704e4d6808c",
     "id": null,
     "metadata": {},
     "name": "TodoDeleteMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoDeleteMutation(\n  $todoId: ID!\n) {\n  deleteTodo(todoId: $todoId) {\n    deletedTodoId\n  }\n}\n"
+    "text": "mutation TodoDeleteMutation(\n  $todoId: ID!\n) {\n  deleteTodo(todoId: $todoId) {\n    __typename\n    ... on Todo {\n      id\n    }\n    ... on Node {\n      __isNode: __typename\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "47c134b2a6ca1cf237ce202f1d00568c";
+(node as any).hash = "bcbf2cf89e47a9fff30b878d067b9cf7";
 
 export default node;

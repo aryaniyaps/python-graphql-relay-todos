@@ -46,8 +46,10 @@ export default function TodoList({ rootQuery }: Props) {
 
   if (data.todos.edges.length === 0 && !data.todos.pageInfo.hasNextPage) {
     return (
-      <div className="flex grow flex-col gap-4 px-4 items-center">
-        <p>Hmm, there are no todos yet</p>
+      <div className="flex grow flex-col gap-4 px-4 items-center h-full">
+        <p className="font-medium text-muted-foreground">
+          Hmm, there are no todos yet
+        </p>
       </div>
     );
   }

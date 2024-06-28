@@ -5,8 +5,10 @@ type CreateTodoPayload {
 """Date with time (isoformat)"""
 scalar DateTime
 
-type DeleteTodoPayload {
-  deletedTodoId: ID
+union DeleteTodoPayload = Todo | TodoNotFoundError
+
+interface Error {
+  message: String!
 }
 
 type Mutation {
@@ -86,6 +88,8 @@ type TodoEdge {
   node: Todo!
 }
 
-type ToggleTodoCompletedPayload {
-  todo: Todo!
+type TodoNotFoundError implements Error {
+  message: String!
 }
+
+union ToggleTodoCompletedPayload = Todo | TodoNotFoundError

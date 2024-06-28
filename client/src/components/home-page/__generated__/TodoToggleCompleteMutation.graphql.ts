@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ae4c5fb2b03b27e334b844b9b1123442>>
+ * @generated SignedSource<<079d1c0a637ccb401e7387ee22d22d57>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,9 +15,7 @@ export type TodoToggleCompleteMutation$variables = {
 };
 export type TodoToggleCompleteMutation$data = {
   readonly toggleTodoCompleted: {
-    readonly todo: {
-      readonly " $fragmentSpreads": FragmentRefs<"TodoFragment">;
-    };
+    readonly " $fragmentSpreads": FragmentRefs<"TodoFragment">;
   };
 };
 export type TodoToggleCompleteMutation = {
@@ -39,7 +37,14 @@ v1 = [
     "name": "todoId",
     "variableName": "todoId"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -50,18 +55,13 @@ return {
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "ToggleTodoCompletedPayload",
+        "concreteType": null,
         "kind": "LinkedField",
         "name": "toggleTodoCompleted",
         "plural": false,
         "selections": [
           {
-            "alias": null,
-            "args": null,
-            "concreteType": "Todo",
-            "kind": "LinkedField",
-            "name": "todo",
-            "plural": false,
+            "kind": "InlineFragment",
             "selections": [
               {
                 "args": null,
@@ -69,7 +69,8 @@ return {
                 "name": "TodoFragment"
               }
             ],
-            "storageKey": null
+            "type": "Todo",
+            "abstractKey": null
           }
         ],
         "storageKey": null
@@ -87,7 +88,7 @@ return {
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "ToggleTodoCompletedPayload",
+        "concreteType": null,
         "kind": "LinkedField",
         "name": "toggleTodoCompleted",
         "plural": false,
@@ -95,18 +96,14 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "Todo",
-            "kind": "LinkedField",
-            "name": "todo",
-            "plural": false,
+            "kind": "ScalarField",
+            "name": "__typename",
+            "storageKey": null
+          },
+          {
+            "kind": "InlineFragment",
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              },
+              (v2/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -136,7 +133,16 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": null
+            "type": "Todo",
+            "abstractKey": null
+          },
+          {
+            "kind": "InlineFragment",
+            "selections": [
+              (v2/*: any*/)
+            ],
+            "type": "Node",
+            "abstractKey": "__isNode"
           }
         ],
         "storageKey": null
@@ -144,16 +150,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e3cf7f8998462f435a80013de63cbf0d",
+    "cacheID": "e892be72b1b91fd463e8910b031d82f1",
     "id": null,
     "metadata": {},
     "name": "TodoToggleCompleteMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoToggleCompleteMutation(\n  $todoId: ID!\n) {\n  toggleTodoCompleted(todoId: $todoId) {\n    todo {\n      ...TodoFragment\n      id\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  completed\n  createdAt\n  updatedAt\n}\n"
+    "text": "mutation TodoToggleCompleteMutation(\n  $todoId: ID!\n) {\n  toggleTodoCompleted(todoId: $todoId) {\n    __typename\n    ... on Todo {\n      ...TodoFragment\n    }\n    ... on Node {\n      __isNode: __typename\n      id\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  completed\n  createdAt\n  updatedAt\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8764b6d695a1cc21b40aaa799cb5cf02";
+(node as any).hash = "2b3c7afd5491b9988135e656391edcc3";
 
 export default node;

@@ -3,12 +3,15 @@ from typing import Annotated
 import strawberry
 from aioinject import Inject
 from aioinject.ext.strawberry import inject
+from result import Err
 from strawberry import relay
 
+from .exceptions import TodoNotFoundError
 from .services import TodoService
 from .types import (
     CreateTodoPayload,
     DeleteTodoPayload,
+    TodoNotFoundErrorType,
     TodoType,
     ToggleTodoCompletedPayload,
 )
@@ -56,11 +59,19 @@ class TodoMutation:
             ),
         ],
         todo_service: Annotated[TodoService, Inject],
-    ) -> DeleteTodoPayload:
+    ) -> TodoType | TodoNotFoundErrorType:
         """Delete a todo by ID."""
-        await todo_service.delete(todo_id=int(todo_id.node_id))
-        return DeleteTodoPayload(
-            deleted_todo_id=todo_id,
+        result = await todo_service.delete(
+            todo_id=int(todo_id.node_id),
+        )
+
+        if isinstance(result, Err):
+            match result.err_value:
+                case TodoNotFoundError():
+                    return TodoNotFoundErrorType()
+
+        return TodoType.from_orm(
+            todo=result.ok_value,
         )
 
     @strawberry.mutation(
@@ -77,7 +88,17 @@ class TodoMutation:
             ),
         ],
         todo_service: Annotated[TodoService, Inject],
-    ) -> ToggleTodoCompletedPayload:
+    ) -> TodoType | TodoNotFoundErrorType:
         """Toggle a todo's completed state by ID."""
-        todo = await todo_service.toggle_completed(todo_id=int(todo_id.node_id))
-        return ToggleTodoCompletedPayload(todo=TodoType.from_orm(todo))
+        result = await todo_service.toggle_completed(
+            todo_id=int(todo_id.node_id),
+        )
+
+        if isinstance(result, Err):
+            match result.err_value:
+                case TodoNotFoundError():
+                    return TodoNotFoundErrorType()
+
+        return TodoType.from_orm(
+            todo=result.ok_value,
+        )

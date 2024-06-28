@@ -20,7 +20,9 @@ export const TodoFragment = graphql`
 const deleteTodoMutation = graphql`
   mutation TodoDeleteMutation($todoId: ID!, $connections: [ID!]!) {
     deleteTodo(todoId: $todoId) {
-      deletedTodoId @deleteEdge(connections: $connections)
+      ... on Todo {
+        id @deleteEdge(connections: $connections)
+      }
     }
   }
 `;
@@ -28,7 +30,7 @@ const deleteTodoMutation = graphql`
 const toggleTodoCompletedMutation = graphql`
   mutation TodoToggleCompleteMutation($todoId: ID!) {
     toggleTodoCompleted(todoId: $todoId) {
-      todo {
+      ... on Todo {
         ...TodoFragment
       }
     }

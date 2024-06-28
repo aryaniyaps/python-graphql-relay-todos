@@ -1,11 +1,11 @@
 from collections.abc import Iterable
 from datetime import datetime
-from typing import Self
+from typing import Annotated, Self
 
 import strawberry
-from strawberry import ID, relay
+from strawberry import relay
 
-from app.base.types import BaseNodeType
+from app.base.types import BaseErrorType, BaseNodeType
 from app.context import Info
 from app.database.paginator import PaginatedResult
 from app.todos.models import Todo
@@ -41,19 +41,25 @@ class TodoType(BaseNodeType):
         return list(map(cls.from_orm, [todo for todo in todos if todo is not None]))
 
 
+@strawberry.type(name="TodoNotFoundError")
+class TodoNotFoundErrorType(BaseErrorType):
+    message: str = "Todo does not exist"
+
+
 @strawberry.type
 class CreateTodoPayload:
     todo_edge: relay.Edge[TodoType]
 
 
-@strawberry.type
-class ToggleTodoCompletedPayload:
-    todo: TodoType
+ToggleTodoCompletedPayload = Annotated[
+    TodoType | TodoNotFoundErrorType,
+    strawberry.union(name="ToggleTodoCompletedPayload"),
+]
 
-
-@strawberry.type
-class DeleteTodoPayload:
-    deleted_todo_id: relay.GlobalID | None
+DeleteTodoPayload = Annotated[
+    TodoType | TodoNotFoundErrorType,
+    strawberry.union(name="DeleteTodoPayload"),
+]
 
 
 @strawberry.type(name="TodoConnection")
