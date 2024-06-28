@@ -1,3 +1,4 @@
+import { dtf } from "@/lib/intl";
 import { useFragment, useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 import { Icons } from "../icons";
@@ -54,7 +55,7 @@ export default function Todo({ todo, connectionId }: Props) {
         </div>
       </CardHeader>
       <CardFooter>
-        <p>{data.createdAt}</p>
+        <p>created at {dtf.format(new Date(data.createdAt))}</p>
       </CardFooter>
     </Card>
   );

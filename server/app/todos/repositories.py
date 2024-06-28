@@ -1,4 +1,4 @@
-from sqlalchemy import delete, desc, select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.paginator import PaginatedResult, Paginator
