@@ -81,7 +81,7 @@ export default function Todo({ todo, connectionId }: Props) {
           <Button
             title="delete todo"
             size={"icon"}
-            variant={"ghost"}
+            variant={"destructive"}
             disabled={isDeleteMutationInFlight}
             onClick={() => {
               commitDeleteMutation({
