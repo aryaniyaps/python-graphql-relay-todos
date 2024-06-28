@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e1a34abe1cf68dfbdb9f11fc58b51dba>>
+ * @generated SignedSource<<56a7b37d4a1a9d9fe1f6736b63871430>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -122,6 +122,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "completed",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "createdAt",
                     "storageKey": null
                   },
@@ -204,12 +211,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "34f62a82e056f882b2f4a8538c4b8b0b",
+    "cacheID": "e5ce0da20040e5b1e3e5e3021c717a50",
     "id": null,
     "metadata": {},
     "name": "TodoListPaginationQuery",
     "operationKind": "query",
-    "text": "query TodoListPaginationQuery(\n  $count: Int = 3\n  $cursor: String\n) {\n  ...TodoListFragment_1G22uz\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment_1G22uz on Query {\n  todos(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
+    "text": "query TodoListPaginationQuery(\n  $count: Int = 3\n  $cursor: String\n) {\n  ...TodoListFragment_1G22uz\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  completed\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment_1G22uz on Query {\n  todos(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();

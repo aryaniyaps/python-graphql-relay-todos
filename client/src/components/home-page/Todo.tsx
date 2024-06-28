@@ -1,4 +1,5 @@
 import { dtf } from "@/lib/intl";
+import clsx from "clsx";
 import { useFragment, useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 import { Icons } from "../icons";
@@ -10,6 +11,7 @@ export const TodoFragment = graphql`
   fragment TodoFragment on Todo {
     id
     content
+    completed
     createdAt
     updatedAt
   }
@@ -23,29 +25,64 @@ const deleteTodoMutation = graphql`
   }
 `;
 
+const toggleTodoCompletedMutation = graphql`
+  mutation TodoToggleCompleteMutation($todoId: ID!) {
+    toggleTodoCompleted(todoId: $todoId) {
+      todo {
+        ...TodoFragment
+      }
+    }
+  }
+`;
+
 type Props = {
   todo: TodoFragment$key;
   connectionId: string;
 };
 
 export default function Todo({ todo, connectionId }: Props) {
-  // TODO: update todo list cache after mutation
-  const [commitMutation, isMutationInFlight] = useMutation(deleteTodoMutation);
+  const [commitDeleteMutation, isDeleteMutationInFlight] =
+    useMutation(deleteTodoMutation);
+  const [commitToggleCompletedMutation, isToggleCompletedMutationInFlight] =
+    useMutation(toggleTodoCompletedMutation);
   const data = useFragment(TodoFragment, todo);
 
   return (
     <Card className="mb-4">
       <CardHeader>
         <div className="flex justify-between">
-          <div className="flex flex-col">
-            <CardTitle>{data.content}</CardTitle>
-          </div>
+          <CardTitle className={clsx({ underline: data.completed })}>
+            {data.content}
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardFooter className="flex">
+        <p className="text-xs">
+          created at {dtf.format(new Date(data.createdAt))}
+        </p>
+        <div className="flex gap-2 grow justify-end">
           <Button
             size={"icon"}
             variant={"ghost"}
-            disabled={isMutationInFlight}
+            disabled={isToggleCompletedMutationInFlight}
             onClick={() => {
-              commitMutation({
+              commitToggleCompletedMutation({
+                variables: { todoId: data.id },
+              });
+            }}
+          >
+            {data.completed ? (
+              <Icons.close className="h-4 w-4" />
+            ) : (
+              <Icons.check className="h-4 w-4" />
+            )}
+          </Button>
+          <Button
+            size={"icon"}
+            variant={"ghost"}
+            disabled={isDeleteMutationInFlight}
+            onClick={() => {
+              commitDeleteMutation({
                 variables: { todoId: data.id, connections: [connectionId] },
               });
             }}
@@ -53,9 +90,6 @@ export default function Todo({ todo, connectionId }: Props) {
             <Icons.trash className="h-4 w-4" />
           </Button>
         </div>
-      </CardHeader>
-      <CardFooter>
-        <p>created at {dtf.format(new Date(data.createdAt))}</p>
       </CardFooter>
     </Card>
   );

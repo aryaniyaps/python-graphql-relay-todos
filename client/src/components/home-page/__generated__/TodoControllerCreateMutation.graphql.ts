@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6177c7a26cb08ae3e287be7121471e75>>
+ * @generated SignedSource<<f3ebd057dca58340b239822859321d97>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -149,6 +149,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "completed",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "createdAt",
                     "storageKey": null
                   },
@@ -187,12 +194,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3af7fa49941d7eac216c6aa798cd6723",
+    "cacheID": "391da1a17dde71fde2d05fc83ea1264f",
     "id": null,
     "metadata": {},
     "name": "TodoControllerCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoControllerCreateMutation(\n  $content: String!\n) {\n  createTodo(content: $content) {\n    todoEdge {\n      node {\n        ...TodoFragment\n        id\n      }\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n"
+    "text": "mutation TodoControllerCreateMutation(\n  $content: String!\n) {\n  createTodo(content: $content) {\n    todoEdge {\n      node {\n        ...TodoFragment\n        id\n      }\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  completed\n  createdAt\n  updatedAt\n}\n"
   }
 };
 })();

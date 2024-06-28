@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<744e0e8590079dfb149ece6eca8a9093>>
+ * @generated SignedSource<<6721a6beb9482e6247f0cb1cbcad9cc9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -103,6 +103,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "completed",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "createdAt",
                     "storageKey": null
                   },
@@ -180,12 +187,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5cecc0d6b09994b5a3831143088b6d55",
+    "cacheID": "61acb47cda0a3817c4656f5accf2e172",
     "id": null,
     "metadata": {},
     "name": "HomePageQuery",
     "operationKind": "query",
-    "text": "query HomePageQuery {\n  ...TodoListFragment\n  ...TodoControllerFragment\n}\n\nfragment TodoControllerFragment on Query {\n  todos(first: 3) {\n    edges {\n      __typename\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Query {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
+    "text": "query HomePageQuery {\n  ...TodoListFragment\n  ...TodoControllerFragment\n}\n\nfragment TodoControllerFragment on Query {\n  todos(first: 3) {\n    edges {\n      __typename\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  completed\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Query {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();

@@ -21,6 +21,12 @@ type Mutation {
     """The ID of the todo to delete."""
     todoId: ID!
   ): DeleteTodoPayload!
+
+  """Toggle the completed state of a todo by ID."""
+  toggleTodoCompleted(
+    """The ID of the todo to toggle."""
+    todoId: ID!
+  ): ToggleTodoCompletedPayload!
 }
 
 """An object with a Globally Unique ID"""
@@ -78,4 +84,8 @@ type TodoEdge {
 
   """The item at the end of the edge"""
   node: Todo!
+}
+
+type ToggleTodoCompletedPayload {
+  todo: Todo!
 }

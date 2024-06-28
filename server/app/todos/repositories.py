@@ -1,4 +1,4 @@
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.paginator import PaginatedResult, Paginator
@@ -24,6 +24,13 @@ class TodoRepo:
                 Todo.id == todo_id,
             ),
         )
+
+    async def update(self, todo: Todo, *, completed: bool) -> Todo:
+        """Update the given todo."""
+        todo.completed = completed
+        self._session.add(todo)
+        await self._session.commit()
+        return todo
 
     async def get_many_by_ids(self, todo_ids: list[int]) -> list[Todo | None]:
         """Get multiple todos by IDs."""
@@ -54,11 +61,7 @@ class TodoRepo:
             after=after,
         )
 
-    async def delete(self, todo_id: int) -> None:
+    async def delete(self, todo: Todo) -> None:
         """Delete a todo by ID."""
-        await self._session.execute(
-            delete(Todo).where(
-                Todo.id == todo_id,
-            ),
-        )
+        await self._session.delete(todo)
         await self._session.commit()

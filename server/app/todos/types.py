@@ -47,6 +47,11 @@ class CreateTodoPayload:
 
 
 @strawberry.type
+class ToggleTodoCompletedPayload:
+    todo: TodoType
+
+
+@strawberry.type
 class DeleteTodoPayload:
     deleted_todo_id: relay.GlobalID | None
 

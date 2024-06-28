@@ -5,10 +5,13 @@ from aioinject import Inject
 from aioinject.ext.strawberry import inject
 from strawberry import relay
 
-from app.context import Info
-
 from .services import TodoService
-from .types import CreateTodoPayload, DeleteTodoPayload, TodoType
+from .types import (
+    CreateTodoPayload,
+    DeleteTodoPayload,
+    TodoType,
+    ToggleTodoCompletedPayload,
+)
 
 
 @strawberry.type
@@ -46,7 +49,6 @@ class TodoMutation:
     @inject
     async def delete_todo(
         self,
-        info: Info,
         todo_id: Annotated[
             relay.GlobalID,
             strawberry.argument(
@@ -56,8 +58,26 @@ class TodoMutation:
         todo_service: Annotated[TodoService, Inject],
     ) -> DeleteTodoPayload:
         """Delete a todo by ID."""
-        todo = await todo_id.resolve_node(info, ensure_type=TodoType)
-        await todo_service.delete(todo_id=todo.id)
+        await todo_service.delete(todo_id=int(todo_id.node_id))
         return DeleteTodoPayload(
             deleted_todo_id=todo_id,
         )
+
+    @strawberry.mutation(
+        graphql_type=ToggleTodoCompletedPayload,
+        description="Toggle the completed state of a todo by ID.",
+    )
+    @inject
+    async def toggle_todo_completed(
+        self,
+        todo_id: Annotated[
+            relay.GlobalID,
+            strawberry.argument(
+                description="The ID of the todo to toggle.",
+            ),
+        ],
+        todo_service: Annotated[TodoService, Inject],
+    ) -> ToggleTodoCompletedPayload:
+        """Toggle a todo's completed state by ID."""
+        todo = await todo_service.toggle_completed(todo_id=int(todo_id.node_id))
+        return ToggleTodoCompletedPayload(todo=TodoType.from_orm(todo))

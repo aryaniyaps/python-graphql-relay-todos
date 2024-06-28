@@ -31,6 +31,19 @@ class TodoService:
 
     async def delete(self, todo_id: int) -> None:
         """Delete a todo by ID."""
+        existing_todo = await self._todo_repo.get(todo_id=todo_id)
+        if existing_todo is None:
+            raise ValueError("Todo doesn't exist.")
         await self._todo_repo.delete(
-            todo_id=todo_id,
+            todo=existing_todo,
+        )
+
+    async def toggle_completed(self, todo_id: int) -> Todo:
+        """Toggle a todo's completed state by ID."""
+        existing_todo = await self._todo_repo.get(todo_id=todo_id)
+        if existing_todo is None:
+            raise ValueError("Todo doesn't exist.")
+        return await self._todo_repo.update(
+            todo=existing_todo,
+            completed=(not existing_todo.completed),
         )
