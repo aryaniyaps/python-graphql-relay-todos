@@ -49,11 +49,6 @@ class Paginator(Generic[ModelType, CursorType]):
         before: CursorType | None,
         after: CursorType | None,
     ) -> int:
-        """
-        Validate the given pagination arguments.
-
-        Returns the pagination limit specified.
-        """
         if first is not None and last is not None:
             first_and_last_error = "Cannot provide both `first` and `last`"
             raise ValueError(first_and_last_error)
@@ -93,7 +88,37 @@ class Paginator(Generic[ModelType, CursorType]):
         )
         raise ValueError(no_first_and_last_error)
 
-    # TODO: make this logic simpler and more efficient
+    def __apply_ordering(
+        self, statement: Select[tuple[ModelType]], last: int | None
+    ) -> Select[tuple[ModelType]]:
+        if self._reverse and last is None:
+            return statement.order_by(desc(self._paginate_by))
+        if last is not None and not self._reverse:
+            return statement.order_by(desc(self._paginate_by))
+        return statement.order_by(asc(self._paginate_by))
+
+    def __apply_filters(
+        self,
+        statement: Select[tuple[ModelType]],
+        before: CursorType | None,
+        after: CursorType | None,
+    ) -> Select[tuple[ModelType]]:
+        if after is not None:
+            direction = (
+                self._paginate_by < after
+                if self._reverse
+                else self._paginate_by > after
+            )
+            return statement.where(direction)
+        if before is not None:
+            direction = (
+                self._paginate_by > before
+                if self._reverse
+                else self._paginate_by < before
+            )
+            return statement.where(direction)
+        return statement
+
     async def paginate(
         self,
         statement: Select[tuple[ModelType]],
@@ -102,37 +127,14 @@ class Paginator(Generic[ModelType, CursorType]):
         before: CursorType | None = None,
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
-        """Paginate the given SQLAlchemy statement."""
-        pagination_limit = self.__validate_arguments(
-            first=first,
-            last=last,
-            after=after,
-            before=before,
-        )
+        pagination_limit = self.__validate_arguments(first, last, before, after)
 
-        if self._reverse and last is None:
-            statement = statement.order_by(desc(self._paginate_by))
-
-        if after is not None:
-            if self._reverse:
-                statement = statement.where(self._paginate_by < after)
-            else:
-                statement = statement.where(self._paginate_by > after)
-        elif before is not None:
-            if self._reverse:
-                statement = statement.where(self._paginate_by > before)
-            else:
-                statement = statement.where(self._paginate_by < before)
-
-        if last is not None and not self._reverse:
-            statement = statement.order_by(desc(self._paginate_by))
-
+        statement = self.__apply_ordering(statement, last)
+        statement = self.__apply_filters(statement, before, after)
         statement = statement.limit(pagination_limit + 1)
 
         scalars = await self._session.scalars(statement)
-
         results = scalars.all()
-
         entities = results[:pagination_limit]
 
         if last is not None:
@@ -147,22 +149,9 @@ class Paginator(Generic[ModelType, CursorType]):
             has_previous_page = after is not None
 
         start_cursor = (
-            getattr(
-                entities[0],
-                self._paginate_by.name,
-            )
-            if entities
-            else None
+            getattr(entities[0], self._paginate_by.name) if entities else None
         )
-
-        end_cursor = (
-            getattr(
-                entities[-1],
-                self._paginate_by.name,
-            )
-            if entities
-            else None
-        )
+        end_cursor = getattr(entities[-1], self._paginate_by.name) if entities else None
 
         return PaginatedResult(
             entities=entities,
