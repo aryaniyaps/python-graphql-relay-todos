@@ -44,6 +44,7 @@ class Paginator(Generic[ModelType, CursorType]):
 
     @staticmethod
     def __validate_arguments(  # noqa: C901
+        *,
         first: int | None,
         last: int | None,
         before: CursorType | None,
@@ -89,7 +90,7 @@ class Paginator(Generic[ModelType, CursorType]):
         raise ValueError(no_first_and_last_error)
 
     def __apply_ordering(
-        self, statement: Select[tuple[ModelType]], last: int | None
+        self, *, statement: Select[tuple[ModelType]], last: int | None
     ) -> Select[tuple[ModelType]]:
         if self._reverse and last is None:
             return statement.order_by(desc(self._paginate_by))
@@ -99,6 +100,7 @@ class Paginator(Generic[ModelType, CursorType]):
 
     def __apply_filters(
         self,
+        *,
         statement: Select[tuple[ModelType]],
         before: CursorType | None,
         after: CursorType | None,
@@ -127,10 +129,17 @@ class Paginator(Generic[ModelType, CursorType]):
         before: CursorType | None = None,
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
-        pagination_limit = self.__validate_arguments(first, last, before, after)
+        pagination_limit = self.__validate_arguments(
+            first=first,
+            last=last,
+            before=before,
+            after=after,
+        )
 
-        statement = self.__apply_ordering(statement, last)
-        statement = self.__apply_filters(statement, before, after)
+        statement = self.__apply_ordering(statement=statement, last=last)
+        statement = self.__apply_filters(
+            statement=statement, before=before, after=after
+        )
         statement = statement.limit(pagination_limit + 1)
 
         scalars = await self._session.scalars(statement)
