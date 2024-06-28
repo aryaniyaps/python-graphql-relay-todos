@@ -93,6 +93,7 @@ class Paginator(Generic[ModelType, CursorType]):
         )
         raise ValueError(no_first_and_last_error)
 
+    # TODO: make this logic simpler and more efficient
     async def paginate(
         self,
         statement: Select[tuple[ModelType]],
