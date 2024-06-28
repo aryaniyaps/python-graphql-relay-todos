@@ -44,6 +44,8 @@ export default function TodoList({ rootQuery }: Props) {
     });
   }
 
+  // TODO: add empty state here
+
   return (
     <ScrollArea className="flex grow w-full flex-col gap-4 px-4">
       {data.todos.edges.map((todoEdge) => {

@@ -24,6 +24,7 @@ import {
   PenBox,
   Pizza,
   Plus,
+  RefreshCw,
   Search,
   SendIcon,
   Settings,
@@ -56,6 +57,7 @@ export const Icons = {
     </svg>
   ),
   search: Search,
+  refresh: RefreshCw,
   key: Key,
   arrowUp: ArrowUp,
   users: Users,
