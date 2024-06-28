@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<2d79d89f2f5153e3eb8cb0d9c1b65274>>
+ * @generated SignedSource<<744e0e8590079dfb149ece6eca8a9093>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -180,12 +180,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8f4bc8f12fc3b2141df99f69b504209b",
+    "cacheID": "5cecc0d6b09994b5a3831143088b6d55",
     "id": null,
     "metadata": {},
     "name": "HomePageQuery",
     "operationKind": "query",
-    "text": "query HomePageQuery {\n  ...TodoListFragment\n  ...TodoControllerFragment\n}\n\nfragment TodoControllerFragment on Query {\n  todos(first: 3) {\n    edges {\n      __typename\n      cursor\n      node {\n        __typename\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Query {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
+    "text": "query HomePageQuery {\n  ...TodoListFragment\n  ...TodoControllerFragment\n}\n\nfragment TodoControllerFragment on Query {\n  todos(first: 3) {\n    edges {\n      __typename\n      cursor\n      node {\n        __typename\n        id\n      }\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment on Query {\n  todos(first: 3) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();

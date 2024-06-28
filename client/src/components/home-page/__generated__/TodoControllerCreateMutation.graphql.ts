@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e93417fa0a4c4f7c43986edf9ae47698>>
+ * @generated SignedSource<<6177c7a26cb08ae3e287be7121471e75>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -187,12 +187,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0384d76c5c404472ba634fccb6567968",
+    "cacheID": "3af7fa49941d7eac216c6aa798cd6723",
     "id": null,
     "metadata": {},
     "name": "TodoControllerCreateMutation",
     "operationKind": "mutation",
-    "text": "mutation TodoControllerCreateMutation(\n  $content: String!\n) {\n  createTodo(content: $content) {\n    todoEdge {\n      node {\n        ...TodoFragment\n      }\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n"
+    "text": "mutation TodoControllerCreateMutation(\n  $content: String!\n) {\n  createTodo(content: $content) {\n    todoEdge {\n      node {\n        ...TodoFragment\n        id\n      }\n    }\n  }\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  createdAt\n  updatedAt\n}\n"
   }
 };
 })();

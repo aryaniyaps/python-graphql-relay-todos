@@ -5,10 +5,9 @@ type CreateTodoPayload {
 """Date with time (isoformat)"""
 scalar DateTime
 
-"""
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-"""
-scalar GlobalID @specifiedBy(url: "https://relay.dev/graphql/objectidentification.htm")
+type DeleteTodoPayload {
+  deletedTodoId: ID
+}
 
 type Mutation {
   """Create a new todo."""
@@ -20,14 +19,14 @@ type Mutation {
   """Delete a todo by ID."""
   deleteTodo(
     """The ID of the todo to delete."""
-    todoId: GlobalID!
-  ): Void
+    todoId: ID!
+  ): DeleteTodoPayload!
 }
 
 """An object with a Globally Unique ID"""
 interface Node {
   """The Globally Unique ID of this object"""
-  id: GlobalID!
+  id: ID!
 }
 
 """Information to aid in pagination."""
@@ -48,7 +47,7 @@ type PageInfo {
 type Query {
   node(
     """The ID of the object."""
-    id: GlobalID!
+    id: ID!
   ): Node!
 
   """Get all todos available."""
@@ -57,7 +56,7 @@ type Query {
 
 type Todo implements Node {
   """The Globally Unique ID of this object"""
-  id: GlobalID!
+  id: ID!
   content: String!
   completed: Boolean!
   createdAt: DateTime!
@@ -80,6 +79,3 @@ type TodoEdge {
   """The item at the end of the edge"""
   node: Todo!
 }
-
-"""Represents NULL values"""
-scalar Void

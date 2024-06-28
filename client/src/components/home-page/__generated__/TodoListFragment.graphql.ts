@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8a5ba74422cffd611b209524818c8ea2>>
+ * @generated SignedSource<<e56231eca24aa97adebe0e262e03a2ad>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,9 +12,10 @@ import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type TodoListFragment$data = {
   readonly todos: {
+    readonly __id: string;
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly id: any;
+        readonly id: string;
         readonly " $fragmentSpreads": FragmentRefs<"TodoFragment">;
       };
     }>;
@@ -153,6 +154,18 @@ return {
             }
           ],
           "storageKey": null
+        },
+        {
+          "kind": "ClientExtension",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "__id",
+              "storageKey": null
+            }
+          ]
         }
       ],
       "storageKey": null
@@ -163,6 +176,6 @@ return {
 };
 })();
 
-(node as any).hash = "4337c75a6d3e2c98239c5c810587f43d";
+(node as any).hash = "38c5e5d1bb689478d5e114781f8e8328";
 
 export default node;

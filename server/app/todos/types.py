@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Self
 
 import strawberry
-from strawberry import relay
+from strawberry import ID, relay
 
 from app.base.types import BaseNodeType
 from app.context import Info
@@ -44,6 +44,11 @@ class TodoType(BaseNodeType):
 @strawberry.type
 class CreateTodoPayload:
     todo_edge: relay.Edge[TodoType]
+
+
+@strawberry.type
+class DeleteTodoPayload:
+    deleted_todo_id: relay.GlobalID | None
 
 
 @strawberry.type(name="TodoConnection")

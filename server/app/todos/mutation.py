@@ -8,7 +8,7 @@ from strawberry import relay
 from app.context import Info
 
 from .services import TodoService
-from .types import CreateTodoPayload, TodoType
+from .types import CreateTodoPayload, DeleteTodoPayload, TodoType
 
 
 @strawberry.type
@@ -40,7 +40,7 @@ class TodoMutation:
         )
 
     @strawberry.mutation(
-        graphql_type=None,
+        graphql_type=DeleteTodoPayload,
         description="Delete a todo by ID.",
     )
     @inject
@@ -54,7 +54,10 @@ class TodoMutation:
             ),
         ],
         todo_service: Annotated[TodoService, Inject],
-    ) -> None:
+    ) -> DeleteTodoPayload:
         """Delete a todo by ID."""
         todo = await todo_id.resolve_node(info, ensure_type=TodoType)
         await todo_service.delete(todo_id=todo.id)
+        return DeleteTodoPayload(
+            deleted_todo_id=todo_id,
+        )

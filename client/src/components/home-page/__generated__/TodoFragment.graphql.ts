@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0c8c6e375b5801c41114508d7a0df199>>
+ * @generated SignedSource<<7ddd327ef6b6a16ae2f34496839aa90f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,7 +13,7 @@ import { FragmentRefs } from "relay-runtime";
 export type TodoFragment$data = {
   readonly content: string;
   readonly createdAt: any;
-  readonly id: any;
+  readonly id: string;
   readonly updatedAt: any | null | undefined;
   readonly " $fragmentType": "TodoFragment";
 };

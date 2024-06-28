@@ -7,8 +7,6 @@ import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { TodoListFragment$key } from "./__generated__/TodoListFragment.graphql";
 
-// TODO: pass this to mistral and ask if its okay to query for the same connection in two different components like
-// this. we could probably get the connection ID from the query here and send the id directly to the todo controller
 const TodoListFragment = graphql`
   fragment TodoListFragment on Query
   @refetchable(queryName: "TodoListPaginationQuery")
@@ -18,6 +16,7 @@ const TodoListFragment = graphql`
   ) {
     todos(after: $cursor, first: $count)
       @connection(key: "TodoListFragment_todos") {
+      __id
       edges {
         node {
           id
@@ -48,7 +47,13 @@ export default function TodoList({ rootQuery }: Props) {
   return (
     <ScrollArea className="flex grow w-full flex-col gap-4">
       {data.todos.edges.map((todoEdge) => {
-        return <Todo todo={todoEdge.node} key={todoEdge.node.id} />;
+        return (
+          <Todo
+            todo={todoEdge.node}
+            connectionId={data.todos.__id}
+            key={todoEdge.node.id}
+          />
+        );
       })}
       {data.todos.pageInfo.hasNextPage && (
         <Button

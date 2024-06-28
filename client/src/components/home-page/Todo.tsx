@@ -15,16 +15,19 @@ export const TodoFragment = graphql`
 `;
 
 const deleteTodoMutation = graphql`
-  mutation TodoDeleteMutation($todoId: GlobalID!) {
-    deleteTodo(todoId: $todoId)
+  mutation TodoDeleteMutation($todoId: ID!, $connections: [ID!]!) {
+    deleteTodo(todoId: $todoId) {
+      deletedTodoId @deleteEdge(connections: $connections)
+    }
   }
 `;
 
 type Props = {
   todo: TodoFragment$key;
+  connectionId: string;
 };
 
-export default function Todo({ todo }: Props) {
+export default function Todo({ todo, connectionId }: Props) {
   // TODO: update todo list cache after mutation
   const [commitMutation, isMutationInFlight] = useMutation(deleteTodoMutation);
   const data = useFragment(TodoFragment, todo);
@@ -41,7 +44,9 @@ export default function Todo({ todo }: Props) {
             variant={"ghost"}
             disabled={isMutationInFlight}
             onClick={() => {
-              commitMutation({ variables: { todoId: data.id } });
+              commitMutation({
+                variables: { todoId: data.id, connections: [connectionId] },
+              });
             }}
           >
             <Icons.trash className="h-4 w-4" />
