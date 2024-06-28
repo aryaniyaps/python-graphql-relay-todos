@@ -48,10 +48,10 @@ export default function Todo({ todo, connectionId }: Props) {
   const data = useFragment(TodoFragment, todo);
 
   return (
-    <Card className="mb-4">
+    <Card className="mb-4 group ">
       <CardHeader>
         <div className="flex justify-between">
-          <CardTitle className={clsx({ underline: data.completed })}>
+          <CardTitle className={clsx({ "line-through": data.completed })}>
             {data.content}
           </CardTitle>
         </div>
@@ -60,7 +60,7 @@ export default function Todo({ todo, connectionId }: Props) {
         <p className="text-xs">
           created at {dtf.format(new Date(data.createdAt))}
         </p>
-        <div className="flex gap-2 grow justify-end">
+        <div className="flex gap-2 grow justify-end opacity-0 group-hover:opacity-100 transition-opacity">
           <Button
             size={"icon"}
             variant={"ghost"}
