@@ -109,6 +109,9 @@ class Paginator(Generic[ModelType, CursorType]):
             before=before,
         )
 
+        if self._reverse and last is None:
+            statement = statement.order_by(desc(self._paginate_by))
+
         if after is not None:
             if self._reverse:
                 statement = statement.where(self._paginate_by < after)
@@ -120,12 +123,8 @@ class Paginator(Generic[ModelType, CursorType]):
             else:
                 statement = statement.where(self._paginate_by < before)
 
-        if last is not None:
-            # switch the order of records when `last` is specified
-            if self._reverse:
-                statement = statement.order_by(asc(self._paginate_by))
-            else:
-                statement = statement.order_by(desc(self._paginate_by))
+        if last is not None and not self._reverse:
+            statement = statement.order_by(desc(self._paginate_by))
 
         statement = statement.limit(pagination_limit + 1)
 

@@ -47,7 +47,7 @@ class TodoRepo:
         )
 
         return await paginator.paginate(
-            statement=select(Todo).order_by(desc(Todo.created_at)),
+            statement=select(Todo),
             first=first,
             last=last,
             before=before,
