@@ -48,7 +48,7 @@ export default function Todo({ todo, connectionId }: Props) {
   const data = useFragment(TodoFragment, todo);
 
   return (
-    <Card className="mb-4 group ">
+    <Card className="mb-4 group">
       <CardHeader>
         <div className="flex justify-between">
           <CardTitle className={clsx({ "line-through": data.completed })}>

@@ -81,7 +81,7 @@ export default function TodoController({ rootQuery }: Props) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 w-full"
+        className="flex flex-col gap-8 w-full px-4"
       >
         <FormField
           control={form.control}
