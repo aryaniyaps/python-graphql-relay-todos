@@ -9,8 +9,6 @@ https://github.com/aryaniyaps/python-graphql-relay-todos/assets/69184573/b6c7e0e
 ## Tech Stack:
 <i>Backend stack</i>
 - [Python](https://www.python.org/)
-
-
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Uvicorn](https://www.uvicorn.org/)
 - [Strawberry GraphQL](https://strawberry.rocks/)
