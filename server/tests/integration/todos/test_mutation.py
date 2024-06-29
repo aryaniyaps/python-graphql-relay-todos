@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.relay import to_base64
 
-from server.tests.integration.graphql_client import GraphQLClient
+from tests.integration.graphql_client import GraphQLClient
 
 pytestmark = pytest.mark.usefixtures("session")
 

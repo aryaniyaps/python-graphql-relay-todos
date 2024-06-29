@@ -5,7 +5,7 @@ from app.todos.types import TodoType
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.relay import to_base64
 
-from server.tests.integration.graphql_client import GraphQLClient
+from tests.integration.graphql_client import GraphQLClient
 
 pytestmark = pytest.mark.usefixtures("session")
 
@@ -110,6 +110,9 @@ async def test_get_todos(graphql_client: GraphQLClient) -> None:
     """Ensure that we can get all todos."""
     pagination_limit = 10
 
+    expected_start_cursor = to_base64(TodoType, 50)
+    expected_end_cursor = to_base64(TodoType, 41)
+
     # Test fetching the first 10 todos
     response = await graphql_client(
         GET_TODOS_QUERY,
@@ -121,12 +124,13 @@ async def test_get_todos(graphql_client: GraphQLClient) -> None:
     assert len(response["data"]["todos"]["edges"]) == pagination_limit
     assert response["data"]["todos"]["pageInfo"]["hasNextPage"] is True
     assert response["data"]["todos"]["pageInfo"]["hasPreviousPage"] is False
-    assert response["data"]["todos"]["pageInfo"]["startCursor"] == to_base64(
-        TodoType, 50
-    )
-    assert response["data"]["todos"]["pageInfo"]["endCursor"] == to_base64(TodoType, 41)
+    assert response["data"]["todos"]["pageInfo"]["startCursor"] == expected_start_cursor
+    assert response["data"]["todos"]["pageInfo"]["endCursor"] == expected_end_cursor
 
     # Test fetching the next 10 todos
+    expected_start_cursor = to_base64(TodoType, 48)
+    expected_end_cursor = to_base64(TodoType, 39)
+
     response = await graphql_client(
         GET_TODOS_QUERY,
         variables={
@@ -137,12 +141,13 @@ async def test_get_todos(graphql_client: GraphQLClient) -> None:
     assert len(response["data"]["todos"]["edges"]) == pagination_limit
     assert response["data"]["todos"]["pageInfo"]["hasNextPage"] is True
     assert response["data"]["todos"]["pageInfo"]["hasPreviousPage"] is True
-    assert response["data"]["todos"]["pageInfo"]["startCursor"] == to_base64(
-        TodoType, 48
-    )
-    assert response["data"]["todos"]["pageInfo"]["endCursor"] == to_base64(TodoType, 39)
+    assert response["data"]["todos"]["pageInfo"]["startCursor"] == expected_start_cursor
+    assert response["data"]["todos"]["pageInfo"]["endCursor"] == expected_end_cursor
 
     # Test fetching the last 10 todos
+    expected_start_cursor = to_base64(TodoType, 10)
+    expected_end_cursor = to_base64(TodoType, 1)
+
     response = await graphql_client(
         GET_TODOS_QUERY,
         variables={"last": pagination_limit},
@@ -150,12 +155,13 @@ async def test_get_todos(graphql_client: GraphQLClient) -> None:
     assert len(response["data"]["todos"]["edges"]) == pagination_limit
     assert response["data"]["todos"]["pageInfo"]["hasNextPage"] is False
     assert response["data"]["todos"]["pageInfo"]["hasPreviousPage"] is True
-    assert response["data"]["todos"]["pageInfo"]["startCursor"] == to_base64(
-        TodoType, 10
-    )
-    assert response["data"]["todos"]["pageInfo"]["endCursor"] == to_base64(TodoType, 1)
+    assert response["data"]["todos"]["pageInfo"]["startCursor"] == expected_start_cursor
+    assert response["data"]["todos"]["pageInfo"]["endCursor"] == expected_end_cursor
 
     # Test fetching 10 todos before the last one
+    expected_start_cursor = to_base64(TodoType, 11)
+    expected_end_cursor = to_base64(TodoType, 2)
+
     response = await graphql_client(
         GET_TODOS_QUERY,
         variables={
@@ -166,13 +172,14 @@ async def test_get_todos(graphql_client: GraphQLClient) -> None:
     assert len(response["data"]["todos"]["edges"]) == pagination_limit
     assert response["data"]["todos"]["pageInfo"]["hasNextPage"] is True
     assert response["data"]["todos"]["pageInfo"]["hasPreviousPage"] is True
-    assert response["data"]["todos"]["pageInfo"]["startCursor"] == to_base64(
-        TodoType, 11
-    )
-    assert response["data"]["todos"]["pageInfo"]["endCursor"] == to_base64(TodoType, 2)
+    assert response["data"]["todos"]["pageInfo"]["startCursor"] == expected_start_cursor
+    assert response["data"]["todos"]["pageInfo"]["endCursor"] == expected_end_cursor
 
     # Test fetching all todos with a limit higher than the total count
     pagination_limit = 75
+
+    expected_start_cursor = to_base64(TodoType, 50)
+    expected_end_cursor = to_base64(TodoType, 1)
 
     response = await graphql_client(
         GET_TODOS_QUERY,
@@ -183,7 +190,5 @@ async def test_get_todos(graphql_client: GraphQLClient) -> None:
     assert len(response["data"]["todos"]["edges"]) < pagination_limit
     assert response["data"]["todos"]["pageInfo"]["hasNextPage"] is False
     assert response["data"]["todos"]["pageInfo"]["hasPreviousPage"] is False
-    assert response["data"]["todos"]["pageInfo"]["startCursor"] == to_base64(
-        TodoType, 50
-    )
-    assert response["data"]["todos"]["pageInfo"]["endCursor"] == to_base64(TodoType, 1)
+    assert response["data"]["todos"]["pageInfo"]["startCursor"] == expected_start_cursor
+    assert response["data"]["todos"]["pageInfo"]["endCursor"] == expected_end_cursor
