@@ -3,8 +3,9 @@
 <br />
 <img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
 
-![Project Demo](./assets/project-demo.mp4)
-
+<p align="center">
+  <video src="/assets/project-demo.mp4" width="500px"></video>
+</p>
 
 ## Tech Stack:
 <i>Backend stack</i>
