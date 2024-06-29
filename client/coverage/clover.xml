@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1719659574198" clover="3.2.0">
-  <project timestamp="1719659574199" name="All files">
-    <metrics statements="180" coveredstatements="0" conditionals="30" coveredconditionals="0" methods="57" coveredmethods="0" elements="267" coveredelements="0" complexity="0" loc="180" ncloc="180" packages="9" files="29" classes="29"/>
+<coverage generated="1719661270795" clover="3.2.0">
+  <project timestamp="1719661270795" name="All files">
+    <metrics statements="134" coveredstatements="0" conditionals="30" coveredconditionals="0" methods="49" coveredmethods="0" elements="213" coveredelements="0" complexity="0" loc="134" ncloc="134" packages="7" files="20" classes="20"/>
     <package name="src">
       <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="main.tsx" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/main.tsx">
@@ -75,74 +75,6 @@
         <line num="48" count="0" type="stmt"/>
         <line num="57" count="0" type="stmt"/>
         <line num="60" count="0" type="stmt"/>
-      </file>
-    </package>
-    <package name="src.components.home-page.__generated__">
-      <metrics statements="41" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="0"/>
-      <file name="TodoControllerCreateMutation.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoControllerCreateMutation.graphql.ts">
-        <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="207" count="0" type="stmt"/>
-      </file>
-      <file name="TodoControllerFragment.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoControllerFragment.graphql.ts">
-        <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="148" count="0" type="stmt"/>
-      </file>
-      <file name="TodoDeleteMutation.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoDeleteMutation.graphql.ts">
-        <metrics statements="10" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="52" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="69" count="0" type="stmt"/>
-        <line num="83" count="0" type="stmt"/>
-        <line num="181" count="0" type="stmt"/>
-      </file>
-      <file name="TodoFragment.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoFragment.graphql.ts">
-        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-      </file>
-      <file name="TodoListFragment.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoListFragment.graphql.ts">
-        <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="179" count="0" type="stmt"/>
-      </file>
-      <file name="TodoListPaginationQuery.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoListPaginationQuery.graphql.ts">
-        <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="25" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="224" count="0" type="stmt"/>
-      </file>
-      <file name="TodoListQuery.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoListQuery.graphql.ts">
-        <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="31" count="0" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="50" count="0" type="stmt"/>
-        <line num="181" count="0" type="stmt"/>
-      </file>
-      <file name="TodoToggleCompleteMutation.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/components/home-page/__generated__/TodoToggleCompleteMutation.graphql.ts">
-        <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="27" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="163" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.components.ui">
@@ -283,17 +215,6 @@
         <line num="7" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
-      </file>
-    </package>
-    <package name="src.pages.__generated__">
-      <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <file name="HomePageQuery.graphql.ts" path="/home/aryaniyaps/web-projects/graphql-notes/client/src/pages/__generated__/HomePageQuery.graphql.ts">
-        <metrics statements="5" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="37" count="0" type="stmt"/>
-        <line num="200" count="0" type="stmt"/>
       </file>
     </package>
   </project>
