@@ -8,8 +8,9 @@ class GraphQLResponse(TypedDict):
     errors: NotRequired[Any]
 
 
-# TODO: subclass strawberry.test.BaseGraphQLTestClient
 class GraphQLClient:
+    """Async GraphQL client."""
+
     def __init__(self, client: AsyncClient, endpoint: str) -> None:
         self._client = client
         self._endpoint = endpoint

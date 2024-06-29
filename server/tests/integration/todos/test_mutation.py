@@ -4,7 +4,7 @@ from app.todos.repositories import TodoRepo
 from app.todos.types import TodoType
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from strawberry import relay
+from strawberry.relay import to_base64
 
 from tests.integration.client import GraphQLClient
 
@@ -56,7 +56,7 @@ async def test_create_todo(
             "createTodo": {
                 "todoEdge": {
                     "node": {
-                        "id": relay.to_base64(TodoType, todo.id),
+                        "id": to_base64(TodoType, todo.id),
                         "completed": todo.completed,
                         "content": content,
                         "createdAt": todo.created_at.isoformat(),
@@ -64,7 +64,7 @@ async def test_create_todo(
                         if todo.updated_at
                         else None,
                     },
-                    "cursor": relay.to_base64(TodoType, todo.id),
+                    "cursor": to_base64(TodoType, todo.id),
                 },
             },
         },
@@ -99,7 +99,7 @@ async def test_delete_todo(
     response = await graphql_client(
         DELETE_TODO_MUTATION,
         variables={
-            "todoId": relay.to_base64(TodoType, todo.id),
+            "todoId": to_base64(TodoType, todo.id),
         },
     )
 
@@ -113,7 +113,7 @@ async def test_delete_todo(
         "data": {
             "deleteTodo": {
                 "__typename": "Todo",
-                "id": relay.to_base64(TodoType, todo.id),
+                "id": to_base64(TodoType, todo.id),
                 "completed": todo.completed,
                 "content": todo.content,
                 "createdAt": todo.created_at.isoformat(),
@@ -128,7 +128,7 @@ async def test_delete_todo_unknown_id(graphql_client: GraphQLClient) -> None:
     response = await graphql_client(
         DELETE_TODO_MUTATION,
         variables={
-            "todoId": relay.to_base64(TodoType, 1432),
+            "todoId": to_base64(TodoType, 1432),
         },
     )
 
@@ -171,7 +171,7 @@ async def test_toggle_todo_completed(
     response = await graphql_client(
         TOGGLE_TODO_COMPLETED_MUTATION,
         variables={
-            "todoId": relay.to_base64(TodoType, todo.id),
+            "todoId": to_base64(TodoType, todo.id),
         },
     )
 
@@ -182,7 +182,7 @@ async def test_toggle_todo_completed(
         "data": {
             "toggleTodoCompleted": {
                 "__typename": "Todo",
-                "id": relay.to_base64(TodoType, todo.id),
+                "id": to_base64(TodoType, todo.id),
                 "completed": (not initial_completed_value),
                 "content": todo.content,
                 "createdAt": todo.created_at.isoformat(),
@@ -197,7 +197,7 @@ async def test_toggle_todo_completed_unknown_id(graphql_client: GraphQLClient) -
     response = await graphql_client(
         TOGGLE_TODO_COMPLETED_MUTATION,
         variables={
-            "todoId": relay.to_base64(TodoType, 1432),
+            "todoId": to_base64(TodoType, 1432),
         },
     )
 
