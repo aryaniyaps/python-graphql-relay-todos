@@ -20,6 +20,19 @@ async def multiple_todos(todo_repo: TodoRepo) -> list[Todo]:
     return [todo_1, todo_2, todo_3, todo_4]
 
 
+@pytest.fixture
+async def __seed_todos(session: AsyncSession) -> None:
+    todos = [
+        Todo(
+            content=f"Todo {i}",
+            id=i + 1,
+        )
+        for i in range(50)
+    ]
+    session.add_all(todos)
+    await session.commit()
+
+
 async def test_create_todo(todo_repo: TodoRepo) -> None:
     """Ensure we can create a new todo."""
     todo = await todo_repo.create(
@@ -57,19 +70,9 @@ async def test_get_multiple_todos_by_ids(
         assert retrieved == original
 
 
-async def test_get_all_todos(todo_repo: TodoRepo, session: AsyncSession) -> None:
+@pytest.mark.usefixtures("__seed_todos")
+async def test_get_all_todos(todo_repo: TodoRepo) -> None:
     """Ensure we can get all todos."""
-    # Create multiple todos for testing
-    todos = [
-        Todo(
-            content=f"Todo {i}",
-            id=i + 1,
-        )
-        for i in range(50)
-    ]
-    session.add_all(todos)
-    await session.commit()
-
     pagination_limit = 10
 
     # Test fetching the first 10 todos

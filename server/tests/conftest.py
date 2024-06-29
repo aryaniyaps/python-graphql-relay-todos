@@ -4,6 +4,8 @@ import pytest
 
 import tests.plugins
 
+from .factories import *
+
 pytest_plugins = [
     "anyio",
     "sqlalchemy_pytest.database",
