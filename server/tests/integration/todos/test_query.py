@@ -5,7 +5,7 @@ from app.todos.types import TodoType
 from sqlalchemy.ext.asyncio import AsyncSession
 from strawberry.relay import to_base64
 
-from tests.integration.client import GraphQLClient
+from server.tests.integration.graphql_client import GraphQLClient
 
 pytestmark = pytest.mark.usefixtures("session")
 

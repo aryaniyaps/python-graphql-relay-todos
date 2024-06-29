@@ -5,7 +5,7 @@ from asgi_lifespan import LifespanManager
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 
-from .client import GraphQLClient
+from .graphql_client import GraphQLClient
 
 
 @pytest.fixture(scope="session")
