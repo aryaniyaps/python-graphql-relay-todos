@@ -3,13 +3,14 @@
 <br />
 <img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
 
-<p align="center">
-  <video src="/assets/project-demo.mp4" width="500px"></video>
-</p>
+
+https://github.com/aryaniyaps/python-graphql-relay-todos/assets/69184573/b6c7e0e9-14c7-4af4-9cf8-67dc28429a75
 
 ## Tech Stack:
 <i>Backend stack</i>
 - [Python](https://www.python.org/)
+
+
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [Uvicorn](https://www.uvicorn.org/)
 - [Strawberry GraphQL](https://strawberry.rocks/)
