@@ -10,6 +10,14 @@ async def todo(todo_repo: TodoRepo) -> Todo:
     )
 
 
+@pytest.fixture
+async def multiple_todos(todo_repo: TodoRepo) -> list[Todo]:
+    todo_1 = await todo_repo.create(content="test content 1")
+    todo_2 = await todo_repo.create(content="test content 2")
+    todo_3 = await todo_repo.create(content="test content 3")
+    return [todo_1, todo_2, todo_3]
+
+
 async def test_create_todo(todo_repo: TodoRepo) -> None:
     """Ensure we can create a new todo."""
     todo = await todo_repo.create(
@@ -36,9 +44,17 @@ async def test_get_todo_by_unknown_id(todo_repo: TodoRepo) -> None:
     assert retrieved_todo is None
 
 
-async def test_get_multiple_todos_by_ids(todo: Todo, todo_repo: TodoRepo) -> None:
+async def test_get_multiple_todos_by_ids(
+    multiple_todos: list[Todo], todo_repo: TodoRepo
+) -> None:
     """Ensure we can get multiple todos by IDs."""
-    pass
+    todo_ids = [todo.id for todo in multiple_todos]
+    todos = await todo_repo.get_many_by_ids(todo_ids=todo_ids)
+
+    assert todos is not None
+    assert len(todos) == len(todo_ids)
+    for original, retrieved in zip(multiple_todos, todos, strict=True):
+        assert retrieved == original
 
 
 async def test_get_all_todos(todo_repo: TodoRepo) -> None:
