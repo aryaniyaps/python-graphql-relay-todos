@@ -114,28 +114,6 @@ def build_server_log_config(log_level: str, *, human_readable: bool) -> dict[str
                 "level": log_level,
                 "propagate": False,
             },
-            # SAQ queue logs go in the server logs
-            "saq": {
-                "handlers": ["default"],
-                "level": log_level,
-                "propagate": False,
-            },
-        }
-    )
-    return base_config
-
-
-def build_worker_log_config(log_level: str, *, human_readable: bool) -> dict[str, Any]:
-    """Build worker logging config."""
-    base_config = build_base_log_config(log_level, human_readable=human_readable)
-    # Extend base config with worker-specific loggers
-    base_config["loggers"].update(
-        {
-            "saq": {
-                "handlers": ["default"],
-                "level": log_level,
-                "propagate": False,
-            },
         }
     )
     return base_config
