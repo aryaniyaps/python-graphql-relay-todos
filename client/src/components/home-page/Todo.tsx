@@ -17,11 +17,16 @@ export const TodoFragment = graphql`
   }
 `;
 
+// TODO: handle TodoNotFoundErrors
 const deleteTodoMutation = graphql`
   mutation TodoDeleteMutation($todoId: ID!, $connections: [ID!]!) {
     deleteTodo(todoId: $todoId) {
+      __typename
       ... on Todo {
         id @deleteEdge(connections: $connections)
+      }
+      ... on TodoNotFoundError {
+        message
       }
     }
   }
@@ -52,14 +57,16 @@ export default function Todo({ todo, connectionId }: Props) {
   return (
     <Card className="mb-4 group">
       <CardHeader>
-        <div className="flex justify-between">
-          <CardTitle className={clsx({ "line-through": data.completed })}>
-            {data.content}
-          </CardTitle>
-        </div>
+        <CardTitle
+          className={clsx({
+            "line-through": data.completed,
+          })}
+        >
+          <p className="break-all">{data.content}</p>
+        </CardTitle>
       </CardHeader>
       <CardFooter className="flex">
-        <p className="text-xs">
+        <p className="text-xs text-muted-foreground">
           created at {dtf.format(new Date(data.createdAt))}
         </p>
         <div className="flex gap-2 grow justify-end opacity-0 group-hover:opacity-100 transition-opacity">

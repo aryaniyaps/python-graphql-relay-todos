@@ -47,8 +47,8 @@ const TodoControllerCreateMutation = graphql`
 `;
 
 const createTodoSchema = z.object({
-  content: z.string().max(250, {
-    message: "content cannot be more than 250 characters.",
+  content: z.string().min(1, { message: "content is required" }).max(250, {
+    message: "content cannot be more than 250 characters",
   }),
 });
 
@@ -80,7 +80,7 @@ export default function TodoController({ rootQuery }: Props) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-8 w-full px-4"
+        className="flex flex-col gap-4 w-full px-4"
       >
         <FormField
           control={form.control}
