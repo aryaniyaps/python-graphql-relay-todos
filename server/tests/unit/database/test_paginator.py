@@ -41,19 +41,21 @@ async def _seed_todos(session: AsyncSession) -> None:
 async def test_paginate_first(todo_paginator: Paginator[Todo, int]) -> None:
     """Ensure that we can paginate correctly with the `first` argument."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 1, 10
     result = await todo_paginator.paginate(select(Todo), first=pagination_limit)
 
     # check the results
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is True
     assert result.page_info.has_previous_page is False
-    assert result.page_info.start_cursor == 1
-    assert result.page_info.end_cursor == 10
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_first_and_after(todo_paginator: Paginator[Todo, int]) -> None:
     """Ensure that we can paginate correctly with the `first` and `after` arguments."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 11, 20
     result = await todo_paginator.paginate(
         select(Todo), first=pagination_limit, after=10
     )
@@ -62,26 +64,28 @@ async def test_paginate_first_and_after(todo_paginator: Paginator[Todo, int]) ->
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is True
     assert result.page_info.has_previous_page is True
-    assert result.page_info.start_cursor == 11
-    assert result.page_info.end_cursor == 20
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_last(todo_paginator: Paginator[Todo, int]) -> None:
     """Ensure that we can paginate correctly with the `last` argument."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 41, 50
     result = await todo_paginator.paginate(select(Todo), last=pagination_limit)
 
     # check the results
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is True
-    assert result.page_info.start_cursor == 41
-    assert result.page_info.end_cursor == 50
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_last_and_before(todo_paginator: Paginator[Todo, int]) -> None:
     """Ensure that we can paginate correctly with the `last` and `before` arguments."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 40, 49
     result = await todo_paginator.paginate(
         select(Todo), last=pagination_limit, before=50
     )
@@ -90,8 +94,8 @@ async def test_paginate_last_and_before(todo_paginator: Paginator[Todo, int]) ->
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is True
     assert result.page_info.has_previous_page is True
-    assert result.page_info.start_cursor == 40
-    assert result.page_info.end_cursor == 49
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_empty_results(todo_paginator: Paginator[Todo, int]) -> None:
@@ -112,15 +116,15 @@ async def test_paginate_empty_results(todo_paginator: Paginator[Todo, int]) -> N
 async def test_paginate_end_page_forwards(todo_paginator: Paginator[Todo, int]) -> None:
     """Test pagination when we've reached the end page forwards."""
     pagination_limit = 75
-    last_todo_id = 50
+    expected_start_cursor, expected_end_cursor = 1, 50
     result = await todo_paginator.paginate(select(Todo), first=pagination_limit)
 
     # check the results
     assert len(result.entities) < pagination_limit
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is False
-    assert result.page_info.start_cursor == 1
-    assert result.page_info.end_cursor == last_todo_id
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_end_page_backwards(
@@ -128,15 +132,15 @@ async def test_paginate_end_page_backwards(
 ) -> None:
     """Test pagination when we've reached the end page backwards."""
     pagination_limit = 75
-    last_todo_id = 50
+    expected_start_cursor, expected_end_cursor = 1, 50
     result = await todo_paginator.paginate(select(Todo), last=pagination_limit)
 
     # check the results
     assert len(result.entities) < pagination_limit
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is False
-    assert result.page_info.start_cursor == 1
-    assert result.page_info.end_cursor == last_todo_id
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_filter_condition(
@@ -163,14 +167,15 @@ async def test_paginate_reverse_first(
 ) -> None:
     """Ensure that we can paginate correctly with the `first` argument."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 50, 41
     result = await reverse_todo_paginator.paginate(select(Todo), first=pagination_limit)
 
     # check the results
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is True
     assert result.page_info.has_previous_page is False
-    assert result.page_info.start_cursor == 50
-    assert result.page_info.end_cursor == 41
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_reverse_first_and_after(
@@ -178,6 +183,7 @@ async def test_paginate_reverse_first_and_after(
 ) -> None:
     """Ensure that we can paginate correctly with the `first` and `after` arguments."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 40, 31
     result = await reverse_todo_paginator.paginate(
         select(Todo), first=pagination_limit, after=41
     )
@@ -186,8 +192,8 @@ async def test_paginate_reverse_first_and_after(
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is True
     assert result.page_info.has_previous_page is True
-    assert result.page_info.start_cursor == 40
-    assert result.page_info.end_cursor == 31
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_reverse_last(
@@ -195,14 +201,15 @@ async def test_paginate_reverse_last(
 ) -> None:
     """Ensure that we can paginate correctly with the `last` argument."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 10, 1
     result = await reverse_todo_paginator.paginate(select(Todo), last=pagination_limit)
 
     # check the results
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is True
-    assert result.page_info.start_cursor == 10
-    assert result.page_info.end_cursor == 1
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_reverse_last_and_before(
@@ -210,6 +217,7 @@ async def test_paginate_reverse_last_and_before(
 ) -> None:
     """Ensure that we can paginate correctly with the `last` and `before` arguments."""
     pagination_limit = 10
+    expected_start_cursor, expected_end_cursor = 11, 2
     result = await reverse_todo_paginator.paginate(
         select(Todo), last=pagination_limit, before=1
     )
@@ -218,8 +226,8 @@ async def test_paginate_reverse_last_and_before(
     assert len(result.entities) == pagination_limit
     assert result.page_info.has_next_page is True
     assert result.page_info.has_previous_page is True
-    assert result.page_info.start_cursor == 11
-    assert result.page_info.end_cursor == 2
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_reverse_empty_results(
@@ -244,15 +252,15 @@ async def test_paginate_reverse_end_page_forwards(
 ) -> None:
     """Test pagination when we've reached the end page forwards."""
     pagination_limit = 75
-    last_todo_id = 1
+    expected_start_cursor, expected_end_cursor = 50, 1
     result = await reverse_todo_paginator.paginate(select(Todo), first=pagination_limit)
 
     # check the results
     assert len(result.entities) < pagination_limit
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is False
-    assert result.page_info.start_cursor == 50
-    assert result.page_info.end_cursor == last_todo_id
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_reverse_end_page_backwards(
@@ -260,15 +268,15 @@ async def test_paginate_reverse_end_page_backwards(
 ) -> None:
     """Test pagination when we've reached the end page backwards."""
     pagination_limit = 75
-    last_todo_id = 1
+    expected_start_cursor, expected_end_cursor = 50, 1
     result = await reverse_todo_paginator.paginate(select(Todo), last=pagination_limit)
 
     # check the results
     assert len(result.entities) < pagination_limit
     assert result.page_info.has_next_page is False
     assert result.page_info.has_previous_page is False
-    assert result.page_info.start_cursor == 50
-    assert result.page_info.end_cursor == last_todo_id
+    assert result.page_info.start_cursor == expected_start_cursor
+    assert result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_paginate_reverse_filter_condition(
