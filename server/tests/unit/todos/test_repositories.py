@@ -12,12 +12,17 @@ async def todo(todo_repo: TodoRepo) -> Todo:
 
 
 @pytest.fixture
-async def multiple_todos(todo_repo: TodoRepo) -> list[Todo]:
-    todo_1 = await todo_repo.create(content="test content 1")
-    todo_2 = await todo_repo.create(content="test content 2")
-    todo_3 = await todo_repo.create(content="test content 3")
-    todo_4 = await todo_repo.create(content="test content 4")
-    return [todo_1, todo_2, todo_3, todo_4]
+async def multiple_todos(session: AsyncSession) -> list[Todo]:
+    todos = [
+        Todo(
+            content=f"Todo {i}",
+            id=i + 1,
+        )
+        for i in range(4)
+    ]
+    session.add_all(todos)
+    await session.commit()
+    return todos
 
 
 @pytest.fixture
