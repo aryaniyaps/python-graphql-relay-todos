@@ -46,7 +46,7 @@ test = [
 
 [tool.pdm.scripts]
 dev = "app/server.py"
-lint = { composite = ["black .", "ruff --fix .", "black .", "mypy ."] }
+lint = { composite = ["black .", "ruff check --fix .", "black .", "mypy ."] }
 generate-schema = "strawberry export-schema app.schema:schema --output ../schema/schema.graphql"
 migrate = "alembic upgrade head"
 new-migration = "alembic revision --autogenerate"
@@ -89,7 +89,7 @@ exclude = [] # exclude packages matching these glob patterns (empty by default)
 namespaces = false # to disable scanning PEP 420 namespaces (true by default)
 
 [tool.mypy]
-plugins = ["pydantic.mypy"]
+plugins = ["pydantic.mypy", "strawberry.ext.mypy_plugin"]
 exclude = ["^.venv/"]
 
 strict = true
@@ -105,6 +105,7 @@ local_partial_types = true
 no_implicit_optional = true
 strict_optional = true
 warn_no_return = true
+warn_unused_ignores = false
 warn_return_any = false
 warn_unreachable = true
 

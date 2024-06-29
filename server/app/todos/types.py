@@ -12,7 +12,7 @@ from app.todos.models import Todo
 
 
 @strawberry.type(name="Todo")
-class TodoType(BaseNodeType):
+class TodoType(BaseNodeType[Todo]):
     content: str
     completed: bool
     created_at: datetime
@@ -30,7 +30,7 @@ class TodoType(BaseNodeType):
         )
 
     @classmethod
-    async def resolve_nodes(  # noqa: ANN206
+    async def resolve_nodes(  # type: ignore[no-untyped-def] # noqa: ANN206
         cls,
         *,
         info: Info,

@@ -50,6 +50,7 @@ class Paginator(Generic[ModelType, CursorType]):
         before: CursorType | None,
         after: CursorType | None,
     ) -> int:
+        """Validate pagination arguments."""
         if first is not None and last is not None:
             first_and_last_error = "Cannot provide both `first` and `last`"
             raise ValueError(first_and_last_error)
@@ -92,6 +93,7 @@ class Paginator(Generic[ModelType, CursorType]):
     def __apply_ordering(
         self, *, statement: Select[tuple[ModelType]], last: int | None
     ) -> Select[tuple[ModelType]]:
+        """Apply ordering on the statement."""
         if (self._reverse and last is None) or (last is not None and not self._reverse):
             return statement.order_by(desc(self._paginate_by))
         return statement.order_by(asc(self._paginate_by))
@@ -103,6 +105,7 @@ class Paginator(Generic[ModelType, CursorType]):
         before: CursorType | None,
         after: CursorType | None,
     ) -> Select[tuple[ModelType]]:
+        """Apply pagination filters on the statement."""
         if after is not None:
             direction = (
                 self._paginate_by < after
@@ -121,12 +124,14 @@ class Paginator(Generic[ModelType, CursorType]):
 
     async def paginate(
         self,
+        *,
         statement: Select[tuple[ModelType]],
         last: int | None = None,
         first: int | None = None,
         before: CursorType | None = None,
         after: CursorType | None = None,
     ) -> PaginatedResult[ModelType, CursorType]:
+        """Paginate the given statement."""
         pagination_limit = self.__validate_arguments(
             first=first,
             last=last,

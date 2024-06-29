@@ -42,7 +42,9 @@ async def test_paginate_first(todo_paginator: Paginator[Todo, int]) -> None:
     """Ensure that we can paginate correctly with the `first` argument."""
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 1, 10
-    result = await todo_paginator.paginate(select(Todo), first=pagination_limit)
+    result = await todo_paginator.paginate(
+        statement=select(Todo), first=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) == pagination_limit
@@ -57,7 +59,7 @@ async def test_paginate_first_and_after(todo_paginator: Paginator[Todo, int]) ->
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 11, 20
     result = await todo_paginator.paginate(
-        select(Todo), first=pagination_limit, after=10
+        statement=select(Todo), first=pagination_limit, after=10
     )
 
     # check the results
@@ -72,7 +74,9 @@ async def test_paginate_last(todo_paginator: Paginator[Todo, int]) -> None:
     """Ensure that we can paginate correctly with the `last` argument."""
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 41, 50
-    result = await todo_paginator.paginate(select(Todo), last=pagination_limit)
+    result = await todo_paginator.paginate(
+        statement=select(Todo), last=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) == pagination_limit
@@ -87,7 +91,7 @@ async def test_paginate_last_and_before(todo_paginator: Paginator[Todo, int]) ->
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 40, 49
     result = await todo_paginator.paginate(
-        select(Todo), last=pagination_limit, before=50
+        statement=select(Todo), last=pagination_limit, before=50
     )
 
     # check the results
@@ -102,7 +106,7 @@ async def test_paginate_empty_results(todo_paginator: Paginator[Todo, int]) -> N
     """Test pagination when no records are returned from the database."""
     last_todo_id = 50
     result = await todo_paginator.paginate(
-        select(Todo).where(Todo.id > last_todo_id), first=10
+        statement=select(Todo).where(Todo.id > last_todo_id), first=10
     )
 
     # check the results
@@ -117,7 +121,9 @@ async def test_paginate_end_page_forwards(todo_paginator: Paginator[Todo, int]) 
     """Test pagination when we've reached the end page forwards."""
     pagination_limit = 75
     expected_start_cursor, expected_end_cursor = 1, 50
-    result = await todo_paginator.paginate(select(Todo), first=pagination_limit)
+    result = await todo_paginator.paginate(
+        statement=select(Todo), first=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) < pagination_limit
@@ -133,7 +139,9 @@ async def test_paginate_end_page_backwards(
     """Test pagination when we've reached the end page backwards."""
     pagination_limit = 75
     expected_start_cursor, expected_end_cursor = 1, 50
-    result = await todo_paginator.paginate(select(Todo), last=pagination_limit)
+    result = await todo_paginator.paginate(
+        statement=select(Todo), last=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) < pagination_limit
@@ -151,7 +159,7 @@ async def test_paginate_filter_condition(
     completed_todos = await session.scalars(select(Todo).filter(Todo.completed == True))
     completed_todo_count = len(completed_todos.all())
     result = await todo_paginator.paginate(
-        select(Todo).filter(Todo.completed == True),
+        statement=select(Todo).filter(Todo.completed == True),
         first=pagination_limit,
     )
 
@@ -168,7 +176,9 @@ async def test_paginate_reverse_first(
     """Ensure that we can paginate correctly with the `first` argument."""
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 50, 41
-    result = await reverse_todo_paginator.paginate(select(Todo), first=pagination_limit)
+    result = await reverse_todo_paginator.paginate(
+        statement=select(Todo), first=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) == pagination_limit
@@ -185,7 +195,7 @@ async def test_paginate_reverse_first_and_after(
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 40, 31
     result = await reverse_todo_paginator.paginate(
-        select(Todo), first=pagination_limit, after=41
+        statement=select(Todo), first=pagination_limit, after=41
     )
 
     # check the results
@@ -202,7 +212,9 @@ async def test_paginate_reverse_last(
     """Ensure that we can paginate correctly with the `last` argument."""
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 10, 1
-    result = await reverse_todo_paginator.paginate(select(Todo), last=pagination_limit)
+    result = await reverse_todo_paginator.paginate(
+        statement=select(Todo), last=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) == pagination_limit
@@ -219,7 +231,7 @@ async def test_paginate_reverse_last_and_before(
     pagination_limit = 10
     expected_start_cursor, expected_end_cursor = 11, 2
     result = await reverse_todo_paginator.paginate(
-        select(Todo), last=pagination_limit, before=1
+        statement=select(Todo), last=pagination_limit, before=1
     )
 
     # check the results
@@ -236,7 +248,7 @@ async def test_paginate_reverse_empty_results(
     """Test pagination when no records are returned from the database."""
     last_todo_id = 50
     result = await reverse_todo_paginator.paginate(
-        select(Todo).where(Todo.id > last_todo_id), first=10
+        statement=select(Todo).where(Todo.id > last_todo_id), first=10
     )
 
     # check the results
@@ -253,7 +265,9 @@ async def test_paginate_reverse_end_page_forwards(
     """Test pagination when we've reached the end page forwards."""
     pagination_limit = 75
     expected_start_cursor, expected_end_cursor = 50, 1
-    result = await reverse_todo_paginator.paginate(select(Todo), first=pagination_limit)
+    result = await reverse_todo_paginator.paginate(
+        statement=select(Todo), first=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) < pagination_limit
@@ -269,7 +283,9 @@ async def test_paginate_reverse_end_page_backwards(
     """Test pagination when we've reached the end page backwards."""
     pagination_limit = 75
     expected_start_cursor, expected_end_cursor = 50, 1
-    result = await reverse_todo_paginator.paginate(select(Todo), last=pagination_limit)
+    result = await reverse_todo_paginator.paginate(
+        statement=select(Todo), last=pagination_limit
+    )
 
     # check the results
     assert len(result.entities) < pagination_limit
@@ -287,7 +303,7 @@ async def test_paginate_reverse_filter_condition(
     completed_todos = await session.scalars(select(Todo).filter(Todo.completed == True))
     completed_todo_count = len(completed_todos.all())
     result = await reverse_todo_paginator.paginate(
-        select(Todo).filter(Todo.completed == True),
+        statement=select(Todo).filter(Todo.completed == True),
         first=pagination_limit,
     )
 
@@ -299,19 +315,21 @@ async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) 
     """Ensure that we cannot paginate with invalid pagination arguments."""
     # test that an error is raised when both `first` and `last` are provided
     with pytest.raises(ValueError, match="Cannot provide both `first` and `last`"):
-        await todo_paginator.paginate(select(Todo), first=10, last=10)
+        await todo_paginator.paginate(statement=select(Todo), first=10, last=10)
 
     # test that an error is raised when both `after` and `before` are provided
     with pytest.raises(ValueError, match="Cannot provide both `after` and `before`"):
-        await todo_paginator.paginate(select(Todo), after=10, before=50, first=10)
+        await todo_paginator.paginate(
+            statement=select(Todo), after=10, before=50, first=10
+        )
 
     # test that an error is raised when `first` is provided with `before`
     with pytest.raises(ValueError, match="`first` cannot be provided with `before`"):
-        await todo_paginator.paginate(select(Todo), first=10, before=5)
+        await todo_paginator.paginate(statement=select(Todo), first=10, before=5)
 
     # test that an error is raised when `last` is provided with `after`
     with pytest.raises(ValueError, match="`last` cannot be provided with `after`"):
-        await todo_paginator.paginate(select(Todo), last=10, after=5)
+        await todo_paginator.paginate(statement=select(Todo), last=10, after=5)
 
     # test that an error is raised when `first` exceeds the maximum pagination limit
     with pytest.raises(
@@ -319,7 +337,7 @@ async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) 
         match=f"`first` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records",
     ):
         await todo_paginator.paginate(
-            select(Todo),
+            statement=select(Todo),
             first=MAX_PAGINATION_LIMIT + 1,
         )
 
@@ -329,7 +347,7 @@ async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) 
         match=f"`last` exceeds pagination limit of {MAX_PAGINATION_LIMIT} records",
     ):
         await todo_paginator.paginate(
-            select(Todo),
+            statement=select(Todo),
             last=MAX_PAGINATION_LIMIT + 1,
         )
 
@@ -337,12 +355,12 @@ async def test_paginate_invalid_arguments(todo_paginator: Paginator[Todo, int]) 
     with pytest.raises(
         ValueError, match="You must provide either `first` or `last` to paginate"
     ):
-        await todo_paginator.paginate(select(Todo), first=None, last=None)
+        await todo_paginator.paginate(statement=select(Todo), first=None, last=None)
 
     # test that an error is raised when `first` is negative.
     with pytest.raises(ValueError, match="`first` must be a positive integer"):
-        await todo_paginator.paginate(select(Todo), first=-10)
+        await todo_paginator.paginate(statement=select(Todo), first=-10)
 
     # test that an error is raised when `last` is negative.
     with pytest.raises(ValueError, match="`last` must be a positive integer"):
-        await todo_paginator.paginate(select(Todo), last=-10)
+        await todo_paginator.paginate(statement=select(Todo), last=-10)
