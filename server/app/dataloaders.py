@@ -14,6 +14,6 @@ class Dataloaders:
 def create_dataloaders() -> Dataloaders:
     return Dataloaders(
         todo_by_id=DataLoader(
-            load_fn=load_todo_by_id,
+            load_fn=load_todo_by_id,  # type: ignore[arg-type]
         )
     )

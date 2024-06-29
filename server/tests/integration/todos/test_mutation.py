@@ -60,9 +60,9 @@ async def test_create_todo(
                         "completed": todo.completed,
                         "content": content,
                         "createdAt": todo.created_at.isoformat(),
-                        "updatedAt": todo.updated_at.isoformat()
-                        if todo.updated_at
-                        else None,
+                        "updatedAt": (
+                            todo.updated_at.isoformat() if todo.updated_at else None
+                        ),
                     },
                     "cursor": to_base64(TodoType, todo.id),
                 },

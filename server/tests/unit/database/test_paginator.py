@@ -148,10 +148,10 @@ async def test_paginate_filter_condition(
 ) -> None:
     """Ensure that filter conditions are preserved while paginating."""
     pagination_limit = 10
-    completed_todos = await session.scalars(select(Todo).filter(Todo.completed == True))  # noqa: E712
+    completed_todos = await session.scalars(select(Todo).filter(Todo.completed == True))
     completed_todo_count = len(completed_todos.all())
     result = await todo_paginator.paginate(
-        select(Todo).filter(Todo.completed == True),  # noqa: E712
+        select(Todo).filter(Todo.completed == True),
         first=pagination_limit,
     )
 
@@ -284,10 +284,10 @@ async def test_paginate_reverse_filter_condition(
 ) -> None:
     """Ensure that filter conditions are preserved while paginating."""
     pagination_limit = 10
-    completed_todos = await session.scalars(select(Todo).filter(Todo.completed == True))  # noqa: E712
+    completed_todos = await session.scalars(select(Todo).filter(Todo.completed == True))
     completed_todo_count = len(completed_todos.all())
     result = await reverse_todo_paginator.paginate(
-        select(Todo).filter(Todo.completed == True),  # noqa: E712
+        select(Todo).filter(Todo.completed == True),
         first=pagination_limit,
     )
 

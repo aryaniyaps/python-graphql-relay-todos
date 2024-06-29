@@ -138,10 +138,10 @@ async def test_update_todo(todo: Todo, todo_repo: TodoRepo) -> None:
     """Ensure we can update a todo."""
     # mark todo as complete
     await todo_repo.update(todo=todo, completed=True)
-    assert todo.completed is True
     assert todo.updated_at is not None
+    assert todo.completed is True
 
     # mark todo as incomplete
     await todo_repo.update(todo=todo, completed=False)
-    assert todo.completed is False
     assert todo.updated_at is not None
+    assert todo.completed is False

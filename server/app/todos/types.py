@@ -65,7 +65,9 @@ DeleteTodoPayload = Annotated[
 @strawberry.type(name="TodoConnection")
 class TodoConnectionType(relay.Connection[TodoType]):
     @classmethod
-    def from_paginated_result(cls, paginated_result: PaginatedResult) -> Self:
+    def from_paginated_result(
+        cls, paginated_result: PaginatedResult[Todo, int]
+    ) -> Self:
         return cls(
             page_info=relay.PageInfo(
                 has_next_page=paginated_result.page_info.has_next_page,
