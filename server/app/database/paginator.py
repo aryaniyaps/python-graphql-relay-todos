@@ -92,9 +92,7 @@ class Paginator(Generic[ModelType, CursorType]):
     def __apply_ordering(
         self, *, statement: Select[tuple[ModelType]], last: int | None
     ) -> Select[tuple[ModelType]]:
-        if self._reverse and last is None:
-            return statement.order_by(desc(self._paginate_by))
-        if last is not None and not self._reverse:
+        if (self._reverse and last is None) or (last is not None and not self._reverse):
             return statement.order_by(desc(self._paginate_by))
         return statement.order_by(asc(self._paginate_by))
 
