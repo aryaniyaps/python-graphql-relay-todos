@@ -149,8 +149,8 @@ class Paginator(Generic[ModelType, CursorType]):
         if last is not None:
             entities = list(reversed(entities))
 
-        if before is not None:
-            has_next_page = True
+        if last is not None:
+            has_next_page = before is not None
             has_previous_page = len(results) > pagination_limit
         else:
             # we are paginating forwards by default

@@ -73,8 +73,8 @@ async def test_paginate_last(todo_paginator: Paginator[Todo, int]) -> None:
 
     # check the results
     assert len(result.entities) == pagination_limit
-    assert result.page_info.has_next_page is True
-    assert result.page_info.has_previous_page is False
+    assert result.page_info.has_next_page is False
+    assert result.page_info.has_previous_page is True
     assert result.page_info.start_cursor == 41
     assert result.page_info.end_cursor == 50
 
@@ -199,8 +199,8 @@ async def test_paginate_reverse_last(
 
     # check the results
     assert len(result.entities) == pagination_limit
-    assert result.page_info.has_next_page is True
-    assert result.page_info.has_previous_page is False
+    assert result.page_info.has_next_page is False
+    assert result.page_info.has_previous_page is True
     assert result.page_info.start_cursor == 10
     assert result.page_info.end_cursor == 1
 
