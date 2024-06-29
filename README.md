@@ -45,7 +45,7 @@ https://github.com/aryaniyaps/python-graphql-relay-todos/assets/69184573/b6c7e0e
 - Cursor paginated connections
 - End to end GraphQL code generation
 - Fully tested GraphQL server
-- User facing errors modelling within the schema
+- User facing errors modelled within the schema
 
 ## Starting the project
 
