@@ -1,8 +1,6 @@
 from collections.abc import AsyncIterator
 
 import pytest
-from app.todos.models import Todo
-from app.todos.repositories import TodoRepo
 from asgi_lifespan import LifespanManager
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
@@ -35,11 +33,4 @@ async def graphql_client(http_client: AsyncClient) -> GraphQLClient:
     return GraphQLClient(
         client=http_client,
         endpoint="/graphql/",
-    )
-
-
-@pytest.fixture
-async def todo(todo_repo: TodoRepo) -> Todo:
-    return await todo_repo.create(
-        content="test content",
     )

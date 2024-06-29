@@ -1,5 +1,6 @@
 import pytest
 from app.todos.models import Todo
+from app.todos.repositories import TodoRepo
 from app.todos.types import TodoType
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,6 +9,14 @@ from strawberry import relay
 from tests.integration.client import GraphQLClient
 
 pytestmark = pytest.mark.usefixtures("session")
+
+
+@pytest.fixture
+async def todo(todo_repo: TodoRepo) -> Todo:
+    return await todo_repo.create(
+        content="test content",
+    )
+
 
 CREATE_TODO_MUTATION = """
 mutation CreateTodoMutation($content: String!) {
