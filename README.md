@@ -1,11 +1,7 @@
-<h1 align="center">My todos</h1>
-<p align="center"><i>Fully fledged application using Strawberry GraphQL, FastAPI, Relay and React</i></p>
+<h1>My todos</h1>
+<p><i>Fully fledged application using Strawberry GraphQL, FastAPI, Relay and React</i></p>
 <br />
-<p align="center">
-  <a href="https://skillicons.dev">
-<img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite&perline=8" alt="Tech Stack" />
-  </a>
-</p>
+<img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
 
 
 ## Starting the project
