@@ -3,7 +3,7 @@
 <br />
 <p align="center">
   <a href="https://skillicons.dev">
-<img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
+<img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite&perline=8" alt="Tech Stack" />
   </a>
 </p>
 
