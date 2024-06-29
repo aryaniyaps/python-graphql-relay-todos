@@ -17,7 +17,7 @@ https://github.com/aryaniyaps/python-graphql-relay-todos/assets/69184573/b6c7e0e
 - [Uvicorn](https://www.uvicorn.org/)
 - [Strawberry GraphQL](https://strawberry.rocks/)
 - [SQLAlchemy](https://www.sqlalchemy.org/)
-- [AsyncPG](https://magicstack.github.io/asyncpg/current/)
+- [Asyncpg](https://magicstack.github.io/asyncpg/current/)
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/)
 - [Result](https://github.com/rustedpy/result)
 - [AioInject](https://thirvondukr.github.io/aioinject/)
