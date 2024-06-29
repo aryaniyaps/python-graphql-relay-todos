@@ -1,7 +1,11 @@
 <h1>Python GraphQL Relay Todos</h1>
 <p><i>Fully fledged todo application using Strawberry GraphQL, FastAPI, Relay and React</i></p>
+
+[![codecov](https://codecov.io/gh/aryaniyaps/python-graphql-relay-todos/graph/badge.svg?token=QDIFFSG8MS)](https://codecov.io/gh/aryaniyaps/python-graphql-relay-todos)
+
 <br />
 <img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
+
 
 
 https://github.com/aryaniyaps/python-graphql-relay-todos/assets/69184573/b6c7e0e9-14c7-4af4-9cf8-67dc28429a75
