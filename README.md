@@ -3,6 +3,42 @@
 <img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
 
 
+## Tech Stack:
+<i>Backend stack</i>
+- [Python](https://www.python.org/)
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Uvicorn](https://www.uvicorn.org/)
+- [Strawberry GraphQL](https://strawberry.rocks/)
+- [SQLAlchemy](https://www.sqlalchemy.org/)
+- [AsyncPG](https://magicstack.github.io/asyncpg/current/)
+- [Alembic](https://alembic.sqlalchemy.org/en/latest/)
+- [Result](https://github.com/rustedpy/result)
+- [AIOInject](https://thirvondukr.github.io/aioinject/)
+- [Structlog](https://www.structlog.org/en/stable/)
+- [Pytest](https://docs.pytest.org/en/latest/)
+
+<i>Frontend stack</i>
+- [TypeScript](https://www.typescriptlang.org/)
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [Relay](https://relay.dev/)
+- [React Router DOM](https://reactrouter.com/en/main)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+
+
+## Features:
+- Dependency Injection in resolvers
+- Usage of dataloaders to resolve nodes
+- Relay spec compliant GraphQL server
+- Connection handling, including inserts, updates and deletions
+- Usage of Relay Client and fragments
+- Cursor paginated connections
+- End to end GraphQL code generation
+- Fully tested GraphQL server
+
 ## Starting the project
 
 1. setup docker compose
