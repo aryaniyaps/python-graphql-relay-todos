@@ -38,6 +38,7 @@
 - Cursor paginated connections
 - End to end GraphQL code generation
 - Fully tested GraphQL server
+- User facing errors modelling within the schema
 
 ## Starting the project
 
