@@ -40,6 +40,8 @@ test = [
     "anyio>=4.4.0",
     "pytest-pretty>=1.2.0",
     "coverage>=7.5.4",
+    "httpx>=0.27.0",
+    "asgi-lifespan>=2.1.0",
 ]
 
 [tool.pdm.scripts]
@@ -59,7 +61,7 @@ filterwarnings = ["ignore::DeprecationWarning"]
 [tool.coverage.run]
 source = ["app"]
 omit = []
-command_line = "-m pytest -v"
+command_line = "-m pytest -vv"
 concurrency = ["greenlet"]
 branch = true
 
