@@ -3,7 +3,9 @@ from typing import Generic, Self, TypeVar
 import strawberry
 from strawberry import relay
 
-from app.database.paginator import ModelType
+from app.database.base import Base
+
+ModelType = TypeVar("ModelType", bound=Base)
 
 
 @strawberry.type
@@ -21,4 +23,4 @@ class BaseErrorType:
     message: str
 
 
-NodeType = TypeVar("NodeType", bound=BaseNodeType)
+NodeType = TypeVar("NodeType", bound=BaseNodeType[Base])

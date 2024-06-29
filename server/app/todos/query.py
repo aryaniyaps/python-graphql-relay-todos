@@ -11,7 +11,7 @@ from .types import TodoConnectionType
 
 @strawberry.type(name="Viewer")
 class TodoQuery:
-    @strawberry.field(
+    @strawberry.field(  # type: ignore[misc]
         graphql_type=TodoConnectionType,
         description="Get all todos available.",
     )

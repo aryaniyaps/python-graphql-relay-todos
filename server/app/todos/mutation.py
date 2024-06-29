@@ -19,7 +19,7 @@ from .types import (
 
 @strawberry.type
 class TodoMutation:
-    @strawberry.mutation(
+    @strawberry.mutation(  # type: ignore[misc]
         graphql_type=CreateTodoPayload,
         description="Create a new todo.",
     )
@@ -48,7 +48,7 @@ class TodoMutation:
             ),
         )
 
-    @strawberry.mutation(
+    @strawberry.mutation(  # type: ignore[misc]
         graphql_type=DeleteTodoPayload,
         description="Delete a todo by ID.",
     )
@@ -77,7 +77,7 @@ class TodoMutation:
             todo=result.ok_value,
         )
 
-    @strawberry.mutation(
+    @strawberry.mutation(  # type: ignore[misc]
         graphql_type=ToggleTodoCompletedPayload,
         description="Toggle the completed state of a todo by ID.",
     )
