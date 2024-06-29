@@ -1,4 +1,5 @@
-<h1>My todos</h1>
+<h1>Python GraphQL Relay Todos</h1>
+<p><i>Fully fledged todo application using Strawberry GraphQL, FastAPI, Relay and React</i></p>
 <br />
 <img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
 
