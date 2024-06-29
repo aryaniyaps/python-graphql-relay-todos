@@ -1,4 +1,10 @@
-# graphql-notes
+<h1 align="center">My todos</h1>
+<br />
+<p align="center">
+  <a href="https://skillicons.dev">
+<img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
+  </a>
+</p>
 
 
 ## Starting the project
