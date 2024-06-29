@@ -13,7 +13,7 @@
 - [AsyncPG](https://magicstack.github.io/asyncpg/current/)
 - [Alembic](https://alembic.sqlalchemy.org/en/latest/)
 - [Result](https://github.com/rustedpy/result)
-- [AIOInject](https://thirvondukr.github.io/aioinject/)
+- [AioInject](https://thirvondukr.github.io/aioinject/)
 - [Structlog](https://www.structlog.org/en/stable/)
 - [Pytest](https://docs.pytest.org/en/latest/)
 
