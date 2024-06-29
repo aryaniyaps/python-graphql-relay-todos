@@ -10,7 +10,7 @@ from tests.integration.client import GraphQLClient
 pytestmark = pytest.mark.usefixtures("session")
 
 CREATE_TODO_MUTATION = """
-mutation CreateTodo($content: String!) {
+mutation CreateTodoMutation($content: String!) {
     createTodo(content: $content) {
         todoEdge {
             node {
@@ -63,7 +63,7 @@ async def test_create_todo(
 
 
 DELETE_TODO_MUTATION = """
-mutation DeleteTodo($todoId: ID!) {
+mutation DeleteTodoMutation($todoId: ID!) {
     deleteTodo(todoId: $todoId) {
         __typename
         ... on Todo {
@@ -134,7 +134,7 @@ async def test_delete_todo_unknown_id(graphql_client: GraphQLClient) -> None:
 
 
 TOGGLE_TODO_COMPLETED_MUTATION = """
-mutation ToggleTodoCompleted($todoId: ID!) {
+mutation ToggleTodoCompletedMutation($todoId: ID!) {
     toggleTodoCompleted(todoId: $todoId) {
         __typename
         ... on Todo {

@@ -38,7 +38,7 @@ class TodoType(BaseNodeType):
         required: bool = False,  # noqa: ARG003
     ):
         todos = await info.context.loaders.todo_by_id.load_many(node_ids)
-        return list(map(cls.from_orm, [todo for todo in todos if todo is not None]))
+        return [cls.from_orm(todo) if todo is not None else todo for todo in todos]
 
 
 @strawberry.type(name="TodoNotFoundError")
