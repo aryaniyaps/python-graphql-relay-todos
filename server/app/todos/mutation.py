@@ -35,9 +35,12 @@ class TodoMutation:
         todo_service: Annotated[TodoService, Inject],
     ) -> CreateTodoPayload:
         """Create a new todo."""
-        todo = await todo_service.create(
+        result = await todo_service.create(
             content=content,
         )
+
+        todo = result.unwrap()
+
         return CreateTodoPayload(
             todo_edge=relay.Edge(
                 node=TodoType.from_orm(todo),

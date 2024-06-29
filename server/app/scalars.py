@@ -5,6 +5,6 @@ from strawberry.relay import GlobalID
 # https://github.com/strawberry-graphql/strawberry/issues/3551
 ID = strawberry.scalar(
     strawberry.ID,
-    serialize=lambda value: str(value),
-    parse_value=lambda value: GlobalID.from_id(value=value),
+    serialize=str,
+    parse_value=GlobalID.from_id,
 )

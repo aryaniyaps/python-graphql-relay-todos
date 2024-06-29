@@ -11,10 +11,12 @@ class TodoService:
     def __init__(self, todo_repo: TodoRepo) -> None:
         self._todo_repo = todo_repo
 
-    async def create(self, content: str) -> Todo:
+    async def create(self, content: str) -> Result[Todo, None]:
         """Create a new todo."""
-        return await self._todo_repo.create(
-            content=content,
+        return Ok(
+            await self._todo_repo.create(
+                content=content,
+            )
         )
 
     async def delete(self, todo_id: int) -> Result[Todo, TodoNotFoundError]:
