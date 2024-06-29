@@ -1,4 +1,5 @@
 <h1 align="center">My todos</h1>
+<p align="center"><i>Fully fledged application using Strawberry GraphQL, FastAPI, Relay and React</i></p>
 <br />
 <p align="center">
   <a href="https://skillicons.dev">
