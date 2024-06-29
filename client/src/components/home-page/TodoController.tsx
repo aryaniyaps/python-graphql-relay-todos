@@ -17,7 +17,7 @@ const TodoControllerFragment = graphql`
   fragment TodoControllerFragment on Query
   @argumentDefinitions(
     cursor: { type: "String" }
-    count: { type: "Int", defaultValue: 3 }
+    count: { type: "Int", defaultValue: 5 }
   ) {
     todos(after: $cursor, first: $count)
       @connection(key: "TodoListFragment_todos") {

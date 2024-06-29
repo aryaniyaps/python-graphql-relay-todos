@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<56a7b37d4a1a9d9fe1f6736b63871430>>
+ * @generated SignedSource<<2d75fee309faa2bbac203c15ad862a1a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,7 +25,7 @@ export type TodoListPaginationQuery = {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": 3,
+    "defaultValue": 5,
     "kind": "LocalArgument",
     "name": "count"
   },
@@ -211,16 +211,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e5ce0da20040e5b1e3e5e3021c717a50",
+    "cacheID": "36b628ed94c097d8e061beb57a1fdd7f",
     "id": null,
     "metadata": {},
     "name": "TodoListPaginationQuery",
     "operationKind": "query",
-    "text": "query TodoListPaginationQuery(\n  $count: Int = 3\n  $cursor: String\n) {\n  ...TodoListFragment_1G22uz\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  completed\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment_1G22uz on Query {\n  todos(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
+    "text": "query TodoListPaginationQuery(\n  $count: Int = 5\n  $cursor: String\n) {\n  ...TodoListFragment_1G22uz\n}\n\nfragment TodoFragment on Todo {\n  id\n  content\n  completed\n  createdAt\n  updatedAt\n}\n\nfragment TodoListFragment_1G22uz on Query {\n  todos(after: $cursor, first: $count) {\n    edges {\n      node {\n        id\n        ...TodoFragment\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "38c5e5d1bb689478d5e114781f8e8328";
+(node as any).hash = "e7bffdd761b305163f3d6cfb0bda3eff";
 
 export default node;

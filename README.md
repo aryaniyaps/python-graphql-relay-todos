@@ -3,6 +3,8 @@
 <br />
 <img src="https://skillicons.dev/icons?i=py,graphql,fastapi,postgres,ts,react,vite,tailwind,nodejs,docker,git,githubactions&perline=6" alt="Tech Stack" />
 
+![Project Demo](./assets/project-demo.mp4)
+
 
 ## Tech Stack:
 <i>Backend stack</i>
@@ -79,4 +81,11 @@ npm run dev
 ```
 cd server
 pdm run generate-schema
+```
+
+
+## Running the Relay Compiler
+```
+cd client
+npm run relay --watch
 ```

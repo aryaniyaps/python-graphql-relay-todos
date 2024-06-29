@@ -62,7 +62,7 @@ export default function Todo({ todo, connectionId }: Props) {
             "line-through": data.completed,
           })}
         >
-          <p className="break-all">{data.content}</p>
+          <p className="break-words">{data.content}</p>
         </CardTitle>
       </CardHeader>
       <CardFooter className="flex">
