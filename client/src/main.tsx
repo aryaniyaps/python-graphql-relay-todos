@@ -6,7 +6,6 @@ import LoadingScreen from "./components/LoadingScreen.tsx";
 import "./index.css";
 import environment from "./lib/relay-environment";
 import router from "./router.tsx";
-
 export default function App() {
   return (
     <React.StrictMode>
