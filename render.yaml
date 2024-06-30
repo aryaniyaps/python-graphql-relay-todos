@@ -16,7 +16,7 @@ services:
       - key: SERVER_PORT
         value: 8000
       - key: SERVER_LOG_LEVEL
-        value: INFO
+        value: "INFO"
       - key: SERVER_CORS_ALLOW_ORIGINS
         value: "["http://localhost:8080", "http://127.0.0.1:8080"]"
       - key: SERVER_DATABASE_URL
