@@ -1,7 +1,5 @@
 from result import Err, Ok, Result
 
-from app.database.paginator import PaginatedResult
-
 from .exceptions import TodoNotFoundError
 from .models import Todo
 from .repositories import TodoRepo
@@ -39,19 +37,4 @@ class TodoService:
                 todo=existing_todo,
                 completed=(not existing_todo.completed),
             )
-        )
-
-    async def get_all(
-        self,
-        first: int | None = None,
-        last: int | None = None,
-        after: int | None = None,
-        before: int | None = None,
-    ) -> PaginatedResult[Todo, int]:
-        """Get all todos."""
-        return await self._todo_repo.get_all(
-            first=first,
-            last=last,
-            after=after,
-            before=before,
         )

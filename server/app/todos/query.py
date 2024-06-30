@@ -5,7 +5,7 @@ from aioinject import Inject
 from aioinject.ext.strawberry import inject
 from strawberry import relay
 
-from .services import TodoService
+from .repositories import TodoRepo
 from .types import TodoConnectionType
 
 
@@ -18,13 +18,13 @@ class TodoQuery:
     @inject
     async def todos(
         self,
-        todo_service: Annotated[TodoService, Inject],
+        todo_repo: Annotated[TodoRepo, Inject],
         before: str | None = None,
         after: str | None = None,
         first: int | None = None,
         last: int | None = None,
     ) -> TodoConnectionType:
-        paginated_result = await todo_service.get_all(
+        paginated_result = await todo_repo.get_all(
             first=first,
             last=last,
             after=(

@@ -4,7 +4,6 @@ from app.todos.models import Todo
 from app.todos.repositories import TodoRepo
 from app.todos.services import TodoService
 from result import Err, Ok
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @pytest.fixture
@@ -12,19 +11,6 @@ async def todo(todo_repo: TodoRepo) -> Todo:
     return await todo_repo.create(
         content="test content",
     )
-
-
-@pytest.fixture
-async def __seed_todos(session: AsyncSession) -> None:
-    todos = [
-        Todo(
-            content=f"Todo {i}",
-            id=i + 1,
-        )
-        for i in range(50)
-    ]
-    session.add_all(todos)
-    await session.commit()
 
 
 async def test_create_todo(todo_service: TodoService) -> None:
@@ -38,59 +24,6 @@ async def test_create_todo(todo_service: TodoService) -> None:
     assert result.ok_value.content == "content"
     assert result.ok_value.created_at is not None
     assert result.ok_value.updated_at is None
-
-
-@pytest.mark.usefixtures("__seed_todos")
-async def test_get_all_todos(todo_service: TodoService) -> None:
-    """Ensure we can get all todos."""
-    pagination_limit = 10
-
-    # Test fetching the first 10 todos
-    expected_start_cursor, expected_end_cursor = 50, 41
-    paginated_result = await todo_service.get_all(first=pagination_limit)
-    assert len(paginated_result.entities) == pagination_limit
-    assert paginated_result.page_info.has_next_page is True
-    assert paginated_result.page_info.has_previous_page is False
-    assert paginated_result.page_info.start_cursor == expected_start_cursor
-    assert paginated_result.page_info.end_cursor == expected_end_cursor
-
-    # Test fetching the next 10 todos
-    expected_start_cursor, expected_end_cursor = 48, 39
-    paginated_result = await todo_service.get_all(first=pagination_limit, after=49)
-    assert len(paginated_result.entities) == pagination_limit
-    assert paginated_result.page_info.has_next_page is True
-    assert paginated_result.page_info.has_previous_page is True
-    assert paginated_result.page_info.start_cursor == expected_start_cursor
-    assert paginated_result.page_info.end_cursor == expected_end_cursor
-
-    # Test fetching the last 10 todos
-    expected_start_cursor, expected_end_cursor = 10, 1
-    paginated_result = await todo_service.get_all(last=pagination_limit)
-    assert len(paginated_result.entities) == pagination_limit
-    assert paginated_result.page_info.has_next_page is False
-    assert paginated_result.page_info.has_previous_page is True
-    assert paginated_result.page_info.start_cursor == expected_start_cursor
-    assert paginated_result.page_info.end_cursor == expected_end_cursor
-
-    # Test fetching 10 todos before the last one
-    expected_start_cursor, expected_end_cursor = 11, 2
-    paginated_result = await todo_service.get_all(last=pagination_limit, before=1)
-    assert len(paginated_result.entities) == pagination_limit
-    assert paginated_result.page_info.has_next_page is True
-    assert paginated_result.page_info.has_previous_page is True
-    assert paginated_result.page_info.start_cursor == expected_start_cursor
-    assert paginated_result.page_info.end_cursor == expected_end_cursor
-
-    # Test fetching all todos with a limit higher than the total count
-    pagination_limit = 75
-
-    expected_start_cursor, expected_end_cursor = 50, 1
-    paginated_result = await todo_service.get_all(first=pagination_limit)
-    assert len(paginated_result.entities) < pagination_limit
-    assert paginated_result.page_info.has_next_page is False
-    assert paginated_result.page_info.has_previous_page is False
-    assert paginated_result.page_info.start_cursor == expected_start_cursor
-    assert paginated_result.page_info.end_cursor == expected_end_cursor
 
 
 async def test_delete_todo(
