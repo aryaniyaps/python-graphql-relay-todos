@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 @pytest.fixture(scope="session")
 def database_url() -> str:
-    return settings.database_test_url
+    return settings.database_url
 
 
 @pytest.fixture(autouse=True)

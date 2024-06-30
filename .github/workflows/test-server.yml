@@ -28,7 +28,6 @@ jobs:
       SERVER_ENVIRONMENT: "testing"
       SERVER_LOG_LEVEL: "INFO"
       SERVER_DATABASE_URL: "postgresql+asyncpg://user:pass@localhost:5432/todos"
-      SERVER_DATABASE_TEST_URL: "postgresql+asyncpg://user:pass@localhost:5432/todos_test"
       SERVER_DATABASE_POOL_SIZE: 20
       SERVER_CORS_ALLOW_ORIGINS: '["*"]'
       SERVER_OPENAPI_URL:
