@@ -7,12 +7,16 @@ import "./index.css";
 import environment from "./lib/relay-environment";
 import router from "./router.tsx";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <RelayEnvironmentProvider environment={environment}>
-      <Suspense fallback={<LoadingScreen />}>
-        <RouterProvider router={router} />
-      </Suspense>
-    </RelayEnvironmentProvider>
-  </React.StrictMode>
-);
+export default function App() {
+  return (
+    <React.StrictMode>
+      <RelayEnvironmentProvider environment={environment}>
+        <Suspense fallback={<LoadingScreen />}>
+          <RouterProvider router={router} />
+        </Suspense>
+      </RelayEnvironmentProvider>
+    </React.StrictMode>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")!).render(<App />);

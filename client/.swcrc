@@ -1,0 +1,50 @@
+{
+  "jsc": {
+    "target": "es2017",
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true,
+      "decorators": false,
+      "dynamicImport": false
+    },
+    "transform": {
+      "react": {
+        "pragma": "React.createElement",
+        "pragmaFrag": "React.Fragment",
+        "throwIfNamespace": true,
+        "development": false,
+        "useBuiltins": false,
+        "runtime": "automatic"
+      },
+      "hidden": {
+        "jest": true
+      },
+      "experimental": {
+        "plugins": [
+          [
+            "@swc/plugin-relay",
+            {
+              "src": "./src",
+              "language": "typescript",
+              "schema": "../schema/schema.graphql",
+              "eagerEsModules": true,
+              "excludes": [
+                "**/node_modules/**",
+                "**/__mocks__/**",
+                "**/__tests__/**",
+                "**/__generated__/**"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  }
+  //   "module": {
+  //     "type": "commonjs",
+  //     "strict": false,
+  //     "strictMode": true,
+  //     "lazy": false,
+  //     "noInterop": false
+  //   }
+}

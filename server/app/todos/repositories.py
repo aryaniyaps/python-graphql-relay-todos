@@ -14,7 +14,7 @@ class TodoRepo:
         """Create a new todo."""
         todo = Todo(content=content)
         self._session.add(todo)
-        await self._session.commit()
+        await self._session.flush()
         return todo
 
     async def get(self, todo_id: int) -> Todo | None:
@@ -29,7 +29,7 @@ class TodoRepo:
         """Update the given todo."""
         todo.completed = completed
         self._session.add(todo)
-        await self._session.commit()
+        await self._session.flush()
         return todo
 
     async def get_many_by_ids(self, todo_ids: list[int]) -> list[Todo | None]:
@@ -64,4 +64,4 @@ class TodoRepo:
     async def delete(self, todo: Todo) -> None:
         """Delete a todo by ID."""
         await self._session.delete(todo)
-        await self._session.commit()
+        await self._session.flush()
