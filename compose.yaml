@@ -10,5 +10,36 @@ services:
     volumes:
       - "postgres_data:/bitnami/postgresql"
 
+  server:
+    build:
+      context: ./server
+    ports:
+      - "8000:8000"
+    environment:
+      - SERVER_DEBUG=false
+      - SERVER_ENVIRONMENT=production
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8000
+      - SERVER_LOG_LEVEL=INFO
+      - SERVER_CORS_ALLOW_ORIGINS=["localhost:3000", "127.0.0.1:3000"]
+      - SERVER_OPENAPI_URL=
+      - SERVER_DATABASE_URL=postgresql+asyncpg://user:pass@postgres:5432/todos
+      - SERVER_DATABASE_TEST_URL=postgresql+asyncpg://user:pass@postgres:5432/todos # TODO: remove this
+      - SERVER_DATABASE_POOL_SIZE=20
+    depends_on:
+      - postgres
+
+  client:
+    image: client
+    build:
+      context: ./client
+    environment:
+      NODE_ENV: production
+      VITE_API_URL: "http://localhost:8000/graphql/"
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+
 volumes:
   postgres_data:
