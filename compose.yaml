@@ -48,7 +48,7 @@ services:
       context: ./client
     environment:
       NODE_ENV: production
-      VITE_API_URL: "http://localhost/api/graphql/"
+      VITE_API_URL: "/api/graphql/"
     ports:
       - 3000:3000
     depends_on:
