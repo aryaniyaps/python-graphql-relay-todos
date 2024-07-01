@@ -1,4 +1,17 @@
 services:
+  caddy:
+    image: "caddy:2.8.4-alpine"
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_config:/config
+
   postgres:
     image: "bitnami/postgresql:16"
     ports:
@@ -21,10 +34,11 @@ services:
       - SERVER_HOST=0.0.0.0
       - SERVER_PORT=8000
       - SERVER_LOG_LEVEL=INFO
-      - SERVER_CORS_ALLOW_ORIGINS=["http://localhost:3000", "http://127.0.0.1:3000"]
+      - SERVER_CORS_ALLOW_ORIGINS=["http://localhost", "http://127.0.0.1"]
       - SERVER_OPENAPI_URL=
       - SERVER_DATABASE_URL=postgresql+asyncpg://user:pass@postgres:5432/todos
       - SERVER_DATABASE_POOL_SIZE=20
+      - SERVER_ROOT_PATH="/api"
     depends_on:
       - postgres
 
@@ -34,7 +48,7 @@ services:
       context: ./client
     environment:
       NODE_ENV: production
-      VITE_API_URL: "http://localhost:8000/graphql/"
+      VITE_API_URL: "http://localhost/api/graphql/"
     ports:
       - 3000:3000
     depends_on:
@@ -42,3 +56,4 @@ services:
 
 volumes:
   postgres_data:
+  caddy_config:

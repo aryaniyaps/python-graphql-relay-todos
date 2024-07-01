@@ -79,6 +79,8 @@ class Settings(BaseSettings):
 
     openapi_url: str | None = None
 
+    root_path: str = ""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_prefix="server_",
