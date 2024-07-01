@@ -1,4 +1,4 @@
-http://localhost {
+localhost {
     reverse_proxy /api/* server:8000
 
 	reverse_proxy client:3000

@@ -34,7 +34,7 @@ services:
       - SERVER_HOST=0.0.0.0
       - SERVER_PORT=8000
       - SERVER_LOG_LEVEL=INFO
-      - SERVER_CORS_ALLOW_ORIGINS=["http://localhost", "http://127.0.0.1"]
+      - SERVER_CORS_ALLOW_ORIGINS=["http://localhost", "http://127.0.0.1", "https://localhost", "https://127.0.0.1"]
       - SERVER_OPENAPI_URL=
       - SERVER_DATABASE_URL=postgresql+asyncpg://user:pass@postgres:5432/todos
       - SERVER_DATABASE_POOL_SIZE=20
